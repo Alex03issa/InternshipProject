@@ -42,7 +42,7 @@
         <!-- <a class="text-gray-800 font-semibold text-3xl leading-4 no-underline page-scroll" href="index.html">Pavo</a> -->
 
         <!-- Image Logo -->
-        <a class="inline-block mr-4 py-0.5 text-xl whitespace-nowrap hover:no-underline focus:no-underline" href="index.html">
+        <a class="inline-block mr-4 py-0.5 text-xl whitespace-nowrap hover:no-underline focus:no-underline" href="{{ route('homepage') }}">
             <img src="images/logo.svg" alt="alternative" class="h-8" />
         </a>
 
@@ -53,16 +53,16 @@
         <div class="navbar-collapse offcanvas-collapse lg:flex lg:flex-grow lg:items-center" id="navbarsExampleDefault">
             <ul class="pl-0 mt-3 mb-2 ml-auto flex flex-col list-none lg:mt-0 lg:mb-0 lg:flex-row">
                 <li>
-                    <a class="nav-link page-scroll active" href="#home">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link page-scroll active" href="{{ route('homepage') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li>
-                    <a class="nav-link page-scroll" href="#blog">Blog</a>
+                    <a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a>
                 </li>
                 <li>
-                    <a class="nav-link page-scroll" href="#about">About Us</a>
+                    <a class="nav-link page-scroll" href="{{ route('aboutus') }}">About Us</a>
                 </li>
                 <li>
-                    <a class="nav-link page-scroll" href="#contact">Contact Us</a>
+                    <a class="nav-link page-scroll" href="{{ route('contactus') }}">Contact Us</a>
                 </li>
 
                 @if(Auth::check()) <!-- Check if the user is logged in -->
@@ -100,7 +100,7 @@
                     
                 @else
                     <li>
-                        <a class="nav-link page-scroll" href="#signup">Sign Up</a>
+                        <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
                     </li>
                     <li>
                         <a class="nav-link page-scroll" href="#download">Download</a>
@@ -645,9 +645,9 @@
         <div class="copyright">
             <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
                 <ul class="mb-4 list-unstyled p-small">
-                    <li class="mb-2"><a href="article.html">Article Details</a></li>
-                    <li class="mb-2"><a href="terms.html">Terms & Conditions</a></li>
-                    <li class="mb-2"><a href="privacy.html">Privacy Policy</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
                 </ul>
                 <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Your name</a></p>
 
