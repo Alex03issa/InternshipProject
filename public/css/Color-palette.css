@@ -1,0 +1,30 @@
+/* variables.css */
+
+:root {
+    
+
+    --primary-blue: #007aff;
+    --white: #ffffff;
+    --black: #000000;
+    
+    
+
+    --medium-gray: #bdbdbd;
+    --google-red: #db4437;
+    --dark-google-red: #c33d2d;
+   
+    --medium-dark-gray: #3f3f3f;
+    --shadow-gray: #444444;
+    --border-gray: #ccc;
+
+
+    /* General Theme color*/
+    --light-gray: #f1f9fc;
+    --purple: #594cda;
+    --red: #eb427e;
+    --black-heading-text: #252c38;
+    --dark-gray-body-text: #6b747b;
+
+    --header-gradient-background: linear-gradient(rgba(197, 234, 249, 1), rgba(255, 255, 255, 1));
+
+}

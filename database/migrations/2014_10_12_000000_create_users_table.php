@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_image')->nullable();
             $table->string('username');
             $table->string('google_id')->nullable();
+            $table->string('apple_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -7,28 +8,28 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 
-class GoogleAuthController extends Controller
+class AppleAuthController extends Controller
 {
-    public function redirectToGoogle()
+    public function redirectToApple()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('apple')->redirect();
     }
 
-    public function handleGoogleCallback()
+    public function handleAppleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $appleUser = Socialite::driver('apple')->stateless()->user();
 
-            $existingUser = User::where('email', $googleUser->getEmail())->first();
+            $existingUser = User::where('email', $appleUser->getEmail())->first();
 
             if ($existingUser) {
                 // Update user avatar if needed
-                $existingUser->update(['profile_image' => $googleUser->getAvatar()]);
+                $existingUser->update(['profile_image' => $appleUser->getAvatar()]);
 
                 // Check if the user has a password
                 if (!$existingUser->password) {
-                    // Store Google ID and redirect to password creation
-                    $existingUser->google_id = $googleUser->getId();
+                    // Store Apple ID and redirect to password creation
+                    $existingUser->apple_id = $appleUser->getId();
                     $existingUser->save();
                     Auth::login($existingUser);
                     return redirect()->route('password.create');
@@ -40,10 +41,10 @@ class GoogleAuthController extends Controller
             } else {
                 // Register the user
                 $newUser = User::create([
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'profile_image' => $googleUser->getAvatar(),
+                    'name' => $appleUser->getName(),
+                    'email' => $appleUser->getEmail(),
+                    'apple_id' => $appleUser->getId(),
+                    'profile_image' => $appleUser->getAvatar(),
                     'password' => null, // Password will be set later
                 ]);
 
@@ -52,7 +53,7 @@ class GoogleAuthController extends Controller
                 return redirect()->route('password.create');
             }
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
+            return redirect()->route('login')->with('error', 'Unable to login using Apple. Please try again.');
         }
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
+use SocialiteProviders\Apple\AppleExtendSocialite;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->singleton(SocialiteWasCalled::class, function ($app) {
+            return new SocialiteWasCalled([
+                'apple' => AppleExtendSocialite::class,
+            ]);
+        });
     }
 }

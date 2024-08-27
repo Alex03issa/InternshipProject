@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\signupController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\AppleAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +17,36 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// Route to the home page
 Route::get('/', function () {
     return view('Homepage');
 })->name('homepage');
+
+// Route to the terms page
+Route::get('/blog', function () {
+    return view('blog');
+})->name('blog');
+
+// Route to the terms page
+Route::get('/aboutus', function () {
+    return view('aboutus');
+})->name('aboutus');
+
+// Route to the terms page
+Route::get('/contactus', function () {
+    return view('contactus');
+})->name('contactus');
+
+// Route to the terms page
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms');
+
+// Route to the privacy page
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
 
 
 Route::get('/signup', [signupController::class, 'showSignUp'])->name('signup');
@@ -31,18 +59,17 @@ Route::post('/login', [loginController::class, 'signIn'])->name('login.submit');
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
 
 
+// Google login routes
 
+Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
-Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+//password creation
 
+Route::get('/password/create', [PasswordController::class, 'showCreateForm'])->name('password.create');
+Route::post('/password/store', [PasswordController::class, 'store'])->name('password.store');
 
+// Apple login routes (if using Apple ID login)
 
-Route::get('/privacy', function () {
-    return view('privacy');
-});
-
-Route::get('/terms', function () {
-    return view('terms');
-});
-
+Route::get('auth/apple/redirect', [AppleAuthController::class, 'redirectToApple'])->name('apple.redirect');
+Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallback'])->name('apple.callback');
