@@ -443,6 +443,10 @@ input[type="checkbox"] {
     background-position: center center;
     background-size: 100% 100%;
 }
+/* Remove the caret from the dropdown toggle */
+#navbarDropdown::after {
+    display: none;
+}
 
 .navbar-collapse {
     flex-basis: 100%;
