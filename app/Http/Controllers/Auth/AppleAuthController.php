@@ -7,12 +7,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Database\QueryException;
+use Laravel\Socialite\Two\InvalidStateException;
+use Exception;
 
 class AppleAuthController extends Controller
 {
     public function redirectToApple()
     {
-        return Socialite::driver('apple')->redirect();
+        try {
+            return Socialite::driver('apple')->redirect();
+        } catch (Exception $e) {
+            return redirect()->route('login')->with('error', 'Unable to initiate Apple authentication. Please try again.');
+        }
     }
 
     public function handleAppleCallback()
@@ -52,7 +59,16 @@ class AppleAuthController extends Controller
                 Auth::login($newUser);
                 return redirect()->route('password.create');
             }
-        } catch (\Exception $e) {
+        } catch (InvalidStateException $e) {
+            // Handle invalid state exception, which can occur if the CSRF token doesn't match
+            return redirect()->route('login')->with('error', 'Invalid state. Please try logging in again.');
+
+        } catch (QueryException $e) {
+            // Handle database-related exceptions
+            return redirect()->route('login')->with('error', 'A database error occurred. Please try again later.');
+
+        } catch (Exception $e) {
+            // Handle all other general exceptions
             return redirect()->route('login')->with('error', 'Unable to login using Apple. Please try again.');
         }
     }

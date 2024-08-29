@@ -66,10 +66,15 @@ Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCa
 
 //password creation
 
-Route::get('/password/create', [PasswordController::class, 'showCreateForm'])->name('password.create');
-Route::post('/password/store', [PasswordController::class, 'store'])->name('password.store');
+Route::get('auth/password/create', [PasswordController::class, 'showCreateForm'])->name('password.create');
+Route::post('auth/password/store', [PasswordController::class, 'store'])->name('password.store');
 
 // Apple login routes (if using Apple ID login)
 
 Route::get('auth/apple/redirect', [AppleAuthController::class, 'redirectToApple'])->name('apple.redirect');
 Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallback'])->name('apple.callback');
+
+//password prompt
+Route::get('/password/prompt', [PasswordController::class, 'prompt'])->name('password.prompt');
+Route::post('/password/choice', [PasswordController::class, 'handleChoice'])->name('password.choice');
+

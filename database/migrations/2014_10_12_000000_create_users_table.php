@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('google_id')->nullable();
             $table->string('apple_id')->nullable();
+            $table->string('user_type')->default('user');
             $table->rememberToken();
             $table->timestamps();
         });
