@@ -47,7 +47,9 @@ public function handleGoogleCallback()
             $newUser = User::create([
                 'username' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
+                'provider' => 'google',
                 'google_id' => $googleUser->getId(),
+                'email_verified_at' => now(), // Automatically mark as verified
                 'profile_image' => $googleUser->getAvatar(),
                 'password' => Hash::make($randomPassword),
             ]);

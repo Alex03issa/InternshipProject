@@ -9,6 +9,10 @@ use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use Illuminate\Support\Str;
+
 
 class loginController extends Controller
 {
@@ -41,6 +45,15 @@ class loginController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
+
+                if (!$user->is_verified) {
+                    // Send verification email
+                    Mail::to($user->email)->send(new VerificationMail($user));
+                    return back()->withErrors([
+                        'email' => 'Please verify your email address before logging in.',
+                    ]);
+                }
+
                 // Rehash the password if it's not using Bcrypt
                 if (Hash::needsRehash($user->password)) {
                     $user->password = Hash::make($request->password);

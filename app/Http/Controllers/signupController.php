@@ -9,6 +9,10 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use Illuminate\Support\Str;
+
 
 class signupController extends Controller
 {
@@ -39,19 +43,23 @@ class signupController extends Controller
                 'password' => 'required|string|min:8|confirmed',
             ]);
 
-            // Create the user
-            $user = User::create([
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+        // Generate the verification token
+        $verificationToken = Str::random(32);
 
-            // Log the user in
-            Auth::login($user);
+        // Create the user with the verification token
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'verification_token' => $verificationToken, 
+        ]);
 
-            // Redirect to the homepage with a success message
-            return redirect()->route('homepage')->with('success', 'Registration successful! You are now logged in.');
-        
+       
+            // Send verification email
+            Mail::to($user->email)->send(new VerificationMail($user));
+            return redirect()->back()->with('success', 'Registration successful! Please check your email to verify your account.');
+
+
         } catch (ValidationException $e) {
             // Handle validation exceptions
             return redirect()->back()->withErrors($e->validator)->withInput();

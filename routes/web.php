@@ -6,6 +6,8 @@ use App\Http\Controllers\loginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\AppleAuthController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +20,10 @@ use App\Http\Controllers\Auth\AppleAuthController;
 |
 */
 // Route to the home page
-Route::get('/', function () {
-    return view('Homepage');
-})->name('homepage');
+// Route to the home page without restrictions
+Route::get('/', [HomeController::class, 'showHomepage'])->name('homepage');
+// Route to the home page with verification
+Route::get('/home', [HomeController::class, 'showHomepageWithVerification'])->middleware(['auth'])->name('home.verified');
 
 // Route to the terms page
 Route::get('/blog', function () {
@@ -78,3 +81,15 @@ Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallb
 Route::get('/password/prompt', [PasswordController::class, 'prompt'])->name('password.prompt');
 Route::post('/password/choice', [PasswordController::class, 'handleChoice'])->name('password.choice');
 
+Route::get('/verify/{token}', [VerificationController::class, 'verify'])->name('verify.email');
+
+
+
+Route::get('/send-test-email', function () {
+    Mail::raw('This is a test email', function($message) {
+        $message->to('aissait18@gmail.com')
+                ->subject('Test Email');
+    });
+
+    return 'Test email sent!';
+});

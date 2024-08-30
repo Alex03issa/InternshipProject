@@ -1,6 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url('Color-palette.css');
 
+.alert-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: auto;
+  z-index: 1050; /* Make sure it's above other content */
+  pointer-events: none;
+}
+
+.alert {
+  pointer-events: auto;
+  margin-bottom: 0; /* Remove bottom margin if needed */
+  text-align: center; /* Center the text */
+  padding: 10px; /* Add padding for a nicer appearance */
+  background-color: #f1f9fc; /* Light gray background */
+  border: 1px solid #f1f9fc; /* Light gray border */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 
 
 * {
@@ -46,6 +72,9 @@ input {
 h1 {
   text-align: center;
   color:  var(--black-heading-text);
+  margin-bottom: 20px;
+  margin-left: 0;
+  display: inline-block;
 }
 h2 {
   text-align: center;
@@ -114,6 +143,77 @@ h2 span {
   background-color: white;
 }
 
+.password-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none; /* Hidden by default */
+  font-size: 18px;
+}
+
+.password-strength-container {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 50%;
+  right: -320px; /* Position the container to the right of the input */
+  width: 300px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  z-index: 1000;
+  transform: translateY(-50%);
+}
+
+
+.password-strength-container p {
+  margin: 0 0 5px 0;
+  font-weight: bold;
+}
+
+.password-strength-container ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.password-strength-container li {
+  margin-bottom: 5px;
+}
+
+.invalid {
+  color: red;
+}
+
+.valid {
+  color: green;
+}
+
+.back-button {
+  position: absolute;
+  left: 0; /* Align the back button to the left edge of the form */
+  color: var(--black-heading-text);
+  font-weight: bold;
+  font-size: 28px;
+  margin-right: 10px;
+}
+
+.header_signup {
+  display: flex;
+  justify-content: center; 
+  position: relative;
+}
+
+.header_signin {
+  display: flex;
+  justify-content: center; 
+  position: relative;
+}
+
+
 /*  Button */
 button {
   display: inline-block;
@@ -131,7 +231,7 @@ button {
 button:hover {
   border: 1px solid var(--black-heading-text);
   background-color: transparent;
-  color: var(--black-heading-text); /* needs to stay here because of the color property of a tag */
+  color: var(--black-heading-text); 
   text-decoration: none;
 }
 
@@ -144,7 +244,6 @@ button:hover {
   padding: 12px 0;
   font-size: 1.2rem;
   border-radius: 32px;
-  font-size: 1.2rem;
   line-height: 0;
   text-decoration: none;
   transition: all 0.2s;
@@ -161,6 +260,7 @@ button:hover {
   background-color: transparent;
   color: var(--google-red); /* needs to stay here because of the color property of a tag */
   text-decoration: none;
+  margin-top: 10px;
 }
 
 
@@ -170,7 +270,6 @@ button:hover {
   padding: 12px 0;
   font-size: 1.2rem;
   border-radius: 32px;
-  font-size: 1.2rem;
   line-height: 0;
   text-decoration: none;
   transition: all 0.2s;
@@ -186,6 +285,7 @@ button:hover {
   background-color: transparent;
   color: #000000; /* needs to stay here because of the color property of a tag */
   text-decoration: none;
+  margin-top: 10px;
 }
 
 .signup__button--google i,

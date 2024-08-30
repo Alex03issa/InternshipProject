@@ -50,14 +50,16 @@ class AppleAuthController extends Controller
                 $newUser = User::create([
                     'name' => $appleUser->getName(),
                     'email' => $appleUser->getEmail(),
+                    'provider' => 'apple',
                     'apple_id' => $appleUser->getId(),
+                    'email_verified_at' => now(), // Automatically mark as verified
                     'profile_image' => $appleUser->getAvatar(),
                     'password' => null, // Password will be set later
                 ]);
 
                 // Log the user in and redirect to password creation
                 Auth::login($newUser);
-                return redirect()->route('password.create');
+                return redirect()->route('homepage')->with('success', 'Logged in successfully!');
             }
         } catch (InvalidStateException $e) {
             // Handle invalid state exception, which can occur if the CSRF token doesn't match

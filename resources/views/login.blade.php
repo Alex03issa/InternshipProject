@@ -9,21 +9,16 @@
 </head>
 <body>
 
+
 <form class="signup" action="{{ route('login.submit') }}" method="POST" autocomplete="off">
     @csrf
-    <h1><i class="fas fa-sign-in-alt"></i>Sign In</h1>
 
-    <!-- Display error messages -->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
+    <div class="header_signin">
+        <a href="{{ route('signup') }}" class="back-button"><i class="fas fa-arrow-left"></i> </a>
+        <h1><i class="fas fa-sign-in-alt"></i>Sign In</h1>
+    </div>
+    
+    
     <div class="signup__field">
         <input class="signup__input" type="email" name="email" id="email" autocomplete="email" required />
         <label class="signup__label" for="email">Email</label>
@@ -47,5 +42,61 @@
     </a>
 </form>
 
+
+<script>
+     document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert-dismissible');
+
+            // Set a timeout to remove the alert after 3 seconds
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.remove('show'); // Bootstrap's fade out
+                    alert.classList.add('fade'); // Add the fade class for animation
+                    
+                    // Wait for the fade out transition to finish before removing from DOM
+                    setTimeout(() => {
+                        alert.parentElement.remove(); // Completely remove the alert container from the DOM
+                    }, 150); // Time to allow fade transition to complete
+                }, 3000); // Adjust time as needed
+            });
+        });
+
+</script>
+
 </body>
+
+
+  
+    <!-- Display error and messages -->
+    <div class="alert-container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle" style="color: green;"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-times-circle" style="color: red;"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul>
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
+
+
 </html>

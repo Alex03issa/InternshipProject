@@ -18,7 +18,7 @@
         <meta name="twitter:card" content="summary_large_image" /> <!-- to have large image post format in Twitter -->
 
         <!-- Webpage Title -->
-        <title>Pavo Webpage Title</title>
+        <title>Side to Side</title>
 
         <!-- Styles -->
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -28,11 +28,13 @@
         <link href="css/swiper.css" rel="stylesheet" />
         <link href="css/magnific-popup.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+        
 
         <!-- Favicon  -->
         <link rel="icon" href="images/favicon.png" />
     </head>
     <body data-spy="scroll" data-target=".fixed-top">
+
 
         <!-- Navigation -->
         <nav class="navbar fixed-top">
@@ -665,5 +667,59 @@
         <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
+        <script>
+         document.addEventListener("DOMContentLoaded", function() {
+            const alerts = document.querySelectorAll('.alert-dismissible');
+
+            // Set a timeout to remove the alert after 3 seconds
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.remove('show'); // Bootstrap's fade out
+                    alert.classList.add('fade'); // Add the fade class for animation
+                    
+                    // Wait for the fade out transition to finish before removing from DOM
+                    setTimeout(() => {
+                        alert.parentElement.remove(); // Completely remove the alert container from the DOM
+                    }, 150); // Time to allow fade transition to complete
+                }, 3000); // Adjust time as needed
+            });
+        });
+
+
+        </script>
+
     </body>
+
+   <!-- Display error and messages -->
+    <div class="alert-container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle" style="color: green;"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-times-circle" style="color: red;"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul>
+                    <i class="fas fa-times-circle" style="color: red;"></i>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
+
+
 </html>

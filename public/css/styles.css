@@ -30,6 +30,34 @@ Colors:
 /*     General Styles     */
 /**************************/
 
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: auto;
+    z-index: 1050; /* Make sure it's above other content */
+    pointer-events: none;
+}
+
+.alert {
+    pointer-events: auto;
+    margin-bottom: 0; /* Remove bottom margin if needed */
+    text-align: center; /* Center the text */
+    padding: 10px; /* Add padding for a nicer appearance */
+    background-color: #f1f9fc; /* Light gray background */
+    border: 1px solid #f1f9fc; /* Light gray border */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
 body,
 p {
     color: #6b747b;

@@ -21,9 +21,12 @@ class CreateUsersTable extends Migration
             $table->integer('retry_times')->default(0);
             $table->string('profile_image')->nullable();
             $table->string('username');
+            $table->string('provider')->nullable();
             $table->string('google_id')->nullable();
             $table->string('apple_id')->nullable();
             $table->string('user_type')->default('user');
+            $table->string('verification_token', 64)->nullable();
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
