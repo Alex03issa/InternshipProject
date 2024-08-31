@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url('Color-palette.css');
 
+/* Ensure this CSS is applied in form-styles.css, signup.css, and styles.css */
 .alert-container {
   position: fixed;
   top: 20px;
@@ -8,25 +9,39 @@
   transform: translateX(-50%);
   width: 400px;
   height: auto;
-  z-index: 1050; /* Make sure it's above other content */
+  z-index: 1050; /* Ensure it's above other content */
   pointer-events: none;
+}
+
+.alert ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+  margin: 0;
+}
+
+.alert li {
+  display: flex;
+  align-items: center; /* Center the icon and text vertically */
+  margin-bottom: 5px; /* Add space between list items */
+}
+
+.alert li i {
+  margin-right: 5px; /* Adjust space between the icon and text */
+  font-size: 1.2em; /* Ensure the icon size is appropriate */
+  flex-shrink: 0; /* Prevent the icon from shrinking */
 }
 
 .alert {
   pointer-events: auto;
-  margin-bottom: 0; /* Remove bottom margin if needed */
-  text-align: center; /* Center the text */
-  padding: 10px; /* Add padding for a nicer appearance */
-  background-color: #f1f9fc; /* Light gray background */
-  border: 1px solid #f1f9fc; /* Light gray border */
-  border-radius: 15px; /* Rounded corners */
+  margin-bottom: 0;
+  text-align: left; /* Align text to the left */
+  padding: 10px;
+  background-color: #f1f9fc;
+  border: 1px solid #f1f9fc;
+  border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-body {
-  margin: 0;
-  padding: 0;
-}
 
 
 * {
@@ -98,6 +113,8 @@ h2 span {
   position: relative;
   margin-bottom: 50px;
 }
+
+
 
 .signup__field:before {
   content: "";
@@ -194,23 +211,18 @@ h2 span {
 
 .back-button {
   position: absolute;
-  left: 0; /* Align the back button to the left edge of the form */
+  left: 0;
   color: var(--black-heading-text);
   font-weight: bold;
   font-size: 28px;
   margin-right: 10px;
 }
 
-.header_signup {
+.header_signup, .header_signin {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   position: relative;
-}
-
-.header_signin {
-  display: flex;
-  justify-content: center; 
-  position: relative;
+  margin-bottom: 20px; /* Ensure consistent spacing below the header */
 }
 
 
@@ -300,4 +312,21 @@ button i {
 
 h1 i {
   margin-right: 10px;
+}
+
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 40px;
+  margin-top: -30px;
+}
+
+.forgot-password a {
+  color: var(--dark-gray-body-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
 }

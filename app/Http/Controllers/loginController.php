@@ -48,6 +48,13 @@ class loginController extends Controller
 
                 if (!$user->is_verified) {
                     // Send verification email
+                    /*
+                    try {
+                        Mail::to($user->email)->send(new VerificationMail($user));
+                    } catch (Exception $e) {
+                        \Log::error('Mail error: ' . $e->getMessage());
+                        dd($e->getMessage());  // This will output the error message to the screen
+                    }*/
                     Mail::to($user->email)->send(new VerificationMail($user));
                     return back()->withErrors([
                         'email' => 'Please verify your email address before logging in.',

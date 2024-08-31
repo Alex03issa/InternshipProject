@@ -694,29 +694,24 @@
     <div class="alert-container">
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle" style="color: green;"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <i class="fas fa-check-circle" style="color: green;"></i>{{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-times-circle" style="color: red;"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <i class="fas fa-times-circle" style="color: red;"></i>{{ session('error') }}
             </div>
         @endif
 
         @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <ul>
-                    <i class="fas fa-times-circle" style="color: red;"></i>
+                   
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li> <i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}</li>
                     @endforeach
                 </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
     </div>

@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account</title>
-    <link href="{{ asset('css/signup.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/fontawesome-all.css') }}" rel="stylesheet" />
+    <title>Reset Password</title>
+    <link href="{{ asset('css/form-styles.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="form-container">
+        <div class="header_signin">
+            <a href="{{ route('login') }}" class="back-button"><i class="fas fa-arrow-left"></i></a>
+            <h1>Reset Password</h1>
+        </div>
 
+        <form method="POST" action="{{ route('password.update') }}">
+            @csrf
 
+            <input type="hidden" name="token" value="{{ $token }}">
 
-<form class="signup" action="{{ route('signup.submit') }}" method="POST" autocomplete="off">
-    @csrf
-    <div class="header_signup">
-        <a href="{{ route('homepage') }}" class="back-button"><i class="fas fa-arrow-left"></i> </a>
-        <h1><i class="fas fa-user-plus"></i>Sign Up</h1>
-    </div>
-    
-    <h2>Already have an account? <a href="{{ route('login') }}">Sign in</a></h2>
+            <div class="form-field">
+                <input class="form-input" type="email" name="email" id="email" value="{{ $email ?? old('email') }}" required autocomplete="email">
+                <label class="form-label" for="email">Email Address</label>
+            </div>
 
-    <div class="signup__field">
-        <input class="signup__input" type="text" name="username" id="username" required />
-        <label class="signup__label" for="username">Username</label>
-    </div>
-
-    <div class="signup__field">
-        <input class="signup__input" type="email" name="email" id="email" autocomplete="email" required />
-        <label class="signup__label" for="email">Email</label>
-    </div>
-
-    <div class="signup__field">
-        <input class="signup__input" type="password" name="password" id="password" autocomplete="new-password" required />
-        <label class="signup__label" for="password">Password</label>
-        <div class="password-strength-container" id="password-strength-container">
+            <div class="form-field">
+                <input class="form-input" type="password" name="password" id="password" required autocomplete="new-password">
+                <label class="form-label" for="password">New Password</label>
+                <div class="password-strength-container" id="password-strength-container">
                     <p id="strength-message">Weak</p>
                     <ul>
                         <li id="length"><i class="fas fa-times-circle"></i> At least 8 characters</li>
@@ -42,31 +36,19 @@
                         <li id="special"><i class="fas fa-times-circle"></i> Contains a special character</li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="form-field">
+                <input class="form-input" type="password" name="password_confirmation" id="password_confirmation" required autocomplete="new-password">
+                <label class="form-label" for="password_confirmation">Confirm Password</label>
+                <span id="confirm-password-icon" class="password-icon"></span>
+            </div>
+
+            <button type="submit">Reset Password</button>
+        </form>
     </div>
 
-    <div class="signup__field">
-        <input class="signup__input" type="password" name="password_confirmation" id="password_confirmation" autocomplete="new-password" required />
-        <label class="signup__label" for="password_confirmation">Confirm Password</label>
-        <span class="password-icon" id="confirm-password-icon"></span>
-    </div>
-
-
-
-    <button type="submit"><i class="fas fa-user-plus"></i>Sign up</button>
-
-    <!-- Google Button -->
-    <a href="{{ route('google.redirect') }}" class="signup__button--google">
-        <i class="fab fa-google"></i>Continue with Google
-    </a>
-
-    <!-- Apple ID Button -->
-    <a href="{{ route('apple.redirect') }}" class="signup__button--apple">
-        <i class="fab fa-apple"></i>Continue with Apple ID
-    </a>
-</form>
-
-
-<script>
+    <script>
     document.addEventListener("DOMContentLoaded", function() {
         const alerts = document.querySelectorAll('.alert-dismissible');
 
@@ -80,12 +62,11 @@
                 setTimeout(() => {
                     alert.parentElement.remove(); // Completely remove the alert container from the DOM
                 }, 150); // Time to allow fade transition to complete
-            }, 5000); // Adjust time as needed
+            }, 3000); // Adjust time as needed
         });
     });
 
 
-       
     document.addEventListener("DOMContentLoaded", function() {
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('password_confirmation');
@@ -178,7 +159,9 @@
 
 
 </body>
-<!-- Display error and messages -->
+
+
+ <!-- Display error and messages -->
 <div class="alert-container">
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -188,22 +171,21 @@
 
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-times-circle" style="color: red;"></i> {{ session('error') }}
+            <i class="fas fa-times-circle" style="color: red;"></i>{{ session('error') }}
         </div>
     @endif
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
-                
+               
                 @foreach ($errors->all() as $error)
-                <li>
-                    <i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}
-                </li>
+                    <li> <i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
 </div>
+
 
 </html>

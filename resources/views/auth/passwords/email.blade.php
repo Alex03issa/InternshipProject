@@ -3,51 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
-    <link href="{{ asset('css/signup.css') }}" rel="stylesheet" />
+    <title>Forgot Password</title>
+    <link href="{{ asset('css/form-styles.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="form-container">
+        <div class="header_signin">
+            <a href="{{ route('login') }}" class="back-button"><i class="fas fa-arrow-left"></i></a>
+            <h1>Forgot Password</h1>
+        </div>
 
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-<form class="signup" action="{{ route('login.submit') }}" method="POST" autocomplete="off">
-    @csrf
+            <div class="form-field">
+                <input class="form-input" type="email" name="email" id="email" required autocomplete="email">
+                <label class="form-label" for="email">Email Address</label>
+            </div>
 
-    <div class="header_signin">
-        <a href="{{ route('signup') }}" class="back-button"><i class="fas fa-arrow-left"></i> </a>
-        <h1><i class="fas fa-sign-in-alt"></i>Sign In</h1>
-    </div>
-    
-    
-    <div class="signup__field">
-        <input class="signup__input" type="email" name="email" id="email" autocomplete="email" required />
-        <label class="signup__label" for="email">Email</label>
-    </div>
+            <button type="submit">Send Password Reset Link</button>
 
-    <div class="signup__field">
-        <input class="signup__input" type="password" name="password" id="password" autocomplete="current-password" required />
-        <label class="signup__label" for="password">Password</label>
+        </form>
     </div>
 
-      <!-- Forgot Password Link -->
-    <div class="forgot-password">
-        <a href="{{ route('password.request') }}">Forgot Password?</a>
-    </div>
-
-    <button type="submit"><i class="fas fa-sign-in-alt"></i>Sign in</button>
-
-    <!-- Google Sign-In Button -->
-    <a href="{{ route('google.redirect') }}" class="signup__button--google">
-        <i class="fab fa-google"></i>Continue with Google
-    </a>
-
-    <!-- Apple ID Button -->
-    <a href="{{ route('apple.redirect') }}" class="signup__button--apple">
-        <i class="fab fa-apple"></i>Continue with Apple ID
-    </a>
-</form>
-
-<script>
+    <script>
     document.addEventListener("DOMContentLoaded", function() {
         const alerts = document.querySelectorAll('.alert-dismissible');
 
@@ -85,9 +65,9 @@
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
-                
+              
                 @foreach ($errors->all() as $error)
-                    <li><i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}</li>
+                    <li>  <i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
