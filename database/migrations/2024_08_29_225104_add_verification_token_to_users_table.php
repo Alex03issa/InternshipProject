@@ -14,8 +14,11 @@ class AddVerificationTokenToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('verification_token', 64)->nullable()->after('email_verified_at');
+            if (!Schema::hasColumn('users', 'verification_token')) {
+                $table->string('verification_token', 64)->nullable();
+            }
         });
+        
     }
 
     /**
