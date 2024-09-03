@@ -34,16 +34,6 @@ Route::get('/blog', function () {
 })->name('blog');
 
 // Route to the terms page
-Route::get('/aboutus', function () {
-    return view('aboutus');
-})->name('aboutus');
-
-// Route to the terms page
-Route::get('/contactus', function () {
-    return view('contactus');
-})->name('contactus');
-
-// Route to the terms page
 Route::get('/terms', function () {
     return view('terms');
 })->name('terms');

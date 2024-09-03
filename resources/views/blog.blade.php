@@ -36,60 +36,81 @@
 
         <!-- Navigation -->
         <nav class="navbar fixed-top">
-            <div class="container flex flex-wrap items-center justify-between sm:px-4 lg:flex-nowrap lg:px-8">
-
-                <!-- Text Logo - Use this if you don't have a graphic logo -->
-                <!--<a class="text-gray-800 font-semibold text-3xl leading-4 no-underline page-scroll" href="index.html">Pavo</a>-->
-
+            <div class="container sm:px-4 lg:px-8 flex flex-wrap items-center justify-between lg:flex-nowrap">
                 <!-- Image Logo -->
-                <a class="inline-block mr-4 py-0.5 text-xl whitespace-nowrap hover:no-underline focus:no-underline" href="index.html">
-                    <img src="images/logo.svg" alt="alternative" class="h-8"/>
+                <a class="inline-block mr-4 py-0.5 text-xl whitespace-nowrap hover:no-underline focus:no-underline" href="{{ route('homepage') }}">
+                    <img src="images/logo.png" alt="alternative" class="h-8" />
                 </a>
-
                 <button class="background-transparent rounded text-xl leading-none hover:no-underline focus:no-underline lg:hidden lg:text-gray-400" type="button" data-toggle="offcanvas">
                     <span class="navbar-toggler-icon inline-block w-8 h-8 align-middle"></span>
                 </button>
-
                 <div class="navbar-collapse offcanvas-collapse lg:flex lg:flex-grow lg:items-center" id="navbarsExampleDefault">
                     <ul class="pl-0 mt-3 mb-2 ml-auto flex flex-col list-none lg:mt-0 lg:mb-0 lg:flex-row">
                         <li>
-                            <a class="nav-link page-scroll" href="index.html#header">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link page-scroll active" href="{{ route('homepage') }}">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="index.html#features">Features</a>
+                            <a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="index.html#details">Details</a>
+                            <a class="nav-link page-scroll" href="#aboutus">About Us</a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="index.html#pricing">Pricing</a>
+                            <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
                         </li>
-                        <li class="dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Drop</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item page-scroll" href="article.html">Article Details</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item page-scroll" href="terms.html">Terms Conditions</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item page-scroll" href="privacy.html">Privacy Policy</a>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="nav-link page-scroll" href="index.html#download">Download</a>
-                        </li>
+
+                        @if(Auth::check()) <!-- Check if the user is logged in -->
+                            <li>
+                                <a class="nav-link page-scroll" href="#download">Download</a>
+                            </li>
+                            <li>
+                                <a class="no-underline" href="#your-link">
+                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
+                                </a>
+                                <a class="no-underline" href="#your-link">
+                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
+                                </a>
+                            </li>
+                            <li class="ml-8 flex items-center dropdown">
+                                <span class="ml-2 text-gray-800">{{ Auth::user()->username }}</span> <!-- Display the username -->
+                                <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <a class="dropdown-item" href="#">Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @else
+                            <li>
+                                <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
+                            </li>
+                            <li>
+                                <a class="nav-link page-scroll" href="#download">Download</a>
+                            </li>
+                            <li>
+                                <a class="no-underline" href="#your-link">
+                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
+                                </a>
+                                <a class="no-underline" href="#your-link">
+                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
-                    <span class="block lg:ml-3.5">
-                        <a class="no-underline" href="#your-link">
-                            <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
-                        </a>
-                        <a class="no-underline" href="#your-link">
-                            <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
-                        </a>
-                    </span>
                 </div> <!-- end of navbar-collapse -->
             </div> <!-- end of container -->
         </nav> <!-- end of navbar -->
-        <!-- end of navigation -->
+
 
 
         <!-- Header -->
@@ -236,9 +257,8 @@
 
         <!-- Footer -->
         <div class="footer">
-            <div class="container px-4 sm:px-8">
-                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">Pavo is a mobile application for marketing automation and you can reach the team at <a class="text-indigo-600 hover:text-gray-500" href="mailto:email@domain.com">email@domain.com</a>
-                </h4>
+            <div id="contactus" class="container px-4 sm:px-8">
+                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
                 <div class="social-container">
                     <span class="fa-stack">
                         <a href="#your-link">
@@ -249,19 +269,7 @@
                     <span class="fa-stack">
                         <a href="#your-link">
                             <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-twitter fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-pinterest-p fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-instagram fa-stack-1x"></i>
+                            <i class="fab fa-linkedin fa-stack-1x"></i>
                         </a>
                     </span>
                     <span class="fa-stack">
@@ -270,32 +278,76 @@
                             <i class="fab fa-youtube fa-stack-1x"></i>
                         </a>
                     </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-instagram fa-stack-1x"></i>
+                        </a>
+                    </span>
                 </div> <!-- end of social-container -->
             </div> <!-- end of container -->
         </div> <!-- end of footer -->
-        <!-- end of footer -->
-
 
         <!-- Copyright -->
         <div class="copyright">
             <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
                 <ul class="mb-4 list-unstyled p-small">
-                    <li class="mb-2"><a href="article.html">Article Details</a></li>
-                    <li class="mb-2"><a href="terms.html">Terms & Conditions</a></li>
-                    <li class="mb-2"><a href="privacy.html">Privacy Policy</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
                 </ul>
-                <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Your name</a></p>
-
-                <p class="pb-2 p-small statement">Distributed by :<a href="https://themewagon.com/" class="no-underline">Themewagon</a></p>
-            </div> 
+                <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Side to Side</a></p>
+             </div>
         </div> <!-- end of copyright -->
-        <!-- end of copyright -->
-
+        
         <!-- Scripts -->
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->
         <script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
         <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const alerts = document.querySelectorAll('.alert-dismissible');
+
+                // Set a timeout to remove the alert after 3 seconds
+                alerts.forEach(alert => {
+                    setTimeout(() => {
+                        alert.classList.remove('show'); // Bootstrap's fade out
+                        alert.classList.add('fade'); // Add the fade class for animation
+                        
+                        // Wait for the fade out transition to finish before removing from DOM
+                        setTimeout(() => {
+                            alert.parentElement.remove(); // Completely remove the alert container from the DOM
+                        }, 150); // Time to allow fade transition to complete
+                    }, 3000); // Adjust time as needed
+                });
+            });
+        </script>
+
+        <!-- Display error and messages -->
+        <div class="alert-container">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle" style="color: green;"></i>{{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-times-circle" style="color: red;"></i>{{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li> <i class="fas fa-times-circle" style="color: red;"></i>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
     </body>
 </html>
