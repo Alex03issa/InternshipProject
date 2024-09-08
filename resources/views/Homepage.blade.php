@@ -6,7 +6,7 @@
 
         <!-- SEO Meta Tags -->
         <meta name="description" content="Side to Side is a mobile game where users control a ball by swiping left and right, jumping on platforms that move upwards infinitely." />
-        <meta name="author" content="Your name" />
+        <meta name="author" content="Alexander Issa - Side to Side team" />
 
         <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
         <meta property="og:site_name" content="Side to Side" /> <!-- website name -->
@@ -47,34 +47,27 @@
                 <div class="navbar-collapse offcanvas-collapse lg:flex lg:flex-grow lg:items-center" id="navbarsExampleDefault">
                     <ul class="pl-0 mt-3 mb-2 ml-auto flex flex-col list-none lg:mt-0 lg:mb-0 lg:flex-row">
                         <li>
-                            <a class="nav-link page-scroll active" href="{{ route('homepage') }}">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link page-scroll active" href="#header">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a>
+                            <a class="nav-link page-scroll" href="#blog">Blog</a>
                         </li>
                         <li>
                             <a class="nav-link page-scroll" href="#aboutus">About Us</a>
                         </li>
-                        <li>
-                            <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
-                        </li>
+                        
 
                         @if(Auth::check()) <!-- Check if the user is logged in -->
                             <li>
                                 <a class="nav-link page-scroll" href="#download">Download</a>
                             </li>
                             <li>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
-                                </a>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
-                                </a>
+                                <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
                             </li>
                             <li class="ml-8 flex items-center dropdown">
-                                <span class="ml-2 text-gray-800">{{ Auth::user()->username }}</span> <!-- Display the username -->
+                                <span class="username-text">{{ Auth::user()->username }}</span> <!-- Display the username -->
                                 <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full">
+                                    <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full user-image">
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
@@ -92,18 +85,14 @@
                             </li>
                         @else
                             <li>
-                                <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
-                            </li>
-                            <li>
                                 <a class="nav-link page-scroll" href="#download">Download</a>
                             </li>
+                            
                             <li>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
-                                </a>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
-                                </a>
+                                <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
+                            </li>
+                            <li>
+                                <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
                             </li>
                         @endif
                     </ul>
@@ -112,302 +101,327 @@
         </nav> <!-- end of navbar -->
 
         <!-- Header -->
-        <header id="header" class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
-                <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
-                    <h1 class="h1-large mb-5">Side to Side - The Ultimate Platform Jumping Game</h1>
-                    <p class="p-large mb-8">Control the ball, jump on platforms, and keep scoring in this endless, fun-filled game!</p>
-                    <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                    <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
-                </div>
-                <div class="xl:text-right">
-                    <img class="inline" src="images/header smartphone.webp" alt="alternative" />
-                </div>
-            </div> <!-- end of container -->
-        </header> <!-- end of header -->
+        <section id="header">
+            <header class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
+                    <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
+                        <h1 class="h1-large mb-5">Side to Side - The Ultimate Platform Jumping Game</h1>
+                        <p class="p-large mb-8">Control the ball, jump on platforms, and keep scoring in this endless, fun-filled game!</p>
+                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
+                        <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+                    </div>
+                    <div class="xl:text-right">
+                        <img class="inline" src="images/header smartphone.webp" alt="alternative" />
+                    </div>
+                </div> <!-- end of container -->
+            </header> <!-- end of header -->
+        </section>
 
         <!-- Introduction -->
-        <div class="pt-4 pb-14 text-center">
-            <div class="container px-4 sm:px-8 xl:px-4">
-                <p class="mb-4 text-gray-800 text-3xl leading-10 lg:max-w-5xl lg:mx-auto">Side to Side is an addictive mobile game that will keep you on your toes as you control a ball jumping on endlessly moving platforms. Can you keep up?</p>
-            </div> <!-- end of container -->
-        </div>
-        <!-- end of introduction -->
+        <section id="introduction">
+            <div class="pt-4 pb-14 text-center">
+                <div class="container px-4 sm:px-8 xl:px-4">
+                    <p class="mb-4 text-gray-800 text-3xl leading-10 lg:max-w-5xl lg:mx-auto">Side to Side is an addictive mobile game that will keep you on your toes as you control a ball jumping on endlessly moving platforms. Can you keep up?</p>
+                </div> <!-- end of container -->
+            </div>
+            <!-- end of introduction -->
 
-        <!-- About the Game -->
-        <div id="about-application" class="pt-16 pb-12">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                <div class="lg:col-span-7">
-                    <div class="mb-16 lg:mb-0 xl:mt-16">
-                        <h2 class="mb-6">About the Side to Side Game</h2>
-                        <p class="mb-4">Side to Side is an exciting mobile game that challenges players to control a ball by swiping left and right. The objective is to jump from platform to platform as they move upwards infinitely. The game tests your reflexes and timing as you try to score as many points as possible by staying on the platforms without falling.</p>
-                        <p class="mb-4">With its intuitive controls and endless gameplay, Side to Side provides an engaging and addictive experience for players of all ages. Keep jumping, score higher, and see how far you can go!</p>
+            <!-- About the Game -->
+            <div id="about-application" class="pt-16 pb-12">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                    <div class="lg:col-span-7">
+                        <div class="mb-16 lg:mb-0 xl:mt-16">
+                            <h2 class="mb-6">About the Side to Side Game</h2>
+                            <p class="mb-4">Side to Side is an exciting mobile game that challenges players to control a ball by swiping left and right. The objective is to jump from platform to platform as they move upwards infinitely. The game tests your reflexes and timing as you try to score as many points as possible by staying on the platforms without falling.</p>
+                            <p class="mb-4">With its intuitive controls and endless gameplay, Side to Side provides an engaging and addictive experience for players of all ages. Keep jumping, score higher, and see how far you can go!</p>
+                        </div>
                     </div>
-                </div>
-                <div class="lg:col-span-5">
-                    <div class="xl:ml-14">
-                        <img class="inline" src="images/detail1.webp" alt="alternative" />
+                    <div class="lg:col-span-5">
+                        <div class="xl:ml-14">
+                            <img class="inline" src="images/detail1.webp" alt="alternative" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Features Cards -->
-        <div id="features" class="cards-1">
-            <div class="container px-4 sm:px-8 xl:px-4">
-                
-                <!-- Card -->
-                <div class="card">
-                    <div class="card-image">
-                        <i class="fas fa-trophy fa-3x" style="color: #eb427e;"></i>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Rewards System</h5>
-                        <p class="mb-4">Earn rewards for reaching milestones! For every 100 points scored, players will receive exciting rewards, such as new skins, power-ups, and more!</p>
-                    </div>
-                </div>
-                <!-- end of card -->
+        
+        <section id="features">
+            <div class="cards-1">
+                <div class="container px-4 sm:px-8 xl:px-4">
+                    <div class="features-layout">
+                        
+                        <!-- Card 1 (Left) -->
+                        <div class="card" id="card-left">
+                            <div class="card-image-feature text-center mb-4">
+                                <div class="icon-circle">
+                                    <i class="fas fa-trophy fa-3x" style="color: #eb427e;"></i>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Rewards System</h5>
+                                <p class="mb-4">Earn rewards for reaching milestones! For every 100 points scored, players will receive exciting rewards, such as new skins, power-ups, and more!</p>
+                            </div>
+                        </div>
 
-                <!-- Card -->
-                <div class="card">
-                    <div class="card-image">
-                         <i class="fas fa-paint-brush fa-3x" style="color: #594cda;"></i>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Customizable Ball and Background</h5>
-                        <p class="mb-4">Personalize your gaming experience by changing the color and skin of the ball, as well as the background. Show off your unique style as you jump to the top!</p>
-                    </div>
-                </div>
-                <!-- end of card -->
+                        <!-- Middle Cards (Stacked) -->
+                        <div class="middle-cards">
+                            <div class="card" id="card-middle-1">
+                                <div class="card-image-feature text-center mb-4">
+                                    <div class="icon-circle">
+                                        <i class="fas fa-paint-brush fa-3x" style="color: #594cda;"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Customizable Ball and Background</h5>
+                                    <p class="mb-4">Personalize your gaming experience by changing the color and skin of the ball, as well as the background. Show off your unique style as you jump to the top!</p>
+                                </div>
+                            </div>
 
-                <!-- Card -->
-                <div class="card">
-                    <div class="card-image">
-                        <i class="fas fa-globe fa-3x" style="color: #eb427e;"></i>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Global Leaderboard</h5>
-                        <p class="mb-4">Compete with players from around the world! Climb the global leaderboard by scoring high and see where you stand against the best players.</p>
-                    </div>
-                </div>
-                <!-- end of card -->
+                            <div class="card" id="card-middle-2">
+                                <div class="card-image-feature text-center mb-4">
+                                    <div class="icon-circle">
+                                        <i class="fas fa-globe fa-3x" style="color: #594cda;"></i>
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Global Leaderboard</h5>
+                                    <p class="mb-4">Compete with players from around the world! Climb the global leaderboard by scoring high and see where you stand against the best players.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Card -->
-                <div class="card">
-                    <div class="card-image">
-                        <i class="fas fa-gamepad fa-3x" style="color:  #eb427e;"></i>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Smooth Controls</h5>
-                        <p class="mb-4">Experience smooth and responsive controls designed for easy gameplay. Swipe left and right effortlessly as you jump from platform to platform.</p>
-                    </div>
-                </div>
-                <!-- end of card -->
+                        <!-- Card 4 (Right) -->
+                        <div class="card" id="card-right">
+                            <div class="card-image-feature text-center mb-4">
+                                <div class="icon-circle">
+                                    <i class="fas fa-gamepad fa-3x" style="color: #eb427e;"></i>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Smooth Controls</h5>
+                                <p class="mb-4">Experience smooth and responsive controls designed for easy gameplay. Swipe left and right effortlessly as you jump from platform to platform.</p>
+                            </div>
+                        </div>
 
-            </div> <!-- end of container -->
-        </div> <!-- end of cards-1 -->
-        <!-- end of features -->
+                    </div> <!-- end of features-layout -->
+                </div> <!-- end of container -->
+            </div> <!-- end of cards-1 -->
+        </section>
+
+
 
         <!-- Details Section -->
-        <div id="details" class="pt-12 pb-16 lg:pt-16">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                <div class="lg:col-span-5">
-                    <div class="mb-16 lg:mb-0 xl:mt-16">
-                        <h2 class="mb-6">Unlock New Skins and Power-ups</h2>
-                        <p class="mb-4">As you reach higher scores, you'll unlock new skins for your ball and special power-ups that will give you an edge in the game. Customize your gameplay and showcase your achievements.</p>
-                        <p class="mb-4">Challenge yourself to reach new heights and unlock all the skins and power-ups available in the game!</p>
+        <section id="detail">
+            <div  class="pt-12 pb-16 lg:pt-16">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                    <div class="lg:col-span-6">
+                        <div class="mb-16 lg:mb-0 xl:mt-16">
+                            <h2 class="mb-6">Unlock New Skins and Power-ups</h2>
+                            <p class="mb-4">As you reach higher scores, you'll unlock new skins for your ball and special power-ups that will give you an edge in the game. Customize your gameplay and showcase your achievements.</p>
+                            <p class="mb-4">Challenge yourself to reach new heights and unlock all the skins and power-ups available in the game!</p>
+                        </div>
                     </div>
-                </div>
-                <div class="lg:col-span-7">
-                    <div class="xl:ml-14">
-                        <img class="inline" src="images/detail3.webp" alt="alternative" />
+                    <div class="lg:col-span-6">
+                        <div class="xl:ml-14">
+                            <img class="inline" src="images/detail3.webp" alt="alternative" />
+                        </div>
                     </div>
-                </div>
-            </div> <!-- end of container -->
-        </div>
-        <!-- end of details -->
-
-        <!-- Details 2 -->
-        <div class="py-24">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                <div class="lg:col-span-7">
-                    <div class="mb-12 lg:mb-0 xl:mr-14">
-                        <img class="inline" src="images/detail2.webp" alt="alternative" />
-                    </div>
-                </div> <!-- end of col -->
-                <div class="lg:col-span-5">
-                    <div class="xl:mt-12">
-                        <h2 class="mb-6">Customize Your Experience</h2>
-                        <ul class="list mb-7 space-y-2">
-                            <li class="flex">
-                                <i class="fas fa-chevron-right"></i>
-                                <div>Change the color and skin of your ball</div>
-                            </li>
-                            <li class="flex">
-                                <i class="fas fa-chevron-right"></i>
-                                <div>Select different backgrounds to match your style</div>
-                            </li>
-                            <li class="flex">
-                                <i class="fas fa-chevron-right"></i>
-                                <div>Use power-ups to boost your score</div>
-                            </li>
-                        </ul>
-                        <a class="btn-solid-reg popup-with-move-anim mr-1.5" href="#details-lightbox">Lightbox</a>
-                        <a class="btn-outline-reg" href="article.html">Details</a>
-                    </div>
-                </div> <!-- end of col -->
-            </div> <!-- end of container -->
-        </div>
-        <!-- end of details 2 -->
+                </div> <!-- end of container -->
+            </div>
+            <!-- end of details -->
+        </section>
+        
+            <!-- Details 2 -->
+        <section id="blog">    
+            <div class="py-24">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                    <div class="lg:col-span-6">
+                        <div class="mb-12 lg:mb-0 xl:mr-14">
+                            <img class="inline" src="images/detail2.webp" alt="alternative" />
+                        </div>
+                    </div> <!-- end of col -->
+                    <div class="lg:col-span-5">
+                        <div class="xl:mt-12">
+                            <h2 class="mb-6">Customize Your Experience</h2>
+                            <ul class="list mb-7 space-y-2">
+                                <li class="flex">
+                                    <i class="fas fa-chevron-right"></i>
+                                    <div>Change the color and skin of your ball</div>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-chevron-right"></i>
+                                    <div>Select different backgrounds to match your style</div>
+                                </li>
+                                <li class="flex">
+                                    <i class="fas fa-chevron-right"></i>
+                                    <div>Use power-ups to boost your score</div>
+                                </li>
+                            </ul>
+                            <a class="btn-outline-reg" href="{{ route('blog') }}">Details</a>
+                        </div>
+                    </div> <!-- end of col -->
+                </div> <!-- end of container -->
+            </div>
+            <!-- end of details 2 -->
+        </section>
 
         <!-- Statistics -->
-        <div class="counter">
-            <div class="container px-4 sm:px-8">
-                
-                <!-- Counter -->
-                <div id="counter">
-                    <div class="cell">
-                        <div class="counter-value number-count" data-count="531">1</div>
-                        <p class="counter-info">Number of Visits</p>
-                    </div>
-                    <div class="cell">
-                        <div class="counter-value number-count" data-count="385">1</div>
-                        <p class="counter-info">Total Downloads</p>
-                    </div>
-                    <div class="cell">
-                        <div class="counter-value number-count" data-count="159">1</div>
-                        <p class="counter-info">High Scores Achieved</p>
-                    </div>
-                    <div class="cell">
-                        <div class="counter-value number-count" data-count="127">1</div>
-                        <p class="counter-info">Rewards Unlocked</p>
-                    </div>
-                </div> <!-- end of counter -->
+        <section id="counter-statisque">
+            <div class="counter">
+                <div class="container px-4 sm:px-8">
+                    
+                    <!-- Counter -->
+                    <div id="counter">
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="531">1</div>
+                            <p class="counter-info">Number of Visits</p>
+                        </div>
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="385">1</div>
+                            <p class="counter-info">Total Downloads</p>
+                        </div>
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="159">1</div>
+                            <p class="counter-info">High Scores Achieved</p>
+                        </div>
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="127">1</div>
+                            <p class="counter-info">Rewards Unlocked</p>
+                        </div>
+                    </div> <!-- end of counter -->
 
-            </div> <!-- end of container -->
-        </div> <!-- end of counter -->
-        <!-- end of statistics -->
+                </div> <!-- end of container -->
+            </div> <!-- end of counter -->
+            <!-- end of statistics -->
+        </section>
 
 
         <!-- Testimonials -->
-        <div id="aboutus" class="slider-1 py-32 bg-gray">
-            <div class="container px-4 sm:px-8">
-                <h2 class="mb-12 text-center lg:max-w-xl lg:mx-auto">Meet the Side to Side Development Team</h2>
+        <section id="aboutus">
+            <div  class="slider-1 py-32 bg-gray">
+                <div class="container px-4 sm:px-8">
+                    <h2 class="mb-12 text-center lg:max-w-xl lg:mx-auto">Meet the Side to Side Development Team</h2>
 
-                <!-- Card Slider -->
-                <div class="slider-container">
-                    <div class="swiper-container card-slider">
-                        <div class="swiper-wrapper">
-                            
-                            <!-- Slide 1 -->
-                            <div class="swiper-slide">
-                                <div class="card">
-                                    <img class="card-image" src="images/testimonial-1.jpg" alt="alternative" />
-                                    <div class="card-body">
-                                        <h4 class="card-title">Wadee Issa</h4>
-                                        <p class="card-text">Mobile Developer & Project Management</p>
-                                        <p class="italic mb-3">"Side to Side has been a rewarding project. The smooth gameplay and endless fun keep our users engaged."</p>
+                    <!-- Card Slider -->
+                    <div class="slider-container">
+                        <div class="swiper-container card-slider">
+                            <div class="swiper-wrapper">
+                                
+                                <!-- Slide 1 -->
+                                <div class="swiper-slide">
+                                    <div class="card">
+                                        <img class="card-image" src="images/article-details-large.jpg" alt="alternative" />
+                                        <div class="card-body">
+                                            <h4 class="card-title">Wadee Issa</h4>
+                                            <p class="card-text">Mobile Developer & Project Management</p>
+                                            <p class="italic mb-3">"Side to Side has been a rewarding project. The smooth gameplay and endless fun keep our users engaged."</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> <!-- end of swiper-slide -->
-                            
-                            <!-- Slide 2 -->
-                            <div class="swiper-slide">
-                                <div class="card">
-                                    <img class="card-image" src="images/testimonial-2.jpg" alt="alternative" />
-                                    <div class="card-body">
-                                        <h4 class="card-title">Alexander Issa</h4>
-                                        <p class="card-text">Mobile Developer & Web Developer</p>
-                                        <p class="italic mb-3">"Creating a seamless and responsive interface was key to making Side to Side a hit among players."</p>
+                                </div> <!-- end of swiper-slide -->
+                                
+                                <!-- Slide 2 -->
+                                <div class="swiper-slide">
+                                    <div class="card">
+                                        <img class="card-image" src="images/testimonial-2.jpg" alt="alternative" />
+                                        <div class="card-body">
+                                            <h4 class="card-title">Alexander Issa</h4>
+                                            <p class="card-text">Mobile Developer & Web Developer</p>
+                                            <p class="italic mb-3">"Creating a seamless and responsive interface was key to making Side to Side a hit among players."</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> <!-- end of swiper-slide -->
+                                </div> <!-- end of swiper-slide -->
 
-                            <!-- Slide 3 -->
-                            <div class="swiper-slide">
-                                <div class="card">
-                                    <img class="card-image" src="images/testimonial-3.jpg" alt="alternative" />
-                                    <div class="card-body">
-                                        <h4 class="card-title">Nassim Cheric</h4>
-                                        <p class="card-text">Quality Assurance</p>
-                                        <p class="italic mb-3">"Ensuring a bug-free experience for our users has been my top priority. Side to Side delivers quality at every level."</p>
+                                <!-- Slide 3 -->
+                                <div class="swiper-slide">
+                                    <div class="card">
+                                        <img class="card-image" src="images/pricing-background.jpg" alt="alternative" />
+                                        <div class="card-body">
+                                            <h4 class="card-title">Nassim Cheric</h4>
+                                            <p class="card-text">Quality Assurance</p>
+                                            <p class="italic mb-3">"Ensuring a bug-free experience for our users has been my top priority. Side to Side delivers quality at every level."</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> <!-- end of swiper-slide -->
+                                </div> <!-- end of swiper-slide -->
 
-                        </div> <!-- end of swiper-wrapper -->
+                            </div> <!-- end of swiper-wrapper -->
 
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-                        <!-- end of add arrows -->
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <!-- end of add arrows -->
 
-                    </div> <!-- end of swiper-container -->
-                </div> <!-- end of slider-container -->
-            </div> <!-- end of container -->
-        </div> <!-- end of slider-1 -->
-        <!-- end of testimonials -->
+                        </div> <!-- end of swiper-container -->
+                    </div> <!-- end of slider-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of slider-1 -->
+            <!-- end of testimonials -->
+        </section>
 
         
         <!-- Conclusion -->
-        <div id="download" class="basic-5">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2">
-                <div class="mb-16 lg:mb-0">
-                    <img src="images/conclusionimage.webp" alt="alternative" />
-                </div>
-                <div class="lg:mt-24 xl:mt-44 xl:ml-12">
-                    <p class="mb-9 text-gray-800 text-3xl leading-10">Team management mobile applications don’t get much better than Pavo. Download it today</p>
-                    <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                    <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
-                </div>
-            </div> <!-- end of container -->
-        </div> <!-- end of basic-5 -->
-        <!-- end of conclusion -->
+        <section id="download">
+            <div class="basic-5">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2">
+                    <div class="mb-16 lg:mb-0">
+                        <img src="images/conclusionimage.webp" alt="alternative" />
+                    </div>
+                    <div class="lg:mt-24 xl:mt-44 xl:ml-12">
+                        <p class="mb-9 text-gray-800 text-3xl leading-10">Team management mobile applications don’t get much better than Pavo. Download it today</p>
+                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
+                        <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+                    </div>
+                </div> <!-- end of container -->
+            </div> <!-- end of basic-5 -->
+            <!-- end of conclusion -->
+        </section>
 
         <!-- Footer -->
-        <div class="footer">
-            <div id="contactus" class="container px-4 sm:px-8">
-                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
-                <div class="social-container">
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-facebook-f fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-linkedin fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-youtube fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-instagram fa-stack-1x"></i>
-                        </a>
-                    </span>
-                </div> <!-- end of social-container -->
-            </div> <!-- end of container -->
-        </div> <!-- end of footer -->
+        <section id="contactus">
+            <div class="footer">
+                <div class="container px-4 sm:px-8">
+                    <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of social-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of footer -->
 
-        <!-- Copyright -->
-        <div class="copyright">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                <ul class="mb-4 list-unstyled p-small">
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
-                </ul>
-                <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Side to Side</a></p>
-             </div>
-        </div> <!-- end of copyright -->
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                    <ul class="mb-4 list-unstyled p-small">
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
+                    </ul>
+                    <p class="pb-2 p-small statement">Copyright © Side to Side</p>
+                </div>
+            </div> <!-- end of copyright -->
+        </section>
 
         <!-- Scripts -->
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->
@@ -433,6 +447,40 @@
                 });
             });
         </script>
+
+        
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const sections = document.querySelectorAll("section");
+                const navLinks = document.querySelectorAll(".nav-link");
+
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    const scrollPosition = window.pageYOffset + window.innerHeight / 2; // Middle of the viewport
+
+                    // Find the current section
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    // Only highlight the nav link if there's a matching section
+                    navLinks.forEach(link => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.add("active");
+                        }
+                    });
+                });
+            });
+        </script>
+
+
 
         <!-- Display error and messages -->
         <div class="alert-container">

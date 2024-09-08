@@ -330,3 +330,76 @@ h1 i {
 .forgot-password a:hover {
   text-decoration: underline;
 }
+
+
+/* Large tablets or small desktops */
+@media (max-width: 1200px) {
+  .signup {
+    padding: 40px 60px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  button {
+    padding: 12px 20px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .signup {
+    padding: 30px 50px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .signup__input {
+    font-size: 1.1rem;
+  }
+
+  button {
+    padding: 10px 18px;
+  }
+}
+
+/* Large Phones */
+@media (max-width: 768px) {
+  .signup {
+    padding: 20px 40px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .signup__input {
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 8px 15px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 576px) {
+  .signup {
+    padding: 15px 30px;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .signup__input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    padding: 6px 12px;
+  }
+}

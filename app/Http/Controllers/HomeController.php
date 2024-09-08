@@ -16,6 +16,8 @@ class HomeController extends Controller
         return view('Homepage');
     }
 
+    
+
     /**
      * Show the homepage only for verified users.
      *

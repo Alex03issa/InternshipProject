@@ -6,7 +6,7 @@
 
         <!-- SEO Meta Tags -->
         <meta name="description" content="Pavo is a mobile app Tailwind CSS HTML template created to help you present benefits, features and information about mobile apps in order to convince visitors to download them" />
-        <meta name="author" content="Your name" />
+        <meta name="author" content="Alexander Issa - Side to Side team" />
 
         <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
         <meta property="og:site_name" content="" /> <!-- website name -->
@@ -18,7 +18,7 @@
         <meta name="twitter:card" content="summary_large_image" /> <!-- to have large image post format in Twitter -->
 
         <!-- Webpage Title -->
-        <title>Article Details - Pavo</title>
+        <title>Blog - Side to Side</title>
 
         <!-- Styles -->
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -30,7 +30,7 @@
         <link href="css/styles.css" rel="stylesheet" />
 
         <!-- Favicon  -->
-        <link rel="icon" href="images/favicon.png" />
+        <link rel="icon" href="images/favicon.ico" />
     </head>
     <body data-spy="scroll" data-target=".fixed-top">
 
@@ -47,30 +47,23 @@
                 <div class="navbar-collapse offcanvas-collapse lg:flex lg:flex-grow lg:items-center" id="navbarsExampleDefault">
                     <ul class="pl-0 mt-3 mb-2 ml-auto flex flex-col list-none lg:mt-0 lg:mb-0 lg:flex-row">
                         <li>
-                            <a class="nav-link page-scroll active" href="{{ route('homepage') }}">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link page-scroll" href="{{ route('homepage') }}">Home</a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a>
+                            <a class="nav-link page-scroll active" href="#blog-header">Blog <span class="sr-only">(current)</span></a>
                         </li>
                         <li>
-                            <a class="nav-link page-scroll" href="#aboutus">About Us</a>
+                            <a class="nav-link page-scroll" href="{{ route('aboutus') }}">About Us</a>
                         </li>
-                        <li>
-                            <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
-                        </li>
+                        
 
                         @if(Auth::check()) <!-- Check if the user is logged in -->
                             <li>
                                 <a class="nav-link page-scroll" href="#download">Download</a>
                             </li>
                             <li>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
-                                </a>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
-                                </a>
-                            </li>
+                            <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
+                        </li>
                             <li class="ml-8 flex items-center dropdown">
                                 <span class="ml-2 text-gray-800">{{ Auth::user()->username }}</span> <!-- Display the username -->
                                 <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -91,19 +84,15 @@
                                 </div>
                             </li>
                         @else
-                            <li>
-                                <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
-                            </li>
+                            
                             <li>
                                 <a class="nav-link page-scroll" href="#download">Download</a>
                             </li>
                             <li>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-apple text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>
-                                </a>
-                                <a class="no-underline" href="#your-link">
-                                    <i class="fab fa-android text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200"></i>
-                                </a>
+                                <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
+                            </li>
+                            <li>
+                                <a class="nav-link page-scroll" href="{{ route('signup') }}">Sign Up</a>
                             </li>
                         @endif
                     </ul>
@@ -112,194 +101,166 @@
         </nav> <!-- end of navbar -->
 
 
-
         <!-- Header -->
-        <header class="ex-header bg-gray">
-            <div class="container px-4 sm:px-8 xl:px-4">
-                <h1 class="xl:ml-24">Article Details</h1>
-            </div> <!-- end of container -->
-        </header> <!-- end of ex-header -->
-        <!-- end of header -->
+        <section id="blog-header">
+            <header class="ex-header bg-gray">
+                <div class="container px-4 sm:px-8 xl:px-4">
+                    <h1 class="xl:ml-24">Explore Side to Side</h1>
+                </div> <!-- end of container -->
+            </header> <!-- end of ex-header -->
+            <!-- end of header -->
+        </section>
 
-        <!-- Basic -->
-        <div class="ex-basic-1 py-12">
+        <!-- Overview Section -->
+        <section id="overiew-sec" class="py-12">
             <div class="container px-4 sm:px-8">
-                <img class="inline mt-12 mb-4" src="images/article-details-large.jpg" alt="alternative" />
+                <img class="mx-auto mt-12 mb-4 max-w-full" src="images/article-details-large.jpg" alt="alternative" />
             </div> <!-- end of container -->
-        </div> <!-- end of ex-basic-1 -->
-        <!-- end of basic -->
+        </section> <!-- end of overview section -->
 
-        <!-- Basic -->
-        <div class="ex-basic-1 pt-4">
+        <!-- Introduction Section -->
+        <section id="introduction-sec" class="pt-4 bg-light">
             <div class="container px-4 sm:px-8 xl:px-32">
-                <p class="mb-4"> Are you looking for ways to grow the user base for your mobile application? Then you have arrived at the right place. Here you will find a curated collection of landing page HTML templates that will help you build an engaging online presentation for your mobile app and convince visitors to become loyal paying users.</p>
-                <p class="mb-12"> All templates in the roundup are premium which means you need to pay for them but we're talking small amounts of money which won't break your bank account but will help authors make a living. In return you get a high quality, updated item together with high quality and very prompt technical support.</p>
-
-                <h2 class="mb-4">Advantages of working with this template</h2>
-                <p class="mb-4">Besides buying the template you need some basic web skills in order to customize it. Nothing too fancy HTML/CSS will do just fine and a little bit of image editing. You can always hire a web designer to help with the customization work while you provide the template and the content that is the most important.</p>
-                <p class="mb-6">Riga is a landing page HTML template made with Tailwind CSS to help you showcase your mobile app online and persuade visitors to download it from the app stores. The author used Tailwind CSS to build the template and integrated a nice animated navigation that slides from outside the screen.</p>
+                <h2 class="mb-4 text-primary">Game Overview</h2>
+                <p class="mb-4">"Side to Side" is a thrilling mobile game that challenges players to navigate a ball through an endless series of platforms. By swiping left and right, you can jump between platforms and avoid obstacles. The goal? To score as many points as possible while ascending into infinity.</p>
+                <p class="mb-12">With its ever-increasing difficulty and engaging mechanics, "Side to Side" is sure to keep players hooked, striving to reach the top of the global leaderboard and unlock exciting rewards along the way.</p>
             </div> <!-- end of container -->
-        </div> <!-- end of ex-basic-1 -->
-        <!-- end of basic -->
+        </section> <!-- end of introduction section -->
 
-        <!-- Cards -->
-        <div class="ex-cards-1 py-4">
+        <!-- Feature Highlights Section -->
+        <section id="feature-sec" class="ex-cards-1 py-8 bg-white">
             <div class="container px-4 sm:px-8">
-                
-                <!-- Card -->
-                <div class="card">
-                    <ul class="list-unstyled">
-                        <li class="flex">
-                            <span class="fa-stack">
-                                <span class="fas fa-circle fa-stack-2x"></span>
-                                <span class="fa-stack-1x">1</span>
-                            </span>
-                            <div class="flex-1 ml-3">
-                                <h5 class="mt-0.5 mb-1.5">High Quality Service</h5>
-                                <p class="mb-4">Features include an eye catching morphtext in the header, details lightbox for more details information</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div> <!-- end of card -->
-                <!-- end of card -->
 
-                <!-- Card -->
-                <div class="card">
-                    <ul class="list-unstyled">
-                        <li class="flex">
-                            <span class="fa-stack">
-                                <span class="fas fa-circle fa-stack-2x"></span>
-                                <span class="fa-stack-1x">2</span>
-                            </span>
-                            <div class="flex-1 ml-3">
-                                <h5 class="mt-0.5 mb-1.5">Prompt Timely Delivery</h5>
-                                <p class="mb-4">Statistics numbers for important values, card slider for testimonials, image slider for customer logos</p>
-                            </div>
-                        </li>
-                    </ul>
+                <!-- Feature Card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-secondary">Customize Your Game</h3>
+                        <p class="card-text">Personalize your gaming experience by unlocking new skins for your ball and vibrant backgrounds. Stand out from other players with unique styles that you can earn as rewards by achieving high scores.</p>
+                    </div>
                 </div> <!-- end of card -->
-                <!-- end of card -->
 
-                <!-- Card -->
-                <div class="card">
-                    <ul class="list-unstyled">
-                        <li class="flex">
-                            <span class="fa-stack">
-                                <span class="fas fa-circle fa-stack-2x"></span>
-                                <span class="fa-stack-1x">3</span>
-                            </span>
-                            <div class="flex-1 ml-3">
-                                <h5 class="mt-0.5 mb-1.5">Skilled Team Involved</h5>
-                                <p class="mb-4">
-                                    Some useful extra pages are bundled with the template lik article details, terms conditions and privacy policy
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
+                <!-- Feature Card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-secondary">Global Leaderboard</h3>
+                        <p class="card-text">Compete with players worldwide. Track your ranking on the global leaderboard, which resets weekly to give everyone a chance to rise to the top. Challenge your friends and become the best in the world!</p>
+                    </div>
                 </div> <!-- end of card -->
-                <!-- end of card -->
+
+                <!-- Feature Card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-secondary">Smooth and Responsive Controls</h3>
+                        <p class="card-text">Experience smooth, intuitive controls that allow for precise movements and jumps. Perfect your timing and coordination to master the game and achieve the highest scores possible.</p>
+                    </div>
+                </div> <!-- end of card -->
 
             </div> <!-- end of container -->
-        </div> <!-- end of ex-cards-1 -->
-        <!-- end of cards -->
+        </section> <!-- end of feature highlights section -->
 
-        <!-- Basic -->
-        <div class="ex-basic-1 pt-6 pb-12">
+      <!-- Gameplay Tips Section -->
+        <section id="download" class="py-6 bg-light">
             <div class="container px-4 sm:px-8 xl:px-32">
-                <p class="mb-12"> Features include an eye catching morphtext in the header, details lightbox for more details information, statistics numbers for important values, card slider for testimonials, image slider for customer logos and working forms that will enable your landing page to provide leads in order to achieve your marketing goals.</p>
+                <h2 class="mb-6 text-primary">Mastering Side to Side</h2>
+                <img class="mb-12 mx-auto max-w-full" src="images/article-details-small.jpg" alt="alternative" />
+                <p class="mb-4">To excel in "Side to Side," timing is everything. Anticipate platform movements and plan your jumps carefully. The game’s pace increases as you progress, so stay focused and refine your skills with each play.</p>
+                <p class="mb-12">Check the global leaderboard regularly to see how you stack up against other players. Every week brings a new opportunity to climb the ranks and showcase your skills!</p>
+            </div> <!-- end of container -->
 
-                <h2 class="mb-6">New elements added to the package</h2>
-                <img class="inline mb-12" src="images/article-details-small.jpg" alt="alternative" />
-                <p class="mb-4"> Some useful extra pages are bundled with the template lik article details, terms conditions and privacy policy which can be customized as per your requirements. Riga has an impactful dark style design combined with warm colors and angular background shapes with the unique goal of making your mobile app stand out. </p>
-                <p class="mb-12"> Leon is an easy to customize landing page HTML template built with Tailwind CSS for promoting mobile apps to the online audience and making visitors download them from app stores. This template is built with HTML and Tailwind CSS to ensure the highest flexibility for all users.</p>
-                <div class="text-box mb-12">
-                    <h3 class="mb-2">Visitors love a beautiful and efficient website</h3>
-                    <p class="mb-4"> All designers, developers and tech-savvy people will be able to customize this template with basic web coding skills. Among the features you will find details lightbox for more details information, tabbed content for feature details, video lightbox, card slider for testimonials, statistics numbers, image slider for customer logos, dropdown navigation and useful extra pages for article details, terms.</p>
+            <div class="container px-4 sm:px-8 xl:px-32">
+                <div class="text-box mb-12 p-4 bg-white rounded shadow-sm">
+                    <h3 class="mb-2">Stay Competitive and Have Fun</h3>
+                    <p class="mb-4">As you climb the leaderboard, you'll face tougher challenges. Use the rewards you’ve unlocked to enhance your gameplay. Each game is a chance to improve and rise to the top!</p>
                 </div> <!-- end of text-box -->
-                <p class="mb-6"> Together with touches of call to action green, the overall landing page design will showcase your app beautifully and will help with convincing visitors to download it from the app stores. Orange and gray hues with one color backgrounds to maximize the impact of your content image slider for customer logos and working forms.</p>
-                <ul class="list-unstyled mb-12 space-y-2">
+
+                <p class="mb-6">Remember, "Side to Side" is not just about high scores—it's about enjoying the vibrant, dynamic gameplay. With responsive controls and customizable visuals, every game offers a new, exciting experience. Have fun, and may the best player win!</p>
+
+                <!-- Corrected List Section -->
+                <ul class="list-unstyled mb-12 space-y-2" style="padding-left: 0;">
                     <li class="flex">
-                        <i class="fas fa-square"></i>
+                        <i class="fas fa-trophy text-primary"></i>
                         <div class="flex-1 ml-2">
-                            <strong>Card slider</strong> for testimonials, statistics numbers for important values image slider for logos
+                            <strong>Unlock New Skins:</strong> Customize your ball with a variety of skins as you progress.
                         </div>
                     </li>
                     <li class="flex">
-                        <i class="fas fa-square"></i>
+                        <i class="fas fa-globe text-primary"></i>
                         <div class="flex-1 ml-2">
-                            <strong>Dropdown navigation</strong> and useful extra pages for article details, terms conditions and privacy policy
+                            <strong>Compete Globally:</strong> See how you rank against players worldwide.
                         </div>
                     </li>
                     <li class="flex">
-                        <i class="fas fa-square"></i>
+                        <i class="fas fa-fingerprint text-primary"></i>
                         <div class="flex-1 ml-2">
-                            <strong>Clean light design</strong> mixing purple, orange and gray hues with one color backgrounds to maximize
+                            <strong>Responsive Controls:</strong> Enjoy smooth, intuitive gameplay.
                         </div>
                     </li>
                     <li class="flex">
-                        <i class="fas fa-square"></i>
+                        <i class="fas fa-palette text-primary"></i>
                         <div class="flex-1 ml-2">
-                            <strong>Together with</strong> touches of call to action green, the overall landing page design will showcase your app
+                            <strong>Vibrant Graphics:</strong> Each game is a visual treat.
                         </div>
                     </li>
                     <li class="flex">
-                        <i class="fas fa-square"></i>
+                        <i class="fas fa-sync text-primary"></i>
                         <div class="flex-1 ml-2">
-                            <strong>This template</strong> is built with HTML and Tailwind CSS to ensure the highest flexibility for all users
+                            <strong>Regular Updates:</strong> New skins, features, and challenges are added regularly.
                         </div>
                     </li>
                 </ul>
 
-                <a class="btn-solid-reg mb-12" href="index.html#download">Download</a>
+                <a class="btn-solid-reg mb-12" href="index.html#download">Download Now</a>
             </div> <!-- end of container -->
-        </div> <!-- end of ex-basic-1 -->
-        <!-- end of basic -->
+        </section> <!-- end of download section -->
+
 
         <!-- Footer -->
-        <div class="footer">
-            <div id="contactus" class="container px-4 sm:px-8">
-                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
-                <div class="social-container">
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-facebook-f fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-linkedin fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-youtube fa-stack-1x"></i>
-                        </a>
-                    </span>
-                    <span class="fa-stack">
-                        <a href="#your-link">
-                            <i class="fas fa-circle fa-stack-2x"></i>
-                            <i class="fab fa-instagram fa-stack-1x"></i>
-                        </a>
-                    </span>
-                </div> <!-- end of social-container -->
-            </div> <!-- end of container -->
-        </div> <!-- end of footer -->
+        <section id="contactus"> 
+            <div class="footer">
+                <div class="container px-4 sm:px-8">
+                    <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of social-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of footer -->
 
-        <!-- Copyright -->
-        <div class="copyright">
-            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                <ul class="mb-4 list-unstyled p-small">
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
-                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
-                </ul>
-                <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Side to Side</a></p>
-             </div>
-        </div> <!-- end of copyright -->
-        
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                    <ul class="mb-4 list-unstyled p-small">
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
+                    </ul>
+                    <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Side to Side</a></p>
+                </div>
+            </div> <!-- end of copyright -->
+        </section>
+
         <!-- Scripts -->
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->
         <script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
@@ -324,6 +285,61 @@
                 });
             });
         </script>
+
+        
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+
+            // Get current scroll position and adjust for navbar height
+            const scrollPosition = window.pageYOffset + 200; // Offset to account for navbar
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200; // Adjust for navbar height
+                const sectionHeight = section.clientHeight;
+
+                // Check if the current scroll position is within the section bounds
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute("id"); // Get the current section's ID
+                }
+            });
+
+            // Only highlight the nav link that corresponds to the current section
+            navLinks.forEach(link => {
+                link.classList.remove("active"); // Remove active class from all links
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("active"); // Add active class to the corresponding link
+                }
+            });
+
+            // Special case for the bottom of the page to handle "Contact Us"
+            if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 100) {
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href").includes("contactus")) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+
+            // Special case for when the page is near the top (for Blog section)
+            if (window.pageYOffset < 200) {
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href").includes("blog-header")) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
 
         <!-- Display error and messages -->
         <div class="alert-container">

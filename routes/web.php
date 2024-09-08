@@ -44,6 +44,12 @@ Route::get('/privacy', function () {
 })->name('privacy');
 
 
+Route::get('/aboutus', function () {
+    return redirect(route('homepage') . '#aboutus');
+})->name('aboutus');
+
+
+
 
 Route::get('/signup', [signupController::class, 'showSignUp'])->name('signup');
 Route::post('/signup', [signupController::class, 'signUp'])->name('signup.submit');
@@ -99,3 +105,5 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 
 // Handle resetting the password
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+

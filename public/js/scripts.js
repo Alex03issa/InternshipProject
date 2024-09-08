@@ -152,21 +152,53 @@
 	/* Function to get the navigation links for smooth page scroll */
 	function getMenuItems() {
 		var menuItems = [];
+		
 		$('.nav-link').each(function() {
-			var hash = $(this).attr('href').substr(1);
-			if(hash !== "")
-				menuItems.push(hash);
-		})
+			var href = $(this).attr('href');
+			
+			if (href && typeof href === 'string') {
+				// If it's a full URL (starts with http), ignore the # character check
+				if (href.startsWith('http')) {
+					console.log('Full URL:', href); // Handle full URLs differently if needed
+				} else if (href.startsWith('#')) {
+					// If it's a hash link (starts with #), process it
+					var hash = href.substr(1); // Remove the leading #
+					if (hash !== "") {
+						menuItems.push(hash);
+					}
+				}
+			} else {
+				console.log("Element without valid href:", $(this));
+			}
+		});
+	
 		return menuItems;
-	}	
+	}
+	
 
 	/* Prevents adding of # at the end of URL on click of non-pagescroll links */
-	$('.nav-link').click(function (e) {
-		var hash = $(this).attr('href').substr(1);
-		if(hash == "")
-			e.preventDefault();
+	$('.nav-link').each(function() {
+		var href = $(this).attr('href');
+		
+		// Check if href exists and is a valid string
+		if (href && typeof href === 'string') {
+			// Check if it's a hash link (starts with #)
+			if (href.startsWith('#')) {
+				var hash = href.substr(1); // Remove the leading '#' from the hash link
+				if (hash !== "") {
+					console.log("Valid hash:", hash);
+					// Your logic for handling hash links
+				}
+			} else {
+				// This is not a hash link, handle full URLs or other types of links
+				console.log("Full URL or other link:", href);
+			}
+		} else {
+			// Log when href is undefined or invalid
+			console.log("Invalid or undefined href:", $(this));
+		}
 	});
-
+	
 	/* Checks page scroll offset and changes active link on page load */
 	changeActive();
 
@@ -175,20 +207,25 @@
 		changeActive();
 	});
 	
-	/* Function to change the active link */
 	function changeActive() {
-		const menuItems = getMenuItems();
-		$.each(menuItems, function(index, value){
-			var offsetSection = $('#' + value).offset().top;
-			var docScroll = $(document).scrollTop();
-			var docScroll1 = docScroll + 1; 
+		// Select all menu items
+		$('.nav-link').each(function() {
+			var href = $(this).attr('href');
 			
-			if ( docScroll1 >= offsetSection ){
-				$('.nav-link').removeClass('active');
-				$('.nav-link[href$="#'+value+'"]').addClass('active');
-			}  
+			// Ignore full URLs, handle only hash links
+			if (href && href.startsWith('#')) {
+				var sectionId = href.substr(1); // Get the section ID from the href (after #)
+				
+				if (sectionId) {
+					var section = $('#' + sectionId); // Select the section using the ID
+					if (section.length) {
+						// Your logic to change active state
+					}
+				}
+			}
 		});
 	}
+	
 
 })(jQuery);
 
