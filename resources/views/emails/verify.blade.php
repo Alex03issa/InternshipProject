@@ -32,7 +32,8 @@
         
         
         <!-- Favicon  -->
-        <link rel="icon" href="images/favicon.ico" />
+        <link rel="icon" href="{{ asset('images/favicon.ico') }}" />
+
 
 
     
@@ -105,7 +106,7 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="images/logo.png" alt="Logo"> 
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
         </div>
         <div class="title">
             Welcome to Side to Side

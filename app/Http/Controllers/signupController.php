@@ -51,7 +51,8 @@ class signupController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'verification_token' => $verificationToken, 
+            'verification_token' => $verificationToken,
+            'provider' => 'sidetoside', 
         ]);
 
        

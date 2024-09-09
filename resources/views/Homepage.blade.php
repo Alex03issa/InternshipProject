@@ -30,7 +30,8 @@
         <link href="css/styles.css" rel="stylesheet" />
         
         <!-- Favicon  -->
-        <link rel="icon" href="images/favicon.ico" />
+        <link rel="icon" href="{{ asset('images/favicon.ico') }}" />
+
     </head>
     <body data-spy="scroll" data-target=".fixed-top">
 

@@ -35,7 +35,10 @@ public function handleGoogleCallback()
 
         if ($existingUser) {
             // Step 3: Update user's profile image if needed
-            $existingUser->update(['profile_image' => $googleUser->getAvatar()]);
+            $existingUser->update(['profile_image' => $googleUser->getAvatar(),
+            'provider' => 'google',    // Ensure the provider is correctly set
+            
+        ]);
             
 
             // Log in the existing user
@@ -49,7 +52,7 @@ public function handleGoogleCallback()
                 'email' => $googleUser->getEmail(),
                 'provider' => 'google',
                 'google_id' => $googleUser->getId(),
-                'email_verified_at' => now(), // Automatically mark as verified
+                'is_verified' => true, // Automatically mark as verified
                 'profile_image' => $googleUser->getAvatar(),
                 'password' => Hash::make($randomPassword),
             ]);
