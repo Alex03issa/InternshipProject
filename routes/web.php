@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
@@ -48,6 +49,10 @@ Route::get('/aboutus', function () {
     return redirect(route('homepage') . '#aboutus');
 })->name('aboutus');
 
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
 
 
 

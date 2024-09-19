@@ -27,12 +27,14 @@ class GoogleAuthController extends Controller
 public function handleGoogleCallback()
 {
     try {
+
+        
         // Step 1: Retrieve the Google user
         $googleUser = Socialite::driver('google')->stateless()->user();
-
+        dd("Reached existing user");
         // Step 2: Check if the user already exists in your database
         $existingUser = User::where('email', $googleUser->getEmail())->first();
-
+        dd("Reached existing user");
         if ($existingUser) {
             // Step 3: Update user's profile image if needed
             $existingUser->update(['profile_image' => $googleUser->getAvatar(),
@@ -45,6 +47,7 @@ public function handleGoogleCallback()
             Auth::login($existingUser);
             return redirect()->route('homepage')->with('success', 'Logged in successfully!');
         } else {
+            dd("Reached creating new user");
             // Step 6: Register a new user
             $randomPassword = $this->generateRandomPassword();
             $newUser = User::create([
@@ -59,7 +62,7 @@ public function handleGoogleCallback()
 
             // Store the generated password in session
             Session::put('generated_password', $randomPassword);
- 
+            dd("Reached login user");
             // Log in the new user
             Auth::login($newUser);
             return redirect()->route('homepage')->with('success', 'Logged in successfully!');

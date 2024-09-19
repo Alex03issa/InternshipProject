@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use Illuminate\Support\Str;
 
-
 class loginController extends Controller
 {
     /**
@@ -46,15 +45,15 @@ class loginController extends Controller
 
             if ($user && Hash::check($request->password, $user->password)) {
 
+                // Check if the user is an admin
+                if ($user->usertype === 'admin') {
+                    // Allow admin to pass even if not verified
+                    Auth::login($user);
+                    return redirect()->route('admin.dashboard')->with('success', 'Logged in as Admin!');
+                }
+
+                // For regular users, check if email is verified
                 if (!$user->is_verified) {
-                    // Send verification email
-                    /*
-                    try {
-                        Mail::to($user->email)->send(new VerificationMail($user));
-                    } catch (Exception $e) {
-                        \Log::error('Mail error: ' . $e->getMessage());
-                        dd($e->getMessage());  // This will output the error message to the screen
-                    }*/
                     Mail::to($user->email)->send(new VerificationMail($user));
                     return back()->withErrors([
                         'email' => 'Please verify your email address before logging in.',
@@ -67,6 +66,7 @@ class loginController extends Controller
                     $user->save();
                 }
 
+                // Log in the user
                 Auth::login($user);
                 return redirect()->route('homepage')->with('success', 'Logged in successfully!');
             }
