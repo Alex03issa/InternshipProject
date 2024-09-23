@@ -107,7 +107,7 @@
         });
     });
 
-
+//HAVE to PUT in JS external FILE !!!
        
     document.addEventListener("DOMContentLoaded", function() {
             const password = document.getElementById('password');

@@ -66,17 +66,23 @@
                                 <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
                             </li>
                             <li class="ml-8 flex items-center dropdown">
-                                <span class="username-text">{{ Auth::user()->username }}</span> <!-- Display the username -->
+                                <span class="username-text">{{ Auth::user()->username }} </span> <!-- Display the username -->
+                                
                                 <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full user-image">
+                                    @if(!empty(Auth::user()->profile_image)) <!-- Check if profile image exists -->
+                                        <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full user-image">
+                                    @else
+                                        <i class="fas fa-user fa-2x"></i> 
+                                    @endif
                                 </a>
+                                
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
                                     <a class="dropdown-item" href="#">Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
                                         Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -84,6 +90,7 @@
                                     </form>
                                 </div>
                             </li>
+
                         @else
                             <li>
                                 <a class="nav-link page-scroll" href="#download">Download</a>
@@ -385,7 +392,7 @@
                         <img src="images/conclusionimage.webp" alt="alternative" />
                     </div>
                     <div class="lg:mt-24 xl:mt-44 xl:ml-12">
-                        <p class="mb-9 text-gray-800 text-3xl leading-10">Team management mobile applications don’t get much better than Pavo. Download it today</p>
+                        <p class="mb-9 text-gray-800 text-3xl leading-10">Mobile games don’t get much better than Side to Side. Customize your ball, climb the leaderboard, and unlock rewards! Download now and start your adventure!</p>
                         <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
                         <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
                     </div>
