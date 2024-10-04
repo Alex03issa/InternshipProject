@@ -24,60 +24,65 @@ class GoogleAuthController extends Controller
         }
     }
 
-public function handleGoogleCallback()
-{
-    try {
-
-        
-        // Step 1: Retrieve the Google user
-        $googleUser = Socialite::driver('google')->stateless()->user();
-        
-        // Step 2: Check if the user already exists in your database
-        $existingUser = User::where('email', $googleUser->getEmail())->first();
-        
-        if ($existingUser) {
-            // Step 3: Update user's profile image if needed
-            $existingUser->update(['profile_image' => $googleUser->getAvatar(),
-            'provider' => 'google',    // Ensure the provider is correctly set
+    public function handleGoogleCallback()
+    {
+        try {
+            // Step 1: Retrieve the Google user
+            $googleUser = Socialite::driver('google')->stateless()->user();
             
-        ]);
+            // Step 2: Check if the user already exists in your database
+            $existingUser = User::where('email', $googleUser->getEmail())->first();
             
-
-            // Log in the existing user
-            Auth::login($existingUser);
-            return redirect()->route('homepage')->with('success', 'Logged in successfully!');
-        } else {
-            
-            // Step 6: Register a new user
-            $randomPassword = $this->generateRandomPassword();
-            $newUser = User::create([
-                'username' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'provider' => 'google',
-                'google_id' => $googleUser->getId(),
-                'is_verified' => true, // Automatically mark as verified
-                'profile_image' => $googleUser->getAvatar(),
-                'password' => Hash::make($randomPassword),
-            ]);
-
-            // Store the generated password in session
-            Session::put('generated_password', $randomPassword);
-            // Log in the new user
-            Auth::login($newUser);
-            return redirect()->route('homepage')->with('success', 'Logged in successfully!');
+            if ($existingUser) {
+                // Check if the username is still the default or empty
+                if ($existingUser->username == 'default_username' || empty($existingUser->username)) {
+                    // Update the username to the Google name
+                    $existingUser->update(['username' => $googleUser->getName()]);
+                }
+    
+                // Step 3: Update the user's profile image and provider
+                $existingUser->update([
+                    'profile_image' => $googleUser->getAvatar(),
+                    'provider' => 'google',  // Set provider to 'google'
+                    'is_verified' => true,
+                    'google_id' => $googleUser->getId(),
+                ]);
+    
+                // Log in the existing user
+                Auth::login($existingUser);
+                return redirect()->route('homepage')->with('success', 'Logged in successfully!');
+            } else {
+                // Step 6: Register a new user
+                $randomPassword = $this->generateRandomPassword();
+                
+                $newUser = User::create([
+                    'username' => $googleUser->getName(),  // Set Google name as username for new users
+                    'name' => $googleUser->getName(),      // Store Google name
+                    'email' => $googleUser->getEmail(),
+                    'provider' => 'google',
+                    'google_id' => $googleUser->getId(),
+                    'is_verified' => true,                 // Automatically mark as verified
+                    'profile_image' => $googleUser->getAvatar(),
+                    'password' => Hash::make($randomPassword),
+                ]);
+    
+                // Store the generated password in session
+                Session::put('generated_password', $randomPassword);
+    
+                // Log in the new user
+                Auth::login($newUser);
+                return redirect()->route('homepage')->with('success', 'Logged in successfully!');
+            }
+        } catch (InvalidStateException $e) {
+            return redirect()->route('login')->with('error', 'Invalid state. Please try logging in again.');
+        } catch (QueryException $e) {
+            return redirect()->route('login')->with('error', 'A database error occurred. Please try again later.');
+        } catch (Exception $e) {
+            \Log::error('Google OAuth error: ' . $e->getMessage());
+            return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
         }
-    } catch (InvalidStateException $e) {
-        return redirect()->route('login')->with('error', 'Invalid state. Please try logging in again.');
-
-    } catch (QueryException $e) {
-        return redirect()->route('login')->with('error', 'A database error occurred. Please try again later.');
-
-    } catch (Exception $e) {
-        \Log::error('Google OAuth error: ' . $e->getMessage());
-        dd($e->getMessage());
-        return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
     }
-}
+    
 
     // Helper function to generate a random password
     private function generateRandomPassword($length = 10)
