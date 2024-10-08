@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\AdResource\Pages;
+namespace App\Filament\Resources\AdsResource\Pages;
 
-use App\Filament\Resources\AdResource;
+use App\Filament\Resources\AdsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditAd extends EditRecord
+class EditAds extends EditRecord
 {
-    protected static string $resource = AdResource::class;
+    protected static string $resource = AdsResource::class;
 
     protected function getHeaderActions(): array
     {

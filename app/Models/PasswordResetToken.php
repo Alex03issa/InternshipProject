@@ -1,20 +1,21 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ad extends Model
+class PasswordResetToken extends Model
 {
     use HasFactory;
 
+    protected $table = 'password_reset_tokens';
+
     protected $fillable = [
-        'name',
-        'type',
-        'placement',
-        'platform',
-        'revenue',
-        'clicks', 
+        'email',
+        'token',
     ];
+
+    public $timestamps = false;
 }

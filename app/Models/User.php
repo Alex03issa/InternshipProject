@@ -18,7 +18,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-                'username','name','email', 'password', 'google_id', 'profile_image','verification_token','provider','is_verified','apple_id',
+                'username',
+                'name',
+                'email',
+                'password',
+                'google_id',
+                'profile_image',
+                'verification_token',
+                'provider',
+                'is_verified',
+                'apple_id',
     ];
 
     /**
@@ -40,4 +49,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function statistics()
+    {
+        return $this->hasOne(SiteStatistic::class);
+    }
+
+    public function gameInfo()
+    {
+        return $this->hasOne(GameInfo::class);
+    }
 }

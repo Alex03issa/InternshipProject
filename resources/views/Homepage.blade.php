@@ -308,7 +308,7 @@
                         </div>
                         <div class="cell">
                             <div class="counter-value number-count" data-count="159">1</div>
-                            <p class="counter-info">High Scores Achieved</p>
+                            <p class="counter-info"> New Users This Month</p>
                         </div>
                         <div class="cell">
                             <div class="counter-value number-count" data-count="127">1</div>

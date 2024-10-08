@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class loginController extends Controller
 {
@@ -31,6 +31,8 @@ class loginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
+    
+
     public function signIn(Request $request)
     {
         try {
@@ -42,14 +44,20 @@ class loginController extends Controller
 
             // Find the user by email
             $user = User::where('email', $request->email)->first();
+            
+            // Log the attempt to sign in
+            Log::info('Login attempt for email: ' . $request->email);
 
             if ($user && Hash::check($request->password, $user->password)) {
+                // Log successful login
+                Log::info('User found and password matches for email: ' . $request->email);
 
                 // Check if the user is an admin
-                if ($user->usertype === 'admin') {
-                    // Allow admin to pass even if not verified
+                if ($user->user_type === 'admin') {
+                    Log::info('Admin check successful for email: ' . $request->email);
+
                     Auth::login($user);
-                    return redirect()->route('admin.dashboard')->with('success', 'Logged in as Admin!');
+                    return redirect()->route('filament.admin.pages.dashboard')->with('success', 'Logged in as Admin!');
                 }
 
                 // For regular users, check if email is verified
@@ -71,30 +79,36 @@ class loginController extends Controller
                 return redirect()->route('homepage')->with('success', 'Logged in successfully!');
             }
 
+            // Log failed login attempt
+            Log::warning('Failed login attempt for email: ' . $request->email);
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ]);
 
         } catch (ValidationException $e) {
             // Handle validation exceptions
+            Log::error('Validation error: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->validator)->withInput();
 
         } catch (QueryException $e) {
             // Handle database query exceptions
+            Log::error('Database error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an issue with your login. Please try again later.');
 
         } catch (Exception $e) {
             // Handle general exceptions
+            Log::error('General error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
     }
+
 
     /**
      * Log the user out of the application.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
         try {
             Auth::logout();

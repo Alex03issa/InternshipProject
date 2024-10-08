@@ -8,9 +8,9 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use Filament\Facades\Filament;
 
 
 /*
@@ -50,12 +50,6 @@ Route::get('/aboutus', function () {
 })->name('aboutus');
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-});
-
-
-
 Route::get('/signup', [signupController::class, 'showSignUp'])->name('signup');
 Route::post('/signup', [signupController::class, 'signUp'])->name('signup.submit');
 
@@ -64,6 +58,11 @@ Route::post('/signup', [signupController::class, 'signUp'])->name('signup.submit
 Route::get('/login', [loginController::class, 'showSignIn'])->name('login');
 Route::post('/login', [loginController::class, 'signIn'])->name('login.submit');
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
+
+
+Route::middleware(['auth', 'CheckAdmin'])->group(function () {
+
+});
 
 
 // Google login routes

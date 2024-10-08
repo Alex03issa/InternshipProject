@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('placement'); // homepage, game level, etc.
             $table->enum('platform', ['game', 'website']);
             $table->float('revenue')->nullable(); 
+            $table->integer('clicks')->default(0); // New field to track clicks
             $table->timestamps();
         });
     }
