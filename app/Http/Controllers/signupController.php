@@ -12,7 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Log;
 
 class signupController extends Controller
 {
@@ -35,6 +35,9 @@ class signupController extends Controller
 
      public function signUp(Request $request)
      {
+        // Log request data for debugging
+        Log::info('Signup request received', ['request' => $request->all()]);
+
         try {
             // Validate the request data
             $request->validate([
@@ -43,8 +46,11 @@ class signupController extends Controller
                 'password' => 'required|string|min:8|confirmed',
             ]);
 
+        // Log validation success
+        Log::info('Signup validation successful', ['email' => $request->email]);
+
         // Generate the verification token
-        $verificationToken = Str::random(32);
+        $verificationToken = Str::random(64);
 
         // Create the user with the verification token
         $user = User::create([
@@ -55,22 +61,34 @@ class signupController extends Controller
             'provider' => 'sidetoside', 
         ]);
 
-       
+        // Log user creation success
+        Log::info('User created successfully', ['user_id' => $user->id, 'email' => $user->email]);
+
+        // Send verification email
+        try {
             // Send verification email
             Mail::to($user->email)->send(new VerificationMail($user));
-            return redirect()->back()->with('success', 'Registration successful! Please check your email to verify your account.');
+        } catch (Exception $e) {
+            // Handle email sending exceptions
+            Log::error('Email sending error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Registration successful, but failed to send verification email. Please contact support.');
+        }
+        return redirect()->back()->with('success', 'Registration successful! Please check your email to verify your account.');
 
 
         } catch (ValidationException $e) {
             // Handle validation exceptions
+            Log::error('Validation error: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->validator)->withInput();
 
         } catch (QueryException $e) {
             // Handle database query exceptions
+            Log::error('Database error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an issue with your registration. Please try again later.');
 
         } catch (Exception $e) {
             // Handle general exceptions
+            Log::error('General error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
     }

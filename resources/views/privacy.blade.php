@@ -60,15 +60,26 @@
 
                         @if(Auth::check()) <!-- Check if the user is logged in -->
                             <li>
-                                <a class="nav-link page-scroll" href="#download">Download</a>
+                                <a class="nav-link page-scroll" href="{{ route('download') }}">Download</a>
                             </li>
                             <li>
                                 <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
                             </li>
                             <li class="ml-8 flex items-center dropdown">
-                                <span class="ml-2 text-gray-800">{{ Auth::user()->username }}</span> <!-- Display the username -->
+                                <span class="username-text">
+                                    @if(Auth::user()->username == 'default_username')
+                                        {{ Auth::user()->name }} 
+                                    @else
+                                        {{ Auth::user()->username }} 
+                                    @endif
+                                </span>
+
                                 <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full">
+                                    @if(!empty(Auth::user()->profile_image)) <!-- Check if profile image exists -->
+                                        <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full user-image">
+                                    @else
+                                        <i class="fas fa-user fa-2x"></i> 
+                                    @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
@@ -86,7 +97,7 @@
                             </li>
                         @else
                             <li>
-                                <a class="nav-link page-scroll" href="#download">Download</a>
+                                <a class="nav-link page-scroll" href="{{ route('download') }}">Download</a>
                             </li>
                             <li>
                                 <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
@@ -241,60 +252,15 @@
         <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const alerts = document.querySelectorAll('.alert-dismissible');
-
-                // Set a timeout to remove the alert after 3 seconds
-                alerts.forEach(alert => {
-                    setTimeout(() => {
-                        alert.classList.remove('show'); // Bootstrap's fade out
-                        alert.classList.add('fade'); // Add the fade class for animation
-                        
-                        // Wait for the fade out transition to finish before removing from DOM
-                        setTimeout(() => {
-                            alert.parentElement.remove(); // Completely remove the alert container from the DOM
-                        }, 150); // Time to allow fade transition to complete
-                    }, 3000); // Adjust time as needed
-                });
-            });
-        </script>
-
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const sections = document.querySelectorAll("section");
-                const navLinks = document.querySelectorAll(".nav-link");
-
-                window.addEventListener("scroll", () => {
-                    let current = "";
-                    const scrollPosition = window.pageYOffset + window.innerHeight / 2; // Middle of the viewport
-
-                    // Find the current section
-                    sections.forEach(section => {
-                        const sectionTop = section.offsetTop;
-                        const sectionHeight = section.clientHeight;
-
-                        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                            current = section.getAttribute("id");
-                        }
-                    });
-
-                    // Only highlight the nav link if there's a matching section
-                    navLinks.forEach(link => {
-                        link.classList.remove("active");
-                        if (link.getAttribute("href").includes(current)) {
-                            link.classList.add("active");
-                        }
-                    });
-                });
-            });
-        </script>
+        <script src="{{ asset('js/ui_event_handlers.js') }}"></script>
 
 
     
-        <!-- Display error and messages -->
-        <div class="alert-container">
+       
+    </body>
+
+     <!-- Display error and messages -->
+     <div class="alert-container">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle" style="color: green;"></i>{{ session('success') }}
@@ -317,5 +283,4 @@
                 </div>
             @endif
         </div>
-    </body>
 </html>

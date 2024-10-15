@@ -14,13 +14,12 @@ class CreateGameInfoTable extends Migration
             $table->integer('score')->default(0);
             $table->integer('retry_times')->default(0);
             $table->integer('level')->default(1);
-            $table->integer('reward_points')->default(0);
             $table->json('unlocked_skins')->nullable(); // Store unlocked skins as JSON
             $table->json('unlocked_backgrounds')->nullable(); // Store unlocked trophies as JSON
             $table->json('unlocked_trophies')->nullable(); // Store unlocked trophies as JSON
             $table->float('speed')->default(1.0);
-            $table->string('background')->default('default_background.png');
-            $table->string('ball_skin')->default('default_ball_skin.png');
+            $table->string('background_selected')->default('default_background.png');
+            $table->string('ball_skin_selected')->default('default_ball_skin.png');
             $table->timestamps();
         });
     }

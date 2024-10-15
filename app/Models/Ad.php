@@ -10,11 +10,12 @@ class Ad extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'type',
-        'placement',
-        'platform',
-        'revenue',
-        'clicks', 
+        'ad_name', 'ad_image', 'ad_type', 'ad_url', 'ad_owner', 'start_date', 'end_date'
     ];
+
+
+    public function statistics()
+    {
+        return $this->hasMany(AdStatistic::class, 'ad_id');
+    }
 }

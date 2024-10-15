@@ -49,6 +49,10 @@ Route::get('/aboutus', function () {
     return redirect(route('homepage') . '#aboutus');
 })->name('aboutus');
 
+Route::get('/download', function () {
+    return redirect(route('homepage') . '#download');
+})->name('download');
+
 
 Route::get('/signup', [signupController::class, 'showSignUp'])->name('signup');
 Route::post('/signup', [signupController::class, 'signUp'])->name('signup.submit');

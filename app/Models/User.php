@@ -18,16 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-                'username',
-                'name',
-                'email',
-                'password',
-                'google_id',
-                'profile_image',
-                'verification_token',
-                'provider',
-                'is_verified',
-                'apple_id',
+        'username', 'name', 'email', 'password', 'user_type', 'profile_image', 'provider', 'google_id', 'apple_id', 'is_verified', 'verification_token'
     ];
 
     /**
@@ -51,13 +42,18 @@ class User extends Authenticatable
     ];
 
 
-    public function statistics()
+    public function gameInfos()
     {
-        return $this->hasOne(SiteStatistic::class);
+        return $this->hasMany(GameInfo::class, 'user_id');
     }
 
-    public function gameInfo()
+    public function siteStatistics()
     {
-        return $this->hasOne(GameInfo::class);
+        return $this->hasMany(SiteStatistic::class, 'user_id');
+    }
+
+    public function gameStatistics()
+    {
+        return $this->hasMany(GameStatistic::class, 'user_id');
     }
 }

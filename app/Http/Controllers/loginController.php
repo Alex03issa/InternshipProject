@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class loginController extends Controller
 {
@@ -61,11 +62,27 @@ class loginController extends Controller
                 }
 
                 // For regular users, check if email is verified
-                if (!$user->is_verified) {
+                if ($user->is_verified == 0) {
+                    Log::info('User found but email is not verified for email: ' . $user->email);
+        
+                    // Resend verification email
+                    $token = $user->verification_token;
+                    if (!$token) {
+                        // If token is missing, generate a new one
+                        $user->verification_token = Str::random(64);
+                        $user->save();
+                    }
+                    // Send verification email
+                try {
+                    // Send verification email
                     Mail::to($user->email)->send(new VerificationMail($user));
-                    return back()->withErrors([
-                        'email' => 'Please verify your email address before logging in.',
-                    ]);
+                } catch (Exception $e) {
+                    // Handle email sending exceptions
+                    Log::error('Email sending error: ' . $e->getMessage());
+                    return redirect()->back()->with('error', 'Registration successful, but failed to send verification email. Please contact support.');
+                }
+
+                    return redirect()->route('login')->with('error', 'Your email is not verified. We have sent you a new verification email.');
                 }
 
                 // Rehash the password if it's not using Bcrypt

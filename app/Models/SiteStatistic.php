@@ -1,4 +1,6 @@
 <?php
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,19 +10,15 @@ class SiteStatistic extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'visits',
-        'last_visit',
-        'total_users_registered',
-        'daily_users_registered',
-        'monthly_users_registered',
-        'daily_active_users',
-        'monthly_active_users',
-    ];
+    
+     protected $fillable = [
+        'user_id', 'visits', 'last_visit', 'total_users_registered', 'daily_users_registered', 'monthly_users_registered', 'daily_active_users', 'monthly_active_users'
+     ];
+    
+    
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+     public function user()
+     {
+         return $this->belongsTo(User::class, 'user_id');
+     }
 }

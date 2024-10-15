@@ -48,7 +48,7 @@
                 <div class="navbar-collapse offcanvas-collapse lg:flex lg:flex-grow lg:items-center" id="navbarsExampleDefault">
                     <ul class="pl-0 mt-3 mb-2 ml-auto flex flex-col list-none lg:mt-0 lg:mb-0 lg:flex-row">
                         <li>
-                            <a class="nav-link page-scroll active" href="#header">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link page-scroll active" href="#home-header">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li>
                             <a class="nav-link page-scroll" href="#blog">Blog</a>
@@ -66,8 +66,14 @@
                                 <a class="nav-link page-scroll" href="#contactus">Contact Us</a>
                             </li>
                             <li class="ml-8 flex items-center dropdown">
-                                <span class="username-text">{{ Auth::user()->username }} </span> <!-- Display the username -->
-                                
+                                <span class="username-text">
+                                    @if(Auth::user()->username == 'default_username')
+                                        {{ Auth::user()->name }} 
+                                    @else
+                                        {{ Auth::user()->username }} 
+                                    @endif
+                                </span>
+
                                 <a class="ml-2 dropdown-toggle no-underline" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @if(!empty(Auth::user()->profile_image)) <!-- Check if profile image exists -->
                                         <img src="{{ Auth::user()->profile_image }}" alt="User Image" class="w-8 h-8 rounded-full user-image">
@@ -109,7 +115,7 @@
         </nav> <!-- end of navbar -->
 
         <!-- Header -->
-        <section id="header">
+        <section id="home-header">
             <header class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
                 <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
                     <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
@@ -454,61 +460,14 @@
         <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const alerts = document.querySelectorAll('.alert-dismissible');
-
-                // Set a timeout to remove the alert after 3 seconds
-                alerts.forEach(alert => {
-                    setTimeout(() => {
-                        alert.classList.remove('show'); // Bootstrap's fade out
-                        alert.classList.add('fade'); // Add the fade class for animation
-                        
-                        // Wait for the fade out transition to finish before removing from DOM
-                        setTimeout(() => {
-                            alert.parentElement.remove(); // Completely remove the alert container from the DOM
-                        }, 150); // Time to allow fade transition to complete
-                    }, 3000); // Adjust time as needed
-                });
-            });
-        </script>
-
-        
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const sections = document.querySelectorAll("section");
-                const navLinks = document.querySelectorAll(".nav-link");
-
-                window.addEventListener("scroll", () => {
-                    let current = "";
-                    const scrollPosition = window.pageYOffset + window.innerHeight / 2; // Middle of the viewport
-
-                    // Find the current section
-                    sections.forEach(section => {
-                        const sectionTop = section.offsetTop;
-                        const sectionHeight = section.clientHeight;
-
-                        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                            current = section.getAttribute("id");
-                        }
-                    });
-
-                    // Only highlight the nav link if there's a matching section
-                    navLinks.forEach(link => {
-                        link.classList.remove("active");
-                        if (link.getAttribute("href").includes(current)) {
-                            link.classList.add("active");
-                        }
-                    });
-                });
-            });
-        </script>
+        <script src="js/ui_event_handlers.js"></script>
 
 
+      
+    </body>
 
-        <!-- Display error and messages -->
-        <div class="alert-container">
+      <!-- Display error and messages -->
+      <div class="alert-container">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle" style="color: green;"></i>{{ session('success') }}
@@ -531,5 +490,4 @@
                 </div>
             @endif
         </div>
-    </body>
 </html>

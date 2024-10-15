@@ -49,7 +49,11 @@
 
     <div class="signup__field">
         <input class="signup__input" type="password" name="password" id="password" autocomplete="current-password" required />
+        
         <label class="signup__label" for="password">Password</label>
+        <span class="toggle-password password-icon" style="cursor: pointer;">
+            <i class="fas fa-eye-slash"></i>
+        </span>
     </div>
 
       <!-- Forgot Password Link -->
@@ -70,24 +74,7 @@
     </a>
 </form>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const alerts = document.querySelectorAll('.alert-dismissible');
-
-        // Set a timeout to remove the alert after 3 seconds
-        alerts.forEach(alert => {
-            setTimeout(() => {
-                alert.classList.remove('show'); // Bootstrap's fade out
-                alert.classList.add('fade'); // Add the fade class for animation
-                
-                // Wait for the fade out transition to finish before removing from DOM
-                setTimeout(() => {
-                    alert.parentElement.remove(); // Completely remove the alert container from the DOM
-                }, 150); // Time to allow fade transition to complete
-            }, 3000); // Adjust time as needed
-        });
-    });
-</script>
+<script src="{{ asset('js/ui_event_handlers.js') }}"></script>
 
 </body>
 

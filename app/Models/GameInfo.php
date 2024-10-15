@@ -10,21 +10,7 @@ class GameInfo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'platform',
-        'score',
-        'retry_times',
-        'level',
-        'speed',
-        'reward_points',
-        'unlocked_skins',
-        'unlocked_backgrounds',
-        'unlocked_trophies',
-        'ball_skin',
-        'background',
-        'average_session_duration',
-        'total_achievements',
-        'last_active',
+        'user_id', 'score', 'retry_times', 'level', 'unlocked_skins', 'unlocked_backgrounds', 'unlocked_trophies', 'speed', 'background_selected', 'ball_skin_selected'
     ];
 
     protected $casts = [
@@ -36,6 +22,21 @@ class GameInfo extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function skins()
+    {
+        return $this->belongsToMany(Skin::class, 'game_info_skins', 'game_info_id', 'skin_id');
+    }
+
+    public function backgrounds()
+    {
+        return $this->belongsToMany(Background::class, 'game_info_backgrounds', 'game_info_id', 'background_id');
+    }
+
+    public function trophies()
+    {
+        return $this->belongsToMany(Trophy::class, 'game_info_trophies', 'game_info_id', 'trophy_id');
     }
 }

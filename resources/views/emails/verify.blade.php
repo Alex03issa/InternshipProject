@@ -115,7 +115,7 @@
             <p>Hello {{ $user->name }},</p>
             <p>Thank you for signing up with Side to Side. Please verify your email address by clicking the button below:</p>
         </div>
-        <a href="{{ $verificationUrl }}" class="verify-button">Verify Email</a>
+        <a class="verify-button" href="{{ $verificationUrl }}" target="_blank" rel="noopener noreferrer">Verify Email</a>
         <div class="footer">
             <p>If you did not sign up for this account, please ignore this email.</p>
             <p>&copy; 2024 Side to Side. All rights reserved.</p>
