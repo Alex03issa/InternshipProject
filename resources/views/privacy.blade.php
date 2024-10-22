@@ -25,8 +25,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
         <link href="css/fontawesome-all.css" rel="stylesheet" />
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-        <link href="css/swiper.css" rel="stylesheet" />
-        <link href="css/magnific-popup.css" rel="stylesheet" />
+
         <link href="css/styles.css" rel="stylesheet" />
         
         <!-- Favicon  -->
@@ -124,80 +123,29 @@
         </section>
 
 
-         <!-- Main Content -->
-         <section id="maincontent">
+        <section id="maincontent">
             <div class="ex-basic-1 py-12">
-                <div class="container px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-
-                    <!-- Section 1: Overview -->
-                    <h2 class="mt-12 mb-4">1. Overview</h2>
-                    <p class="mb-12">At "Side to Side," we value your privacy and are committed to protecting the information you provide when using our game or website. This Privacy Policy outlines what data we collect, how we use it, and the measures we take to safeguard your personal information.</p>
-
-                    <!-- Section 2: Data We Collect -->
-                    <h2 class="mb-4">2. Data We Collect</h2>
-                    <p class="mb-12">We collect the following types of information from users:</p>
-
-                    <h3 class="mb-2">2.1. Information You Provide</h3>
-                    <p class="mb-12">When you sign up for an account, participate in in-game purchases, or contact us, we may collect personal information such as your name, email address, billing information, and game preferences.</p>
-
-                    <h3 class="mb-2">2.2. Automatically Collected Information</h3>
-                    <p class="mb-12">We automatically collect certain data when you play "Side to Side" or visit our website, including your IP address, device information, browser type, and interactions with the game (e.g., scores, rewards, skins selected).</p>
-
-                    <!-- Section 3: How We Use Your Data -->
-                    <h2 class="mb-4">3. How We Use Your Data</h2>
-                    <ul class="list-unstyled mb-6 space-y-2">
-                        <li class="flex">
-                            <i class="fas fa-chevron-right"></i>
-                            <div class="flex-1 ml-2"><strong>To Enhance Gameplay:</strong> We use your data to improve game features, provide personalized experiences, and track your progress.</div>
-                        </li>
-                        <li class="flex">
-                            <i class="fas fa-chevron-right"></i>
-                            <div class="flex-1 ml-2"><strong>To Process Transactions:</strong> We collect payment information to facilitate in-app purchases and manage your in-game rewards.</div>
-                        </li>
-                        <li class="flex">
-                            <i class="fas fa-chevron-right"></i>
-                            <div class="flex-1 ml-2"><strong>To Improve Our Services:</strong> We use aggregated data to analyze how users interact with the game and website, helping us make improvements.</div>
-                        </li>
-                        <li class="flex">
-                            <i class="fas fa-chevron-right"></i>
-                            <div class="flex-1 ml-2"><strong>For Security:</strong> We monitor user activity to detect potential fraud or unauthorized activity and to maintain the security of our services.</div>
-                        </li>
-                    </ul>
-
-                    <!-- Section 4: Data Sharing -->
-                    <h2 class="mb-4">4. Data Sharing</h2>
-                    <p class="mb-12">We do not sell your personal information to third parties. However, we may share data with trusted partners in the following situations:</p>
-
-                    <h3 class="mb-2">4.1. Payment Processing</h3>
-                    <p class="mb-12">We work with third-party payment processors to handle transactions securely. These providers adhere to strict data protection standards to safeguard your payment information.</p>
-
-                    <h3 class="mb-2">4.2. Compliance with Laws</h3>
-                    <p class="mb-12">We may disclose your information if required by law or if we believe such action is necessary to protect our rights or the rights of others.</p>
-
-                    <!-- Section 5: Cookies and Tracking Technologies -->
-                    <h2 class="mb-4">5. Cookies and Tracking Technologies</h2>
-                    <p class="mb-12">We use cookies and similar technologies to improve your experience on our website. Cookies help us understand user behavior and track game performance, allowing us to enhance gameplay and customize in-game features.</p>
-
-                    <!-- Section 6: Data Security -->
-                    <h2 class="mb-4">6. Data Security</h2>
-                    <p class="mb-12">We take appropriate technical and organizational measures to protect your data from unauthorized access, alteration, or deletion. However, no online service is completely secure, and we cannot guarantee absolute data protection.</p>
-
-                    <!-- Section 7: Your Rights -->
-                    <h2 class="mb-4">7. Your Rights</h2>
-                    <p class="mb-12">You have the right to access, correct, or delete your personal information. If you wish to exercise any of these rights, please contact us at <a href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>.</p>
-
-                    <!-- Section 8: Changes to This Privacy Policy -->
-                    <h2 class="mb-4">8. Changes to This Privacy Policy</h2>
-                    <p class="mb-12">We may update this Privacy Policy from time to time to reflect changes in our practices or applicable laws. We encourage you to review this page periodically for the latest information on our privacy practices.</p>
-
-                    <!-- Section 9: Contact Us -->
-                    <h2 class="mb-4">9. Contact Us</h2>
-                    <p>If you have any questions about this Privacy Policy or our data handling practices, please contact us at <a href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>.</p>
-
-                </div> <!-- end of container -->
+                <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                    @if($post->contentBlocks->isNotEmpty())
+                        @foreach($post->contentBlocks as $block)
+                            @if($block->type == 'heading')
+                                <h2 class="mb-4">{{ $block->content }}</h2>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-4">{{ $block->content }}</p>
+                            @elseif($block->type == 'list')
+                                <ul class="list-unstyled mb-6 space-y-2">
+                                    <li class="flex">
+                                        <i class="fas fa-square"></i>
+                                        <div class="flex-1 ml-2">{{ $block->content }}</div>
+                                    </li>
+                                </ul>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
             </div>
-            <!-- end of ex-basic-1 -->
         </section>
+
 
           <!-- Footer -->
         <section id="contactus">

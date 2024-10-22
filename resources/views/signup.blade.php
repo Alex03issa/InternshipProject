@@ -3,6 +3,7 @@
 <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- SEO Meta Tags -->
         <meta name="description" content="Side to Side is a mobile game where users control a ball by swiping left and right, jumping on platforms that move upwards infinitely." />
@@ -88,6 +89,7 @@
         </label>
     </div>
 
+    <input type="hidden" name="timezone" id="timezone">
 
 
     <button type="submit"><i class="fas fa-user-plus"></i>Sign up</button>
@@ -95,9 +97,10 @@
     
 
     <!-- Google Button -->
-    <a href="{{ route('google.redirect') }}" class="signup__button--google">
+    <a href="#" id="google-signin-btn" data-redirect-url="{{ route('google.redirect') }}" class="signup__button--google">
         <i class="fab fa-google"></i>Continue with Google
     </a>
+
 
     <!-- Apple ID Button -->
     <a href="{{ route('apple.redirect') }}" class="signup__button--apple">

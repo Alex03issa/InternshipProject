@@ -288,9 +288,42 @@ function handlePasswordVisibilityToggleforForm() {
     });
 }
 
+function handleGoogleSignIn(event) {
+    event.preventDefault(); // Prevent the default anchor behavior (navigation)
+
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    console.log("Detected Timezone: " + timezone); // Log the detected timezone to the console
+
+    // Send the timezone to the server before Google redirect
+    fetch('/store-timezone', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ timezone: timezone })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Timezone stored successfully:', data);
+        // Get the redirect URL from the data attribute
+        const redirectUrl = document.querySelector('#google-signin-btn').getAttribute('data-redirect-url');
+        // Redirect to Google sign-in
+        window.location.href = redirectUrl;
+    })
+    .catch(error => {
+        console.error('Error storing timezone:', error);
+    });
+}
 
 // Initialize the scripts when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
+
+    const googleSigninBtn = document.querySelector('#google-signin-btn');
+    
+    if (googleSigninBtn) {
+        googleSigninBtn.addEventListener('click', handleGoogleSignIn);
+    }
     handleAlerts();
     handlePasswordValidation(); 
     smoothScroll();

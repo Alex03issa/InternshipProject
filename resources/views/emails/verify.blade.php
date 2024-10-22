@@ -108,13 +108,16 @@
         <div class="logo">
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
         </div>
+        
         <div class="title">
             Welcome to Side to Side
         </div>
+        
         <div class="content">
-            <p>Hello {{ $user->name }},</p>
+            <p>Hello {{ $user->username == 'default_username' ?  $user->name : $user->username }},</p>
             <p>Thank you for signing up with Side to Side. Please verify your email address by clicking the button below:</p>
         </div>
+        
         <a class="verify-button" href="{{ $verificationUrl }}" target="_blank" rel="noopener noreferrer">Verify Email</a>
         <div class="footer">
             <p>If you did not sign up for this account, please ignore this email.</p>

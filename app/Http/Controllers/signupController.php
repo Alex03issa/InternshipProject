@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class signupController extends Controller
 {
@@ -44,7 +45,11 @@ class signupController extends Controller
                 'username' => 'required|string|max:255|unique:users',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
+                'timezone' => 'required|string',
             ]);
+
+        $timezone = $request->input('timezone');
+        $now = Carbon::now($timezone);
 
         // Log validation success
         Log::info('Signup validation successful', ['email' => $request->email]);
@@ -58,7 +63,9 @@ class signupController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'verification_token' => $verificationToken,
-            'provider' => 'sidetoside', 
+            'provider' => 'sidetoside',
+            'timezone' => $timezone,
+            'created_at' => $now, 
         ]);
 
         // Log user creation success

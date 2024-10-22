@@ -1,0 +1,28 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url('Color-palette.css');
+
+
+body {
+    background-color: black;
+    color: var(--dark-gray-body-text);
+}
+
+h1, h2, h3 {
+    color: var(--black-heading-text);
+}
+
+.button {
+    background-color: var(--purple);
+    color: white; /* or any color that fits your design */
+}
+
+.custom-delete-btn {
+    background-color: #ff4d4d;  /* Bright red */
+    color: white;
+}
+
+.custom-inactive-btn {
+    background-color: #e60000;  /* Darker red */
+    color: white;
+}

@@ -25,8 +25,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
         <link href="css/fontawesome-all.css" rel="stylesheet" />
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-        <link href="css/swiper.css" rel="stylesheet" />
-        <link href="css/magnific-popup.css" rel="stylesheet" />
+
         <link href="css/styles.css" rel="stylesheet" />
         
         <!-- Favicon  -->
@@ -125,6 +124,48 @@
         </section>
 
 
+        <!-- Basic -->
+        <section id="mainheader">
+            <div class="ex-basic-1 py-12">
+                <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                    <div class="text-box my-12">
+                        <p class="p-large mb-4">The "Side to Side" app automatically collects and receives certain information from your device, including activities on our website, platforms, and applications, as well as hardware and software details like your operating system or browser.</p>
+                    </div> <!-- end of text-box -->
+                </div> <!-- end of container -->
+            </div> <!-- end of ex-basic-1 -->
+        </section>
+
+        @foreach($posts as $post)
+<section id="blog-post-{{ $post->id }}">
+    <div class="container px-4 sm:px-8">
+        <!-- Post Header -->
+        <h2>{{ $post->title }}</h2>
+        
+        <!-- Check if the post has content blocks or just a body -->
+        @if($post->contentBlocks->isNotEmpty())
+            @foreach($post->contentBlocks as $block)
+                @if($block->type == 'heading')
+                    <h2 class="mb-4">{{ $block->content }}</h2>
+                @elseif($block->type == 'paragraph')
+                    <p class="mb-4">{{ $block->content }}</p>
+                @elseif($block->type == 'list')
+                    <ul class="list-unstyled mb-6 space-y-2">
+                        <li class="flex">
+                            <i class="fas fa-square"></i>
+                            <div class="flex-1 ml-2">{{ $block->content }}</div>
+                        </li>
+                    </ul>
+                @endif
+            @endforeach
+        @else
+            <!-- If no blocks, display the body content -->
+            <p class="mb-12">{!! $post->body !!}</p>
+        @endif
+    </div> <!-- end of container -->
+</section>
+@endforeach
+
+        
         <!-- Basic -->
         <section id="maincontent">
             <div class="ex-basic-1 py-12">

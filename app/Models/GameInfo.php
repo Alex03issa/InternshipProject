@@ -9,15 +9,17 @@ class GameInfo extends Model
 {
     use HasFactory;
 
+    protected $table = 'game_info'; 
+
     protected $fillable = [
-        'user_id', 'score', 'retry_times', 'level', 'unlocked_skins', 'unlocked_backgrounds', 'unlocked_trophies', 'speed', 'background_selected', 'ball_skin_selected'
+        'user_id', 'score', 'retry_times', 'coin', 'unlocked_skins', 'unlocked_backgrounds', 'unlocked_trophies', 'background_selected', 'ball_skin_selected'
     ];
 
     protected $casts = [
         'unlocked_skins' => 'array', // Assuming skins are stored as JSON
         'unlocked_backgrounds' => 'array', // Assuming skins are stored as JSON
         'unlocked_trophies' => 'array', // Assuming trophies are stored as JSON
-        'last_active' => 'datetime',
+        
     ];
 
     public function user()

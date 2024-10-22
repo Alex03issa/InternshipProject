@@ -11,7 +11,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Filament\Facades\Filament;
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +24,14 @@ use Filament\Facades\Filament;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Route to the home page
+
 // Route to the home page without restrictions
 Route::get('/', [HomeController::class, 'showHomepage'])->name('homepage');
+
 // Route to the home page with verification
 Route::get('/home', [HomeController::class, 'showHomepageWithVerification'])->middleware(['auth'])->name('home.verified');
 
-// Route to the terms page
+// Route to the blog page
 Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
@@ -70,7 +72,7 @@ Route::middleware(['auth', 'CheckAdmin'])->group(function () {
 
 
 // Google login routes
-
+Route::post('/store-timezone', [GoogleAuthController::class, 'storeTimezone'])->name('store.timezone');
 Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
@@ -102,16 +104,28 @@ Route::get('/send-test-email', function () {
 });
 
 
-// Show the form to request a password reset link
+Route::get('storage/uploads/{filename}', function ($filename) {
+    $path = storage_path('app/public/uploads/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    // Get the correct mime type
+    $mimeType = File::mimeType($path);
+
+    // Return file with headers
+    return Response::file($path, [
+        'Content-Type' => $mimeType,
+        'X-Content-Type-Options' => 'nosniff'
+    ]);
+});
+
+
+// Password Reset routes
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-
-// Handle sending the password reset link
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-
-// Show the password reset form
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-
-// Handle resetting the password
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 
