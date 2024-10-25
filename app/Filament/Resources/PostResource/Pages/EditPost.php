@@ -31,7 +31,16 @@ class EditPost extends EditRecord
         }
         $this->record->categories()->sync($syncData);
 
-        
+       
+        $existingBlockIds = $this->record->contentBlocks->pluck('id')->toArray();
+        $newBlockIds = array_filter(array_column($this->data['content_blocks'], 'id'));
+
+        $deletedBlockIds = array_diff($existingBlockIds, $newBlockIds);
+
+        if (!empty($deletedBlockIds)) {
+            $this->record->contentBlocks()->whereIn('id', $deletedBlockIds)->delete();
+        }
+
         $orderCounter = 1;
 
         
@@ -50,7 +59,7 @@ class EditPost extends EditRecord
                         
                         $contentBlock->update([
                             'type' => $blockData['type'],
-                            'content' => $blockData['content'],
+                            'content' => strip_tags($blockData['content'], '<ul><ol><li><strong><em><p><h1><h2><h3><h4><h5><h6><br><a><u><blockquote><code><img>&nbsp;>'),
                             'order' => $orderCounter,  
                             'use_blocks' => 1, 
                         ]);
@@ -59,7 +68,7 @@ class EditPost extends EditRecord
                     
                     $this->record->contentBlocks()->create([
                         'type' => $blockData['type'],
-                        'content' => $blockData['content'],
+                        'content' => strip_tags($blockData['content'], '<ul><ol><li><strong><em><p><h1><h2><h3><h4><h5><h6><br><a><u><blockquote><code><img>&nbsp;>'),
                         'order' => $orderCounter,  
                         'use_blocks' => 1,
                     ]);
@@ -70,7 +79,7 @@ class EditPost extends EditRecord
         } else {
            
             $this->record->update([
-                'body' => $this->data['body'],  
+                'body' => strip_tags($this->data['body'],'<ul><ol><li><strong><em><p><h1><h2><h3><h4><h5><h6><br><a><u><blockquote><code><img>&nbsp;>'),   
             ]);
         }
     }
@@ -89,7 +98,9 @@ class EditPost extends EditRecord
         }
 
         
-        $data['content_blocks'] = $this->record->contentBlocks->map(function ($block) {
+        $data['content_blocks'] = $this->record->contentBlocks
+        ->sortBy('order')
+        ->map(function ($block) {
             return [
                 'id' => $block->id,
                 'type' => $block->type,

@@ -24,12 +24,12 @@ class Post extends Model
     ];
 
 protected $casts = [
-        'content_blocks' => 'array', // Cast content blocks as an array for JSON storage
+        'content_blocks' => 'array', 
 ];
     
 public function contentBlocks()
 {
-    return $this->hasMany(ContentBlock::class); // Relationship to the content_blocks table
+    return $this->hasMany(ContentBlock::class)->orderBy('order', 'asc'); 
 }
         
 public function categories(): BelongsToMany

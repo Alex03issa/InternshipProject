@@ -446,10 +446,10 @@
                 <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
                     <ul class="mb-4 list-unstyled p-small">
                         <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
                     </ul>
-                    <p class="pb-2 p-small statement">Copyright © Side to Side</p>
+                    <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
                 </div>
             </div> <!-- end of copyright -->
         </section>

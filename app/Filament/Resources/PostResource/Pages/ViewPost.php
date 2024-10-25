@@ -35,7 +35,9 @@ class ViewPost extends ViewRecord
         }
 
         
-        $data['content_blocks'] = $this->record->contentBlocks->map(function ($block) {
+        $data['content_blocks'] = $this->record->contentBlocks
+        ->sortBy('order')
+        ->map(function ($block) {
             return [
                 'id' => $block->id,
                 'type' => $block->type,

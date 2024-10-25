@@ -113,199 +113,239 @@
 
 
 
-        <!-- Header -->
         <section id="header">
             <header class="ex-header bg-gray">
                 <div class="container mx-auto px-4 sm:px-8 xl:max-w-6xl xl:px-4">
-                    <h1 class="xl:ml-24">Terms & Conditions</h1>
-                </div> <!-- end of container -->
-            </header> <!-- end of ex-header -->
-            <!-- end of header -->
-        </section>
-
-
-        <!-- Basic -->
-        <section id="mainheader">
-            <div class="ex-basic-1 py-12">
-                <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-                    <div class="text-box my-12">
-                        <p class="p-large mb-4">The "Side to Side" app automatically collects and receives certain information from your device, including activities on our website, platforms, and applications, as well as hardware and software details like your operating system or browser.</p>
-                    </div> <!-- end of text-box -->
-                </div> <!-- end of container -->
-            </div> <!-- end of ex-basic-1 -->
-        </section>
-
-        @foreach($posts as $post)
-<section id="blog-post-{{ $post->id }}">
-    <div class="container px-4 sm:px-8">
-        <!-- Post Header -->
-        <h2>{{ $post->title }}</h2>
-        
-        <!-- Check if the post has content blocks or just a body -->
-        @if($post->contentBlocks->isNotEmpty())
-            @foreach($post->contentBlocks as $block)
-                @if($block->type == 'heading')
-                    <h2 class="mb-4">{{ $block->content }}</h2>
-                @elseif($block->type == 'paragraph')
-                    <p class="mb-4">{{ $block->content }}</p>
-                @elseif($block->type == 'list')
-                    <ul class="list-unstyled mb-6 space-y-2">
-                        <li class="flex">
-                            <i class="fas fa-square"></i>
-                            <div class="flex-1 ml-2">{{ $block->content }}</div>
-                        </li>
-                    </ul>
-                @endif
-            @endforeach
-        @else
-            <!-- If no blocks, display the body content -->
-            <p class="mb-12">{!! $post->body !!}</p>
-        @endif
-    </div> <!-- end of container -->
-</section>
-@endforeach
-
-        
-        <!-- Basic -->
-        <section id="maincontent">
-            <div class="ex-basic-1 py-12">
-                <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-                    <div class="text-box my-12">
-                        <p class="p-large mb-4">The "Side to Side" app automatically collects and receives certain information from your device, including activities on our website, platforms, and applications, as well as hardware and software details like your operating system or browser.</p>
-                    </div> <!-- end of text-box -->
-
-                    <h2 class="mb-4">1. Information Collected During Visits</h2>
-                    <p class="mb-4">Each time you visit the website or use the services, we collect information such as your IP address, browser type, and device. We also gather access times, the page you came from, and the pages you visit within our services.</p>
-                    <p class="mb-12">Under no circumstances will "Side to Side" be liable for any direct, indirect, incidental, or consequential damages, including data loss or profit loss arising from the use or inability to use this site.</p>
-
-                    <h2 class="mb-4">2. Use of Content and Materials</h2>
-                    <p class="mb-4">Any use of materials from this site is subject to the user assuming all costs for repairs or corrections of equipment or data. "Side to Side" will not be liable for any damages resulting from the use of materials.</p>
-                    <p class="mb-6">All content and templates inherit the GNU general public license. You are prohibited from redistributing or reselling our templates or using them on multiple projects without permission.</p>
-                    <ul class="list-unstyled mb-6 space-y-2">
-                        <li class="flex">
-                            <i class="fas fa-square"></i>
-                            <div class="flex-1 ml-2"><strong>Redistribution Restrictions</strong>: You are prohibited from reselling our templates, regardless of modification.</div>
-                        </li>
-                        <li class="flex">
-                            <i class="fas fa-square"></i>
-                            <div class="flex-1 ml-2"><strong>Client Use</strong>: You may use our templates for client work, but no more than one project at a time.</div>
-                        </li>
-                    </ul>
-
-                    <h2 class="mb-4">3. Game Rules and Responsibilities</h2>
-                    <p class="mb-12">By playing "Side to Side," you agree to abide by the game's rules, including fair play. Exploiting bugs, using cheats, or engaging in inappropriate behavior may result in suspension or account termination.</p>
-
-                    <h2 class="mb-4">4. Virtual Items and Rewards</h2>
-                    <p class="mb-4">The game includes virtual items such as ball skins or backgrounds, which cannot be exchanged for cash. We reserve the right to modify or remove virtual items at any time.</p>
-                    <p class="mb-12">Points and rewards earned in the game are subject to change, and we reserve the right to modify reward systems without prior notice.</p>
-
-                    <h2 class="mb-4">5. Purchases and Refunds</h2>
-                    <p class="mb-6">In-app purchases are available for virtual items. All sales are final, and refunds will only be issued for unauthorized transactions within 14 days of purchase.</p>
-                    <ul class="list-unstyled mb-12 space-y-2">
-                        <li class="flex">
-                            <i class="fas fa-square"></i>
-                            <div class="flex-1 ml-2"><strong>In-App Purchases</strong>: All in-app purchases are final, and refunds will not be issued except in cases of fraud.</div>
-                        </li>
-                        <li class="flex">
-                            <i class="fas fa-square"></i>
-                            <div class="flex-1 ml-2"><strong>Non-Refundable</strong>: Virtual items cannot be transferred or refunded.</div>
-                        </li>
-                    </ul>
-
-                    <h2 class="mb-4">6. Updates and Changes</h2>
-                    <p class="mb-4">We may update the game, its content, and these terms periodically. By continuing to use the game, you agree to be bound by any changes.</p>
-
-                    <h2 class="mb-4">7. Limitation of Liability</h2>
-                    <p class="mb-12">We are not responsible for any damages resulting from the use of "Side to Side," including data loss or service disruptions. Your use of the game is at your own risk.</p>
-
-                    <h2 class="mb-4">8. User Account and Security</h2>
-                    <p class="mb-12">It is your responsibility to keep your account credentials secure. You agree not to share your username and password with anyone. If we detect suspicious activity in your account, we may temporarily suspend access for further investigation. You agree to notify us immediately in the event of unauthorized access to your account.</p>
-
-                    <h2 class="mb-4">9. Age Restrictions</h2>
-                    <p class="mb-12">"Side to Side" is intended for users who are 13 years of age or older. By using this game, you represent that you meet this age requirement. We do not knowingly collect personal data from users under the age of 13 without parental consent. If we learn that we have inadvertently collected information from a user under 13, we will delete such data promptly.</p>
-
-                    <h2 class="mb-4">10. User Conduct</h2>
-                    <p class="mb-12">You agree not to use the "Side to Side" app to engage in activities that are illegal, harmful, or disruptive. This includes, but is not limited to, hacking, cheating, harassment, and the exploitation of in-game bugs or vulnerabilities. Any user found violating these rules may have their account suspended or permanently banned.</p>
-
-                    <h2 class="mb-4">11. Intellectual Property</h2>
-                    <p class="mb-12">All intellectual property related to "Side to Side," including game design, graphics, and software, belongs to the company. You agree not to reproduce, distribute, or modify any part of the game without express permission. Unauthorized use of intellectual property may result in legal action.</p>
-
-                    <h2 class="mb-4">12. Data Collection and Privacy</h2>
-                    <p class="mb-12">We collect user data to improve the game experience and analyze performance. By playing the game, you consent to the collection and use of your data as outlined in our Privacy Policy. You have the right to request the deletion of your data at any time by contacting us.</p>
-
-                    <h2 class="mb-4">13. Suspension and Termination of Services</h2>
-                    <p class="mb-12">We reserve the right to suspend or terminate your access to the game at any time, with or without notice, for any reason, including breach of these terms. In the event of termination, you will lose access to your account and any associated rewards or in-game items.</p>
-
-                    <h2 class="mb-4">14. Refund Policy</h2>
-                    <p class="mb-12">All purchases made through the app, including in-app purchases, are non-refundable. Exceptions may be made in cases of fraud, unauthorized transactions, or technical issues directly caused by the app.</p>
-
-                    <h2 class="mb-4">15. Liability Disclaimer</h2>
-                    <p class="mb-12">We do not guarantee that "Side to Side" will be free of errors or uninterrupted. The game is provided "as is," and we are not responsible for any issues that may arise during gameplay, including data loss, service outages, or system failures.</p>
-
-                    <h2 class="mb-4">16. Force Majeure</h2>
-                    <p class="mb-12">We shall not be liable for any delay or failure to perform resulting from causes outside our reasonable control, including but not limited to natural disasters, acts of war, strikes, and technical failures.</p>
-
-                    <h2 class="mb-4">17. Changes to Terms and Conditions</h2>
-                    <p class="mb-12">We reserve the right to modify these terms at any time. Changes will be posted on our website, and your continued use of the app constitutes acceptance of the updated terms.</p>
-
-                    <h2 class="mb-4">18. Governing Law</h2>
-                    <p class="mb-12">These terms shall be governed and construed in accordance with the laws of [Your Country]. Any disputes arising from these terms or the use of the app shall be resolved in the courts of [Your Jurisdiction].</p>
-
-                    <h2 class="mb-4">19. Contact Us</h2>
-                    <p>If you have any questions or concerns regarding these Terms & Conditions, feel free to contact us at <a href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>.</p>
-
-                        
-                </div> <!-- end of container -->
-            </div> <!-- end of ex-basic-1 -->
-        </section>
-
-
-         <!-- Footer -->
-         <section id="contactus">
-            <div class="footer">
-                <div class="container px-4 sm:px-8">
-                    <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
-                    <div class="social-container">
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-facebook-f fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-linkedin fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-youtube fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-instagram fa-stack-1x"></i>
-                            </a>
-                        </span>
-                    </div> <!-- end of social-container -->
-                </div> <!-- end of container -->
-            </div> <!-- end of footer -->
-
-            <!-- Copyright -->
-            <div class="copyright">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                    <ul class="mb-4 list-unstyled p-small">
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms') }}">Terms & Conditions</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy') }}">Privacy Policy</a></li>
-                    </ul>
-                    <p class="pb-2 p-small statement">Copyright © <a href="#your-link" class="no-underline">Side to Side</a></p>
+                    <h1 class="xl:ml-24">{{ $category->title }}</h1> 
                 </div>
-            </div> <!-- end of copyright -->
+            </header>
         </section>
+
+        @php
+            
+            $mainHeaderPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'mainheader' && $category->title === 'Terms & Conditions';
+                });
+            })->sortByDesc('published_at')->first();
+
+            $mainContentPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'maincontent' && $category->title === 'Terms & Conditions';
+                });
+            })->sortByDesc('published_at')->first();
+
+           
+            $allPostsInactive = !$mainHeaderPost && !$mainContentPost && !$contactUsPost;
+        @endphp
+
+        @if($allPostsInactive)
+            <section id="mainheader">
+                    <div class="ex-basic-1 py-12">
+                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                            <div class="text-box my-12">
+                                <p class="p-large mb-4 text-center">Sorry, we are currently under maintenance. The content will be back soon. Stay tuned!</p>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+
+            <!-- Footer -->   
+            <section id="contactus">
+                <div class="footer">
+                    <div class="container px-4 sm:px-8">
+
+                        @if($contactUsPost)
+                            @if($contactUsPost->body)
+                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
+                            @elseif($contactUsPost)
+                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-8">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'link')
+                                        @php
+                                            $linkText = $block->link_text ?? $block->content;
+                                        @endphp
+                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto"> 
+                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
+                                        </h4>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @else
+                            <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
+                                For more information about the Side to Side game or to reach the development team, please contact us at 
+                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
+                            </h4>
+                        @endif
+                        
+
+                        <div class="social-container">
+                            <span class="fa-stack">
+                                <a href="#your-link">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
+                                </a>
+                            </span>
+                            <span class="fa-stack">
+                                <a href="#your-link">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x"></i>
+                                </a>
+                            </span>
+                            <span class="fa-stack">
+                                <a href="#your-link">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-youtube fa-stack-1x"></i>
+                                </a>
+                            </span>
+                            <span class="fa-stack">
+                                <a href="#your-link">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-instagram fa-stack-1x"></i>
+                                </a>
+                            </span>
+                        </div> <!-- end of social-container -->
+                    </div> <!-- end of container -->
+                </div> <!-- end of footer -->
+
+                <!-- Copyright -->
+                <div class="copyright">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                        <ul class="mb-4 list-unstyled p-small">
+                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                        </ul>
+                        <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+                    </div>
+                </div> <!-- end of copyright -->
+            </section>
+        @else
+
+            <!-- Main Header Section -->
+            @if($mainHeaderPost)
+                <section id="mainheader">
+                    <div class="ex-basic-1 py-12">
+                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                            <div class="text-box my-12">
+                                <p class="p-large mb-4">{!! $mainHeaderPost->body !!}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+            <!-- Main Content Section -->
+            @if($mainContentPost)
+                <section id="maincontent">
+                    <div class="ex-basic-1 py-12">
+                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                            @if($mainContentPost->body)
+                                <p class="mb-4">{!! $mainContentPost->body !!}</p>
+                            @else
+                                @foreach($mainContentPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h2 class="mb-4">{!! $block->content !!}</h2>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-4">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'subtitle')
+                                        @php
+                                            $nextBlock = $mainContentPost->contentBlocks->where('order', $block->order + 1)->first();
+                                        @endphp
+                                        <ul class="list-unstyled mb-6">
+                                            <li class="flex">
+                                                <i class="fas fa-square"></i>
+                                                <div class="flex ml-2">
+                                                    <strong>{!! $block->content !!}</strong>
+                                                    @if ($nextBlock && $nextBlock->type == 'list')
+                                                        {!! $nextBlock->content !!}
+                                                    @endif
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    @elseif($block->type == 'link')
+                                        <a href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+
+            <!-- Contact Us Section -->
+            @if($contactUsPost)
+                <section id="contactus">
+                    <div class="footer">
+                        <div class="container px-4 sm:px-8">
+                            @if($contactUsPost->body)
+                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
+                            @else
+                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-8">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'link')
+                                        @php
+                                            $linkText = $block->link_text ?? $block->content;
+                                        @endphp
+                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
+                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
+                                        </h4>
+                                    @endif
+                                @endforeach
+                            @endif
+                       
+
+                            <div class="social-container">
+                                <span class="fa-stack">
+                                    <a href="#your-link">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x"></i>
+                                    </a>
+                                </span>
+                                <span class="fa-stack">
+                                    <a href="#your-link">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-linkedin fa-stack-1x"></i>
+                                    </a>
+                                </span>
+                                <span class="fa-stack">
+                                    <a href="#your-link">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-youtube fa-stack-1x"></i>
+                                    </a>
+                                </span>
+                                <span class="fa-stack">
+                                    <a href="#your-link">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-instagram fa-stack-1x"></i>
+                                    </a>
+                                </span>
+                            </div> <!-- end of social-container -->
+                        </div> <!-- end of container -->
+                    </div> <!-- end of footer -->
+
+                    <!-- Copyright -->
+                    <div class="copyright">
+                        <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                            <ul class="mb-4 list-unstyled p-small">
+                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                            </ul>
+                            <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+                        </div>
+                    </div> <!-- end of copyright -->
+                </section>
+            @endif
+        @endif
+
 
         <!-- Scripts -->
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->

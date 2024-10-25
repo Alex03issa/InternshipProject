@@ -75,6 +75,53 @@
     </a>
 </form>
 
+<!-- Footer -->
+<section id="contactus">
+            <div class="footer">
+                <div class="container px-4 sm:px-8">
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of social-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of footer -->
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                    <ul class="mb-4 list-unstyled p-small">
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="mailto:majed.issa62@gmail.com">Contact us</a></li>
+                    </ul>
+                    <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+                </div>
+            </div> <!-- end
+
+
 <script src="{{ asset('js/ui_event_handlers.js') }}"></script>
 
 </body>

@@ -76,6 +76,8 @@ class PostResource extends Resource
                                         'heading' => 'Heading',
                                         'paragraph' => 'Paragraph',
                                         'list' => 'List',
+                                        'subtitle' => 'Subtitle',
+                                        'link' => 'Link',
                                     ])
                                     ->required(),
 
@@ -85,6 +87,7 @@ class PostResource extends Resource
                             ->createItemButtonLabel('Add New Block')
                             ->required()
                             ->visible(fn ($get) => $get('use_blocks')),
+                        
 
                         Forms\Components\Toggle::make('active')
                             ->required(),

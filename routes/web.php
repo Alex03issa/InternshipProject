@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\signupController;
 use App\Http\Controllers\loginController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -36,16 +38,11 @@ Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
 
-// Route to the terms page
-Route::get('/terms', function () {
-    return view('terms');
-})->name('terms');
 
-// Route to the privacy page
-Route::get('/privacy', function () {
-    return view('privacy');
-})->name('privacy');
-
+Route::get('/privacy-policy', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Privacy Policy')->name('privacy.policy');
+Route::get('/terms-conditions', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Terms & Conditions')->name('terms.conditions');
+Route::get('/blog', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Blog')->name('blog');
+Route::get('/homes', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Homepage')->name('home');
 
 Route::get('/aboutus', function () {
     return redirect(route('homepage') . '#aboutus');
