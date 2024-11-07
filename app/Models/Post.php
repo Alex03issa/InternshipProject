@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Carbon\Carbon;
 
 
 class Post extends Model
@@ -26,6 +27,26 @@ class Post extends Model
 protected $casts = [
         'content_blocks' => 'array', 
 ];
+
+
+
+public function updateStatusBasedOnConditions()
+    {
+        // Check if manual_override is true; if so, skip automated updates
+        if ($this->manual_override) {
+            return;
+        }
+
+        // Automated conditions for activating or deactivating the post
+        $currentDate = now();
+
+        if ($this->published_at && $this->published_at <= $currentDate) {
+            $this->update(['active' => true]);
+        } else {
+            $this->update(['active' => false]);
+        }
+    }
+
     
 public function contentBlocks()
 {

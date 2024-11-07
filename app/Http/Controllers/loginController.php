@@ -46,16 +46,18 @@ class loginController extends Controller
             // Find the user by email
             $user = User::where('email', $request->email)->first();
             
-            // Log the attempt to sign in
-            Log::info('Login attempt for email: ' . $request->email);
+            
 
             if ($user && Hash::check($request->password, $user->password)) {
-                // Log successful login
-                Log::info('User found and password matches for email: ' . $request->email);
+                
+
+                if ($request->has('timezone')) {
+                    $user->timezone = $request->input('timezone');
+                    $user->save();
+                }
 
                 // Check if the user is an admin
                 if ($user->user_type === 'admin') {
-                    Log::info('Admin check successful for email: ' . $request->email);
 
                     Auth::login($user);
                     return redirect()->route('filament.admin.pages.dashboard')->with('success', 'Logged in as Admin!');
@@ -63,7 +65,6 @@ class loginController extends Controller
 
                 // For regular users, check if email is verified
                 if ($user->is_verified == 0) {
-                    Log::info('User found but email is not verified for email: ' . $user->email);
         
                     // Resend verification email
                     $token = $user->verification_token;
@@ -72,13 +73,12 @@ class loginController extends Controller
                         $user->verification_token = Str::random(64);
                         $user->save();
                     }
-                    // Send verification email
+                    
                 try {
                     // Send verification email
                     Mail::to($user->email)->send(new VerificationMail($user));
                 } catch (Exception $e) {
                     // Handle email sending exceptions
-                    Log::error('Email sending error: ' . $e->getMessage());
                     return redirect()->back()->with('error', 'Registration successful, but failed to send verification email. Please contact support.');
                 }
 
@@ -97,24 +97,20 @@ class loginController extends Controller
             }
 
             // Log failed login attempt
-            Log::warning('Failed login attempt for email: ' . $request->email);
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ]);
 
         } catch (ValidationException $e) {
             // Handle validation exceptions
-            Log::error('Validation error: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->validator)->withInput();
 
         } catch (QueryException $e) {
             // Handle database query exceptions
-            Log::error('Database error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an issue with your login. Please try again later.');
 
         } catch (Exception $e) {
             // Handle general exceptions
-            Log::error('General error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
     }

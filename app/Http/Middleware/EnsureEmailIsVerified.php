@@ -14,9 +14,9 @@ class EnsureEmailIsVerified
         if ($user) {
             // Check if the user has signed in with Google or Apple ID
             if ($user->provider == 'google' || $user->provider == 'apple') {
-                $user->is_verified = true; // Mark as verified
+                $user->is_verified = true; 
                 $user->verification_token = null;
-                $user->provider = $user->provider;
+                $user->provider = $user->provider == 'google' ? 'google' : 'apple';
                 $user->save();
                 return $next($request);
             } 

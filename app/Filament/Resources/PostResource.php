@@ -90,17 +90,20 @@ class PostResource extends Resource
                         
 
                         Forms\Components\Toggle::make('active')
-                            ->required(),
+                            ->required()
+                            ->onColor('success')
+                            ->offColor('danger'),
                         
                         Forms\Components\DateTimePicker::make('published_at')
                             ->required()
-                            ->label('Published At'),
+                            ->label('Publish At')
+                            ->minDate(now()) 
+                            ->helperText('Select a future date for publishing'),
 
                         Forms\Components\Hidden::make('timezone')
-                            ->default('UTC') // Default to UTC if JavaScript fails
-                            ->afterStateHydrated(function ($component, $state) {
-                                $component->state(request()->timezone ?? 'UTC'); // Set the timezone from the request
-                            }),
+                            ->default(fn () => 
+                                now()->setTimezone(\IntlTimeZone::createDefault()->getID())->getTimezone()->getName()
+                            ),
 
                         
                     ]),
@@ -112,7 +115,8 @@ class PostResource extends Resource
                             ->preserveFilenames() 
                             ->directory('uploads') 
                             ->visibility('public')
-                            ->image(),
+                            ->image()
+                            ->imageEditor(),
                         Forms\Components\Select::make('category_id')
                             ->relationship('categories', 'title')
                             ->required(),
@@ -142,8 +146,8 @@ class PostResource extends Resource
 
                 Tables\Columns\ImageColumn::make('uploaded_file')
                     ->label('Uploaded Image')
-                    ->url(fn ($record) => url(Storage::url($record->uploaded_file), ))
-                    ,
+                    ->url(fn ($record) => $record->uploaded_file ? url(Storage::url($record->uploaded_file)) : null),
+                
                 
 
                 Tables\Columns\IconColumn::make('active')
@@ -161,8 +165,8 @@ class PostResource extends Resource
                     }),
                 
                 Tables\Columns\TextColumn::make('published_at')
+                ->label('Publish At')
                     ->dateTime()
-                    ->timezone(fn () => request()->timezone ?? 'UTC') // Use the user's current timezone
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -170,10 +174,8 @@ class PostResource extends Resource
                     ->dateTime()
                     ->formatStateUsing(function ($state, $record) {
                         $postTimezone = $record->timezone ?? 'UTC'; 
-                        return Carbon::parse($state)
-                            ->setTimezone($postTimezone) 
-                            ->setTimezone(request()->timezone ?? 'UTC'); 
-                    })
+                        return Carbon::parse($state)->setTimezone($postTimezone);
+                    })                    
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
@@ -182,9 +184,7 @@ class PostResource extends Resource
                     ->dateTime()
                     ->formatStateUsing(function ($state, $record) {
                         $postTimezone = $record->timezone ?? 'UTC'; 
-                        return Carbon::parse($state)
-                            ->setTimezone($postTimezone) 
-                            ->setTimezone(request()->timezone ?? 'UTC'); 
+                        return Carbon::parse($state)->setTimezone($postTimezone);
                     })
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -294,9 +294,18 @@ class PostResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->icon('heroicon-o-eye')
+                    ->label('')
+                    ->size('xl'),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil')
+                    ->label('')
+                    ->size('xl'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->label('')
+                    ->size('xl'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -307,7 +316,10 @@ class PostResource extends Resource
                         ->label('Mark as Active')  
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {
-                                $record->update(['active' => true]); 
+                                $record->update([
+                                    'active' => true,
+                                    'manual_override' => true, // Set manual_override to true
+                                ]);
                             }
                             Notification::make()
                                 ->title('Posts marked as Active!')
@@ -322,7 +334,10 @@ class PostResource extends Resource
                         ->label('Mark as Inactive')  
                         ->action(function (Collection $records) {
                             foreach ($records as $record) {
-                                $record->update(['active' => false]); 
+                                $record->update([
+                                    'active' => false,
+                                    'manual_override' => true, // Set manual_override to true
+                                ]);
                             }
                             Notification::make()
                                 ->title('Posts marked as Inactive!')

@@ -14,6 +14,9 @@ use Laravel\Socialite\Two\InvalidStateException;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\SiteStatistic;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GoogleAuthController extends Controller
 {
@@ -97,6 +100,33 @@ class GoogleAuthController extends Controller
     
                 // Log in the new user
                 Auth::login($newUser);
+
+                DB::beginTransaction();
+                try {
+                    // Your user registration logic here
+            
+                    // Update statistics after successful registration
+                    $totalUsers = User::count();
+                    $dailyUsers = User::whereDate('created_at', Carbon::today())->count();
+                    $monthlyUsers = User::whereYear('created_at', Carbon::now()->year)
+                                        ->whereMonth('created_at', Carbon::now()->month)
+                                        ->count();
+            
+                    $siteStatistic = SiteStatistic::first();
+                    if ($siteStatistic) {
+                        $siteStatistic->total_users_registered = $totalUsers;
+                        $siteStatistic->daily_users_registered = $dailyUsers;
+                        $siteStatistic->monthly_users_registered = $monthlyUsers;
+                        $siteStatistic->save();
+                    }
+            
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    Log::error('Error during user registration: ' . $e->getMessage());
+                }
+
+
                 return redirect()->route('homepage')->with('success', 'Logged in successfully!');
             }
         } catch (InvalidStateException $e) {

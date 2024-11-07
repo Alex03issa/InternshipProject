@@ -14,6 +14,8 @@ use App\Mail\VerificationMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\SiteStatistic;
+use Illuminate\Support\Facades\DB;
 
 class signupController extends Controller
 {
@@ -36,8 +38,6 @@ class signupController extends Controller
 
      public function signUp(Request $request)
      {
-        // Log request data for debugging
-        Log::info('Signup request received', ['request' => $request->all()]);
 
         try {
             // Validate the request data
@@ -51,8 +51,6 @@ class signupController extends Controller
         $timezone = $request->input('timezone');
         $now = Carbon::now($timezone);
 
-        // Log validation success
-        Log::info('Signup validation successful', ['email' => $request->email]);
 
         // Generate the verification token
         $verificationToken = Str::random(64);
@@ -68,34 +66,48 @@ class signupController extends Controller
             'created_at' => $now, 
         ]);
 
-        // Log user creation success
-        Log::info('User created successfully', ['user_id' => $user->id, 'email' => $user->email]);
+        DB::beginTransaction();
+        try {
+            // Your user registration logic here
+    
+            // Update statistics after successful registration
+            $totalUsers = User::count();
+            $dailyUsers = User::whereDate('created_at', Carbon::today())->count();
+            $monthlyUsers = User::whereYear('created_at', Carbon::now()->year)
+                                ->whereMonth('created_at', Carbon::now()->month)
+                                ->count();
+    
+            $siteStatistic = SiteStatistic::first();
+            if ($siteStatistic) {
+                $siteStatistic->total_users_registered = $totalUsers;
+                $siteStatistic->daily_users_registered = $dailyUsers;
+                $siteStatistic->monthly_users_registered = $monthlyUsers;
+                $siteStatistic->save();
+            }
+    
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error during user registration: ' . $e->getMessage());
+        }
 
         // Send verification email
         try {
             // Send verification email
             Mail::to($user->email)->send(new VerificationMail($user));
         } catch (Exception $e) {
-            // Handle email sending exceptions
-            Log::error('Email sending error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Registration successful, but failed to send verification email. Please contact support.');
         }
         return redirect()->back()->with('success', 'Registration successful! Please check your email to verify your account.');
 
 
         } catch (ValidationException $e) {
-            // Handle validation exceptions
-            Log::error('Validation error: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->validator)->withInput();
 
         } catch (QueryException $e) {
-            // Handle database query exceptions
-            Log::error('Database error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an issue with your registration. Please try again later.');
 
         } catch (Exception $e) {
-            // Handle general exceptions
-            Log::error('General error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
     }

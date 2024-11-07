@@ -81,7 +81,6 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -125,7 +124,7 @@
             
             $overviewPost = $posts->where('active', true)->filter(function($post) {
                 return $post->categories->contains(function($category) {
-                    return $category->pivot->section === 'overview-sec' && $category->title === 'Blog';
+                    return $category->pivot->section === 'overiew-sec' && $category->title === 'Blog';
                 });
             })->sortByDesc('published_at')->first();
 
@@ -141,13 +140,13 @@
                 });
             })->sortByDesc('published_at')->first();
 
-            $downloadPost = $posts->where('active', true)->filter(function($post) {
+            $gameplayTipsPost = $posts->where('active', true)->filter(function($post) {
                 return $post->categories->contains(function($category) {
-                    return $category->pivot->section === 'download' && $category->title === 'Blog';
+                     return $category->pivot->section === 'download' && $category->title === 'Blog';
                 });
             })->sortByDesc('published_at')->first();
            
-            $allPostsInactive = !$overviewPost && !$introPost && !$featurePost && !$downloadPost && !$contactUsPost;
+            $allPostsInactive = !$overviewPost && !$introPost && !$featurePost && !$gameplayTipsPost;
         @endphp
 
         @if($allPostsInactive)
@@ -161,232 +160,255 @@
                 </div>
             </section>
 
-            <!-- Footer -->   
-            <section id="contactus">
-                <div class="footer">
-                    <div class="container px-4 sm:px-8">
-
-                        @if($contactUsPost)
-                            @if($contactUsPost->body)
-                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
-                            @elseif($contactUsPost)
-                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
-                                    @if($block->type == 'heading')
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
-                                    @elseif($block->type == 'paragraph')
-                                        <p class="mb-8">{!! $block->content !!}</p>
-                                    @elseif($block->type == 'link')
-                                        @php
-                                            $linkText = $block->link_text ?? $block->content;
-                                        @endphp
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto"> 
-                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
-                                        </h4>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @else
-                            <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
-                                For more information about the Side to Side game or to reach the development team, please contact us at 
-                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
-                            </h4>
-                        @endif
-                        
-
-                        <div class="social-container">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-linkedin fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-youtube fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-instagram fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </div> <!-- end of social-container -->
-                    </div> <!-- end of container -->
-                </div> <!-- end of footer -->
-
-                <!-- Copyright -->
-                <div class="copyright">
-                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                        <ul class="mb-4 list-unstyled p-small">
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                        </ul>
-                        <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
-                    </div>
-                </div> <!-- end of copyright -->
+        @endif        
+           
+        <!-- Overview Section -->
+        @if($overviewPost && $overviewPost->uploaded_file)
+            <section id="overview-sec" class="py-12">
+                <img class="mx-auto mt-12 mb-4 max-w-full" src="{{ asset('storage/' . $overviewPost->uploaded_file) }}" alt="{{ $overviewPost->title }}" />
             </section>
-        @else
-        
-            <!-- Overview Section -->
-            @if($overviewPost && $overviewPost->uploaded_file)
-                <section id="overview-sec" class="py-12">
-                    <div class="container px-4 sm:px-8">
-                        <img class="mx-auto mt-12 mb-4 max-w-full" src="{{ asset('storage/' . $overviewPost->uploaded_file) }}" alt="{{ $overviewPost->title }}" />
-                    </div>
-                </section>
-            @endif
+        @endif
 
-            <!-- Introduction Section -->
-            @if($introPost)
-                <section id="introduction-sec" class="pt-4 bg-light">
-                    <div class="container px-4 sm:px-8 xl:px-32">
-                        @if($introPost->body)
-                            <p class="mb-4">{!! $introPost->body !!}</p>
-                        @elseif($introPost->contentBlocks && $introPost->contentBlocks->isNotEmpty())
-                            @foreach($introPost->contentBlocks->sortBy('order')->take(3) as $block)
-                                @if($block->type == 'heading')
-                                    <h2 class="mb-4 text-primary">{!! $block->content !!}</h2>
-                                @elseif($block->type == 'paragraph')
-                                    <p class="mb-4">{!! $block->content !!}</p>
-                                @endif
-                            @endforeach
-                        @endif
-                    </div>
-                </section>
-            @endif
+        <!-- Introduction Section -->
+        @if($introPost)
+            <section id="introduction-sec" class="pt-4 bg-light">
+                <div class="container px-4 sm:px-8 xl:px-32">
+                    @if($introPost->body)
+                        <p class="mb-4">{!! $introPost->body !!}</p>
+                    @elseif($introPost->contentBlocks && $introPost->contentBlocks->isNotEmpty())
+                        @foreach($introPost->contentBlocks->sortBy('order')->take(3) as $block)
+                            @if($block->type == 'heading')
+                                <h2 class="mb-4 text-primary">{!! $block->content !!}</h2>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-4">{!! $block->content !!}</p>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+            </section>
+        @endif
 
-            <!-- Feature Highlights Section -->
-            @if($featurePost)
-                <section id="feature-sec" class="ex-cards-1 py-8 bg-white">
-                    <div class="container px-4 sm:px-8">
-                        @if($featurePost->body)
+        <!-- Feature Highlights Section -->
+        @if($featurePost)
+            <section id="feature-sec" class="ex-cards-1 py-8 bg-white">
+                <div class="container px-4 sm:px-8">
+                    @if($featurePost->body)
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-secondary">{{ $featurePost->title }}</h3>
+                                <p class="card-text">{!! $featurePost->body !!}</p>
+                            </div>
+                        </div>
+                    @elseif($featurePost->contentBlocks && $featurePost->contentBlocks->isNotEmpty())
+                        @php
+                            $contentBlocks = $featurePost->contentBlocks->sortBy('order')->values(); 
+                        @endphp
+                        @for ($i = 0; $i < $contentBlocks->count(); $i += 2)
                             <div class="card mb-4">
-                                <div class="card-body">
-                                    <h3 class="card-title text-secondary">{{ $featurePost->title }}</h3>
-                                    <p class="card-text">{!! $featurePost->body !!}</p>
+                                <div class="card-body"> 
+                                    @if(isset($contentBlocks[$i]) && $contentBlocks[$i]->type == 'heading')
+                                        <h3 class="card-title text-secondary">{!! $contentBlocks[$i]->content !!}</h3>
+                                    @endif
+                                    @if(isset($contentBlocks[$i + 1]) && $contentBlocks[$i + 1]->type == 'paragraph')
+                                        <p class="card-text">{!! $contentBlocks[$i + 1]->content !!}</p>
+                                    @endif
                                 </div>
                             </div>
-                        @elseif($featurePost->contentBlocks && $featurePost->contentBlocks->isNotEmpty())
-                            @php
-                                $contentBlocks = $featurePost->contentBlocks->sortBy('order')->values(); 
-                            @endphp
-                            @for ($i = 0; $i < $contentBlocks->count(); $i += 2)
-                                <div class="card mb-4">
-                                    <div class="card-body"> 
-                                        @if(isset($contentBlocks[$i]) && $contentBlocks[$i]->type == 'heading')
-                                            <h3 class="card-title text-secondary">{!! $contentBlocks[$i]->content !!}</h3>
-                                        @endif
-                                        @if(isset($contentBlocks[$i + 1]) && $contentBlocks[$i + 1]->type == 'paragraph')
-                                            <p class="card-text">{!! $contentBlocks[$i + 1]->content !!}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endfor
-                        @endif
-                    </div>
-                </section>
-            @endif
+                        @endfor
+                    @endif
+                </div>
+            </section>
+        @endif
 
-            <!-- Download Section -->
-            @if($downloadPost)
-                <section id="download" class="py-6 bg-light">
-                    <div class="container px-4 sm:px-8 xl:px-32">
-                        @if($downloadPost->body)
-                            <p class="mb-4">{!! $downloadPost->body !!}</p>
+        <!-- Download Section -->
+        @if($gameplayTipsPost)
+            <section id="download" class="py-6 bg-light">
+                <div class="container px-4 sm:px-8 xl:px-32">
+
+                    @if($gameplayTipsPost)
+                        @if($gameplayTipsPost->body)
+                            <p class="mb-4">{!! $gameplayTipsPost->body !!}</p>
                             <a class="btn-solid-reg mb-12" href="index.html#download">Download Now</a>
                         @else
-                            <h2 class="mb-6 text-primary">{{ $downloadPost->title }}</h2>
-                            @if($downloadPost->uploaded_file)
-                                <img class="mb-12 mx-auto max-w-full" src="{{ asset('storage/' . $downloadPost->uploaded_file) }}" alt="{{ $downloadPost->title }}" />
+                            <h2 class="mb-6 text-primary">{{ $gameplayTipsPost->title }}</h2>
+
+                            @if($gameplayTipsPost->uploaded_file)
+                                <img class="mb-12 mx-auto max-w-full" src="{{ asset('storage/' . $gameplayTipsPost->uploaded_file) }}" alt="{{ $gameplayTipsPost->title }}" />
                             @endif
+
                             @php
-                                $paragraphBlocks = $downloadPost->contentBlocks->where('type', 'paragraph')->sortBy('order');
+                                $paragraphBlocks = $gameplayTipsPost->contentBlocks->where('type', 'paragraph')->sortBy('order');
                             @endphp
+
                             @foreach($paragraphBlocks->take(2) as $block)
                                 <p class="mb-4">{!! $block->content !!}</p>
                             @endforeach
-                        @endif
-                    </div>
-                </section>
-            @endif
 
-            <!-- Contact Us Section -->
-            @if($contactUsPost)
-                <section id="contactus">
-                    <div class="footer">
-                        <div class="container px-4 sm:px-8">
-                            @if($contactUsPost->body)
-                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
-                            @else
-                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                            <div class="text-box mb-12 p-4 bg-white rounded shadow-sm">
+                                @php
+                                    $remainingBlocks = $gameplayTipsPost->contentBlocks->sortBy('order')->skip(2); // Skip first two paragraphs
+                                @endphp
+                                @foreach($remainingBlocks->take(2) as $block)
                                     @if($block->type == 'heading')
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                                        <h3 class="mb-2">{!! $block->content !!}</h3>
                                     @elseif($block->type == 'paragraph')
-                                        <p class="mb-8">{!! $block->content !!}</p>
-                                    @elseif($block->type == 'link')
-                                        @php
-                                            $linkText = $block->link_text ?? $block->content;
-                                        @endphp
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
-                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
-                                        </h4>
+                                        <p class="mb-4">{!! $block->content !!}</p>
                                     @endif
                                 @endforeach
-                            @endif
-                       
+                            </div>
 
-                            <div class="social-container">
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-linkedin fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-youtube fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-instagram fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                            </div> <!-- end of social-container -->
-                        </div> <!-- end of container -->
-                    </div> <!-- end of footer -->
+                            @foreach($remainingBlocks->skip(2)->take(1) as $block)
+                                <p class="mb-6">{!! $block->content !!}</p>
+                            @endforeach
 
-                    <!-- Copyright -->
-                    <div class="copyright">
-                        <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                            <ul class="mb-4 list-unstyled p-small">
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                            </ul>
-                            <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
-                        </div>
-                    </div> <!-- end of copyright -->
-                </section>
-            @endif
+                            @php
+                                $icons = [
+                                'fas fa-trophy text-primary',  
+                                'fas fa-globe text-primary',          
+                                'fas fa-fingerprint text-primary',  
+                                'fas fa-palette text-primary',     
+                                'fas fa-sync text-primary', 
+                                ];
+                                $iconIndex = 0; 
+                            @endphp
+
+
+                            @foreach($gameplayTipsPost->contentBlocks->sortBy('order') as $block)
+                                @if($block->type == 'subtitle')
+                                    <ul class="list-unstyled mb-6 space-y-2" style="padding-left: 0;">
+                                        <li class="flex">
+                                            <i class="{{ $icons[$iconIndex % count($icons)] }}"></i>
+                                            <div class="flex ml-2">
+                                                <strong>{!! $block->content !!}</strong>
+                                                @php
+                                                    $nextBlock = $gameplayTipsPost->contentBlocks->where('order', $block->order + 1)->first();
+                                                @endphp
+                                                @if ($nextBlock && $nextBlock->type == 'list')
+                                                    {!! $nextBlock->content !!}
+                                                @endif
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    @php
+                                        $iconIndex++; 
+                                    @endphp
+                                @endif
+                            @endforeach
+                            
+                            <a class="btn-solid-reg mb-12" href="index.html#download">Download Now</a>
+                        @endif
+                    @endif
+                </div>
+            </section>
         @endif
+
+        <!-- Ad Section -->
+        @if($ads->where('active', true)->where('ad_platform', 'website')->isNotEmpty())
+            <section id="ads-section" class="py-8">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-2xl font-bold mb-4">Sponsored Ads</h2>
+
+                    <!-- Center the ad container with conditional layout based on ad count -->
+                    <div class="@if($ads->where('active', true)->where('ad_platform', 'website')->count() > 2) grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 @else flex justify-center space-x-6 @endif">
+                        @foreach($ads->where('active', true)->where('ad_platform', 'website')->take(3) as $ad) <!-- Limit to 3 active ads with platform 'website' -->
+                            @if($ad->ad_type == 'custom')
+                                <!-- Display Custom Ad -->
+                                <div class="ad-item bg-white p-4 rounded-lg shadow-lg inline-block">
+                                    @if($ad->ad_image)
+                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $ad->ad_image) }}" alt="{{ $ad->ad_name }}"  class="object-contain rounded-lg mb-4 mx-auto" style="max-width: 100%; height: auto;">
+                                        </a>
+                                    @endif
+                                    <h3 class="text-xl font-semibold mb-2">
+                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="hover:underline">{{ $ad->ad_name }}</a>
+                                    </h3>
+                                    <p class="mb-2 text-gray-600">{{ $ad->description }}</p> <!-- Display Description -->
+                                    <p class="mb-4">Sponsored by {{ $ad->ad_owner }}</p>
+                                    <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="text-indigo-600 hover:underline">Visit Site</a>
+                                </div>
+                            @elseif($ad->ad_type == 'google')
+                                <!-- Display Google Ad -->
+                                <div class="google-ad-item mb-6">
+                                    {!! $ad->google_ad_code !!}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif
+
+
+
+
+
+        <!-- Contact Us Section -->
+        <section id="contactus">
+            <div class="footer">
+                <div class="container px-4 sm:px-8">
+                    @if($contactUsPost && $contactUsPost->body)
+                        <p class="mb-4">{!! $contactUsPost->body !!}</p>
+                    @elseif($contactUsPost)
+                        @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                            @if($block->type == 'heading')
+                                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-8">{!! $block->content !!}</p>
+                            @elseif($block->type == 'link')
+                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
+                            @endif
+                        @endforeach
+                    @else
+                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
+                            For more information about the Side to Side game or to reach the development team, please contact us at 
+                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
+                        </h4>
+                    @endif
+                    
+
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of social-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of footer -->
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                    <ul class="mb-4 list-unstyled p-small">
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                    </ul>
+                    <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+                </div>
+            </div> <!-- end of copyright -->
+        </section>
+        
+        
 
 
         <!-- Scripts -->
@@ -396,6 +418,9 @@
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
         <script src="{{ asset('js/ui_event_handlers.js') }}"></script>
+        <script>
+            fetch("{{ route('ad.view', $ad->id) }}");
+        </script>
 
 
 

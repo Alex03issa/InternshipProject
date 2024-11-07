@@ -14,6 +14,10 @@ class EditUser extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\Action::make('view_users')
+                ->label('View Users')
+                ->url(UserResource::getUrl('index'))
+                ->icon('heroicon-o-user-group'),
         ];
     }
 }

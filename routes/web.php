@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Filament\Facades\Filament;
@@ -28,21 +29,16 @@ use Illuminate\Support\Facades\Response;
 */
 
 // Route to the home page without restrictions
-Route::get('/', [HomeController::class, 'showHomepage'])->name('homepage');
+Route::get('/', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Homepage')->name('homepage');
 
 // Route to the home page with verification
 Route::get('/home', [HomeController::class, 'showHomepageWithVerification'])->middleware(['auth'])->name('home.verified');
-
-// Route to the blog page
-Route::get('/blog', function () {
-    return view('blog');
-})->name('blog');
 
 
 Route::get('/privacy-policy', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Privacy Policy')->name('privacy.policy');
 Route::get('/terms-conditions', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Terms & Conditions')->name('terms.conditions');
 Route::get('/blog', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Blog')->name('blog');
-Route::get('/homes', [PostController::class, 'showPage'])->defaults('categoryTitle', 'Homepage')->name('home');
+
 
 Route::get('/aboutus', function () {
     return redirect(route('homepage') . '#aboutus');
@@ -126,3 +122,5 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 
+Route::get('/ad-click/{id}', [AdController::class, 'trackClick'])->name('ad.click');
+Route::get('/ad-view/{id}', [AdController::class, 'trackView'])->name('ad.view');

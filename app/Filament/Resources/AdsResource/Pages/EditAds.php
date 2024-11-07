@@ -14,6 +14,10 @@ class EditAds extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\Action::make('view_ads')
+                ->label('View Ads')
+                ->url(AdsResource::getUrl('index'))
+                ->icon('heroicon-o-user-group'),
         ];
     }
 }

@@ -273,19 +273,23 @@ function handlePasswordVisibilityToggleforForm() {
 
     toggles.forEach(toggle => {
         toggle.addEventListener('click', function () {
-            const input = this.closest('.form-field').querySelector('.form-input');
-
-            if (input && (input.type === 'password' || input.type === 'text')) {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    this.innerHTML = '<i class="fas fa-eye"></i>';
-                } else {
-                    input.type = 'password';
-                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            const formField = this.closest('.form-field');
+            if (formField) { 
+                const input = formField.querySelector('.form-input');
+                
+                if (input && (input.type === 'password' || input.type === 'text')) {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = '<i class="fas fa-eye"></i>';
+                    } else {
+                        input.type = 'password';
+                        this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                    }
                 }
             }
         });
     });
+    
 }
 
 function handleGoogleSignIn(event) {
@@ -321,13 +325,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const googleSigninBtn = document.querySelector('#google-signin-btn');
     
+    const isSignupPage = document.body.classList.contains('signup-page');
+    const isLoginPage = document.body.classList.contains('login-page');
+
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezoneInput = document.getElementById('timezone');
+
+    if (timezoneInput) {
+        timezoneInput.value = timezone;
+    }
+
+    if (!isSignupPage && !isLoginPage) {
+        highlightActiveSection();
+    }
+    
     if (googleSigninBtn) {
         googleSigninBtn.addEventListener('click', handleGoogleSignIn);
     }
     handleAlerts();
     handlePasswordValidation(); 
     smoothScroll();
-    highlightActiveSection();
     handleFloatingLabels();
     handlePasswordVisibilityToggleforForm();
     handlePasswordVisibilityToggleforSign();

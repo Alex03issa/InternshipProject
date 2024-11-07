@@ -82,7 +82,6 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -136,215 +135,139 @@
             })->sortByDesc('published_at')->first();
 
            
-            $allPostsInactive = !$mainHeaderPost && !$mainContentPost && !$contactUsPost;
+            $allPostsInactive = !$mainHeaderPost && !$mainContentPost;
         @endphp
 
         @if($allPostsInactive)
-            <section id="mainheader">
-                    <div class="ex-basic-1 py-12">
-                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-                            <div class="text-box my-12">
-                                <p class="p-large mb-4 text-center">Sorry, we are currently under maintenance. The content will be back soon. Stay tuned!</p>
-                            </div>
+            <section id="maintenance-message">
+                <div class="ex-basic-1 py-12">
+                    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                        <div class="text-box my-12">
+                            <p class="p-large mb-4 text-center">Sorry, we are currently under maintenance. The content will be back soon. Stay tuned!</p>
                         </div>
                     </div>
+                </div>
             </section>
-
-            <!-- Footer -->   
-            <section id="contactus">
-                <div class="footer">
-                    <div class="container px-4 sm:px-8">
-
-                        @if($contactUsPost)
-                            @if($contactUsPost->body)
-                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
-                            @elseif($contactUsPost)
-                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
-                                    @if($block->type == 'heading')
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
-                                    @elseif($block->type == 'paragraph')
-                                        <p class="mb-8">{!! $block->content !!}</p>
-                                    @elseif($block->type == 'link')
-                                        @php
-                                            $linkText = $block->link_text ?? $block->content;
-                                        @endphp
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto"> 
-                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
-                                        </h4>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @else
-                            <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
-                                For more information about the Side to Side game or to reach the development team, please contact us at 
-                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
-                            </h4>
-                        @endif
-                        
-
-                        <div class="social-container">
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-linkedin fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-youtube fa-stack-1x"></i>
-                                </a>
-                            </span>
-                            <span class="fa-stack">
-                                <a href="#your-link">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-instagram fa-stack-1x"></i>
-                                </a>
-                            </span>
-                        </div> <!-- end of social-container -->
-                    </div> <!-- end of container -->
-                </div> <!-- end of footer -->
-
-                <!-- Copyright -->
-                <div class="copyright">
-                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                        <ul class="mb-4 list-unstyled p-small">
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
-                            <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                        </ul>
-                        <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
-                    </div>
-                </div> <!-- end of copyright -->
-            </section>
-        @else
-
-            <!-- Main Header Section -->
-            @if($mainHeaderPost)
-                <section id="mainheader">
-                    <div class="ex-basic-1 py-12">
-                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-                            <div class="text-box my-12">
-                                <p class="p-large mb-4">{!! $mainHeaderPost->body !!}</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            @endif
-
-            <!-- Main Content Section -->
-            @if($mainContentPost)
-                <section id="maincontent">
-                    <div class="ex-basic-1 py-12">
-                        <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-                            @if($mainContentPost->body)
-                                <p class="mb-4">{!! $mainContentPost->body !!}</p>
-                            @else
-                                @foreach($mainContentPost->contentBlocks->sortBy('order') as $block)
-                                    @if($block->type == 'heading')
-                                        <h2 class="mb-4">{!! $block->content !!}</h2>
-                                    @elseif($block->type == 'paragraph')
-                                        <p class="mb-4">{!! $block->content !!}</p>
-                                    @elseif($block->type == 'subtitle')
-                                        @php
-                                            $nextBlock = $mainContentPost->contentBlocks->where('order', $block->order + 1)->first();
-                                        @endphp
-                                        <ul class="list-unstyled mb-6">
-                                            <li class="flex">
-                                                <i class="fas fa-square"></i>
-                                                <div class="flex ml-2">
-                                                    <strong>{!! $block->content !!}</strong>
-                                                    @if ($nextBlock && $nextBlock->type == 'list')
-                                                        {!! $nextBlock->content !!}
-                                                    @endif
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    @elseif($block->type == 'link')
-                                        <a href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
-                                    @endif
-                                @endforeach
-                            @endif
-                        </div>
-                    </div>
-                </section>
-            @endif
-
-
-            <!-- Contact Us Section -->
-            @if($contactUsPost)
-                <section id="contactus">
-                    <div class="footer">
-                        <div class="container px-4 sm:px-8">
-                            @if($contactUsPost->body)
-                                <p class="mb-4">{!! $contactUsPost->body !!}</p>
-                            @else
-                                @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
-                                    @if($block->type == 'heading')
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
-                                    @elseif($block->type == 'paragraph')
-                                        <p class="mb-8">{!! $block->content !!}</p>
-                                    @elseif($block->type == 'link')
-                                        @php
-                                            $linkText = $block->link_text ?? $block->content;
-                                        @endphp
-                                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
-                                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $linkText !!}">{!! $linkText !!}</a>
-                                        </h4>
-                                    @endif
-                                @endforeach
-                            @endif
-                       
-
-                            <div class="social-container">
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-linkedin fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-youtube fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                                <span class="fa-stack">
-                                    <a href="#your-link">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-instagram fa-stack-1x"></i>
-                                    </a>
-                                </span>
-                            </div> <!-- end of social-container -->
-                        </div> <!-- end of container -->
-                    </div> <!-- end of footer -->
-
-                    <!-- Copyright -->
-                    <div class="copyright">
-                        <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                            <ul class="mb-4 list-unstyled p-small">
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
-                                <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                            </ul>
-                            <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
-                        </div>
-                    </div> <!-- end of copyright -->
-                </section>
-            @endif
         @endif
+
+        <!-- Main Header Section -->
+        @if($mainHeaderPost)
+            <section id="mainheader">
+                <div class="ex-basic-1 py-12">
+                    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                        <div class="text-box my-12">
+                            <p class="p-large mb-4">{!! $mainHeaderPost->body !!}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
+
+        <!-- Main Content Section -->
+        @if($mainContentPost)
+            <section id="maincontent">
+                <div class="ex-basic-1 py-12">
+                    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                        @if($mainContentPost->body)
+                            <p class="mb-4">{!! $mainContentPost->body !!}</p>
+                        @else
+                            @foreach($mainContentPost->contentBlocks->sortBy('order') as $block)
+                                @if($block->type == 'heading')
+                                    <h2 class="mb-4">{!! $block->content !!}</h2>
+                                @elseif($block->type == 'paragraph')
+                                    <p class="mb-4">{!! $block->content !!}</p>
+                                @elseif($block->type == 'subtitle')
+                                    @php
+                                        $nextBlock = $mainContentPost->contentBlocks->where('order', $block->order + 1)->first();
+                                    @endphp
+                                    <ul class="list-unstyled mb-6">
+                                        <li class="flex">
+                                            <i class="fas fa-square"></i>
+                                            <div class="flex ml-2">
+                                                <strong>{!! $block->content !!}</strong>
+                                                @if ($nextBlock && $nextBlock->type == 'list')
+                                                    {!! $nextBlock->content !!}
+                                                @endif
+                                            </div>
+                                        </li>
+                                    </ul>
+                                @elseif($block->type == 'link')
+                                    <a href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
+                                @endif
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </section>
+        @endif
+
+
+        <!-- Contact Us Section -->
+        <section id="contactus">
+            <div class="footer">
+                <div class="container px-4 sm:px-8">
+                    @if($contactUsPost && $contactUsPost->body)
+                        <p class="mb-4">{!! $contactUsPost->body !!}</p>
+                    @elseif($contactUsPost)
+                        @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                            @if($block->type == 'heading')
+                                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-8">{!! $block->content !!}</p>
+                            @elseif($block->type == 'link')
+                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
+                            @endif
+                        @endforeach
+                    @else
+                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
+                            For more information about the Side to Side game or to reach the development team, please contact us at 
+                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
+                        </h4>
+                    @endif
+                
+
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div> <!-- end of social-container -->
+                </div> <!-- end of container -->
+            </div> <!-- end of footer -->
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                    <ul class="mb-4 list-unstyled p-small">
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                    </ul>
+                    <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+                </div>
+            </div> <!-- end of copyright -->
+        </section>
+    
 
 
         <!-- Scripts -->

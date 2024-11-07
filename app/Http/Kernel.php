@@ -36,6 +36,9 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\TrackUserActivity::class,
+            \App\Http\Middleware\SetUserTimezone::class,
+
         ],
 
         'api' => [
@@ -69,6 +72,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'CheckAdmin' => \App\Http\Middleware\CheckAdmin::class,
+        
     ];
     
 }

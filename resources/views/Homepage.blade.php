@@ -84,7 +84,6 @@
                                 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Settings</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
@@ -114,190 +113,410 @@
             </div> <!-- end of container -->
         </nav> <!-- end of navbar -->
 
-        <!-- Header -->
-        <section id="home-header">
-            <header class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
-                    <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
-                        <h1 class="h1-large mb-5">Side to Side - The Ultimate Platform Jumping Game</h1>
-                        <p class="p-large mb-8">Control the ball, jump on platforms, and keep scoring in this endless, fun-filled game!</p>
-                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                        <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
-                    </div>
-                    <div class="xl:text-right">
-                        <img class="inline" src="images/header smartphone.webp" alt="alternative" />
-                    </div>
-                </div> <!-- end of container -->
-            </header> <!-- end of header -->
-        </section>
 
-        <!-- Introduction -->
-        <section id="introduction">
-            <div class="pt-4 pb-14 text-center">
-                <div class="container px-4 sm:px-8 xl:px-4">
-                    <p class="mb-4 text-gray-800 text-3xl leading-10 lg:max-w-5xl lg:mx-auto">Side to Side is an addictive mobile game that will keep you on your toes as you control a ball jumping on endlessly moving platforms. Can you keep up?</p>
-                </div> <!-- end of container -->
-            </div>
-            <!-- end of introduction -->
+        @php
+            $homeHeaderPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'home-header';
+                });
+            })->sortByDesc('published_at')->first();
 
-            <!-- About the Game -->
-            <div id="about-application" class="pt-16 pb-12">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                    <div class="lg:col-span-7">
-                        <div class="mb-16 lg:mb-0 xl:mt-16">
-                            <h2 class="mb-6">About the Side to Side Game</h2>
-                            <p class="mb-4">Side to Side is an exciting mobile game that challenges players to control a ball by swiping left and right. The objective is to jump from platform to platform as they move upwards infinitely. The game tests your reflexes and timing as you try to score as many points as possible by staying on the platforms without falling.</p>
-                            <p class="mb-4">With its intuitive controls and endless gameplay, Side to Side provides an engaging and addictive experience for players of all ages. Keep jumping, score higher, and see how far you can go!</p>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-5">
-                        <div class="xl:ml-14">
-                            <img class="inline" src="images/detail1.webp" alt="alternative" />
+            $introductionPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'introduction';
+                });
+            })->sortByDesc('published_at')->first();
+
+            $aboutApplicationPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'about-application';
+                });
+            })->sortByDesc('published_at')->first();
+
+            $featuresPosts = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'features';
+                });
+            })->sortByDesc('published_at')->first();
+
+            $detailPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'detail';
+                });
+            })->sortByDesc('published_at')->first();
+
+            $blogPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'blog';
+                });
+            })->sortByDesc('published_at')->first();
+
+
+            $downloadPost = $posts->where('active', true)->filter(function($post) {
+                return $post->categories->contains(function($category) {
+                    return $category->pivot->section === 'download';
+                });
+            })->sortByDesc('published_at')->first();
+
+
+            $allPostsInactive = !$homeHeaderPost && !$introductionPost && !$featuresPosts && !$detailPost && !$blogPost && !$downloadPost;
+        @endphp
+
+        @if($allPostsInactive)
+            <!-- Maintenance Message -->
+            <section id="maintenance-message">
+                <div class="ex-basic-1 py-12" style="margin: 200px;">
+                    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+                        <div class="text-box my-12">
+                            <p class="p-large mb-4 text-center">Sorry, we are currently under maintenance. The content will be back soon. Stay tuned!</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
 
         
-        <section id="features">
-            <div class="cards-1">
-                <div class="container px-4 sm:px-8 xl:px-4">
-                    <div class="features-layout">
-                        
-                        <!-- Card 1 (Left) -->
-                        <div class="card" id="card-left">
-                            <div class="card-image-feature text-center mb-4">
-                                <div class="icon-circle">
-                                    <i class="fas fa-trophy fa-3x" style="color: #eb427e;"></i>
-                                </div>
-                            </div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Rewards System</h5>
-                                <p class="mb-4">Earn rewards for reaching milestones! For every 100 points scored, players will receive exciting rewards, such as new skins, power-ups, and more!</p>
-                            </div>
+        <!-- Home Header Section -->
+        @if($homeHeaderPost)
+            <section id="home-header">
+                <header class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
+                        <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
+                            @if($homeHeaderPost->body)
+                                <p class="p-large mb-8">{!! $homeHeaderPost->body !!}</p>
+                            @endif
+                            @foreach($homeHeaderPost->contentBlocks->sortBy('order') as $block)
+                                @if($block->type == 'heading')
+                                    <h1 class="h1-large mb-5">{!! $block->content !!}</h1>
+                                @elseif($block->type == 'paragraph')
+                                    <p class="p-large mb-8">{!! $block->content !!}</p>
+                                @elseif($block->type == 'subtitle')
+                                    @php
+                                        $nextBlock = $homeHeaderPost->contentBlocks->where('order', $block->order + 1)->first();
+                                    @endphp
+                                    <ul class="list-unstyled mb-6">
+                                        <li class="flex">
+                                            <i class="fas fa-chevron-right"></i>
+                                            <div class="flex ml-2">
+                                                <strong>{!! $block->content !!}</strong>
+                                                @if ($nextBlock && $nextBlock->type == 'list')
+                                                    {!! $nextBlock->content !!}
+                                                @endif
+                                            </div>
+                                        </li>
+                                    </ul>
+                                @elseif($block->type == 'list')
+                                    <ul class="list mb-7 space-y-2">
+                                        <li class="flex">
+                                            <i class="fas fa-chevron-right"></i>
+                                            <div>{!! $block->content !!}</div>
+                                        </li>
+                                    </ul>
+                                @elseif($block->type == 'link')
+                                    <a href="{!! $block->content !!}" class="text-primary hover:underline">{{ $block->content }}</a>
+                                @endif
+                            @endforeach
+                            <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
+                            <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
                         </div>
-
-                        <!-- Middle Cards (Stacked) -->
-                        <div class="middle-cards">
-                            <div class="card" id="card-middle-1">
-                                <div class="card-image-feature text-center mb-4">
-                                    <div class="icon-circle">
-                                        <i class="fas fa-paint-brush fa-3x" style="color: #594cda;"></i>
-                                    </div>
-                                </div>
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Customizable Ball and Background</h5>
-                                    <p class="mb-4">Personalize your gaming experience by changing the color and skin of the ball, as well as the background. Show off your unique style as you jump to the top!</p>
-                                </div>
-                            </div>
-
-                            <div class="card" id="card-middle-2">
-                                <div class="card-image-feature text-center mb-4">
-                                    <div class="icon-circle">
-                                        <i class="fas fa-globe fa-3x" style="color: #594cda;"></i>
-                                    </div>
-                                </div>
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">Global Leaderboard</h5>
-                                    <p class="mb-4">Compete with players from around the world! Climb the global leaderboard by scoring high and see where you stand against the best players.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4 (Right) -->
-                        <div class="card" id="card-right">
-                            <div class="card-image-feature text-center mb-4">
-                                <div class="icon-circle">
-                                    <i class="fas fa-gamepad fa-3x" style="color: #eb427e;"></i>
-                                </div>
-                            </div>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Smooth Controls</h5>
-                                <p class="mb-4">Experience smooth and responsive controls designed for easy gameplay. Swipe left and right effortlessly as you jump from platform to platform.</p>
-                            </div>
-                        </div>
-
-                    </div> <!-- end of features-layout -->
-                </div> <!-- end of container -->
-            </div> <!-- end of cards-1 -->
-        </section>
-
-
-
-        <!-- Details Section -->
-        <section id="detail">
-            <div  class="pt-12 pb-16 lg:pt-16">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                    <div class="lg:col-span-6">
-                        <div class="mb-16 lg:mb-0 xl:mt-16">
-                            <h2 class="mb-6">Unlock New Skins and Power-ups</h2>
-                            <p class="mb-4">As you reach higher scores, you'll unlock new skins for your ball and special power-ups that will give you an edge in the game. Customize your gameplay and showcase your achievements.</p>
-                            <p class="mb-4">Challenge yourself to reach new heights and unlock all the skins and power-ups available in the game!</p>
+                        <div class="xl:text-right">
+                            <img class="inline" src="{{ asset('storage/' . $homeHeaderPost->uploaded_file) }}" alt="{{ $homeHeaderPost->title }}" />
                         </div>
                     </div>
-                    <div class="lg:col-span-6">
-                        <div class="xl:ml-14">
-                            <img class="inline" src="images/detail3.webp" alt="alternative" />
+                </header>
+            </section>
+        @endif
+
+        <!-- Introduction Section -->
+        @if($introductionPost)
+            <section id="introduction">
+                <div class="pt-4 pb-14 text-center">
+                    <div class="container px-4 sm:px-8 xl:px-4">
+                        @if($introductionPost->body)
+                            <p class="mb-4 text-gray-800 text-3xl leading-10 lg:max-w-5xl lg:mx-auto">{{ $introductionPost->body }}</p>
+                        @endif
+                        @foreach($introductionPost->contentBlocks->sortBy('order') as $block)
+                            @if($block->type == 'heading')
+                                <h2 class="mb-6">{!! $block->content !!}</h2>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-4 text-gray-800 text-3xl leading-10 lg:max-w-5xl lg:mx-auto">{!! $block->content !!}</p>
+                            @elseif($block->type == 'subtitle')
+                                @php
+                                    $nextBlock = $introductionPost->contentBlocks->where('order', $block->order + 1)->first();
+                                @endphp
+                                <ul class="list-unstyled mb-6">
+                                    <li class="flex">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <div class="flex ml-2">
+                                            <strong>{!! $block->content !!}</strong>
+                                            @if ($nextBlock && $nextBlock->type == 'list')
+                                                {!! $nextBlock->content !!}
+                                            @endif
+                                        </div>
+                                    </li>
+                                </ul>
+                            @elseif($block->type == 'list')
+                                <ul class="list mb-7 space-y-2">
+                                    <li class="flex">
+                                        <i class="fas fa-chevron-right"></i>
+                                        <div>{!! $block->content !!}</div>
+                                    </li>
+                                </ul>
+                            @elseif($block->type == 'link')
+                                <a href="{!! $block->content !!}" class="text-primary hover:underline">{{ $block->content }}</a>
+                            @endif
+                        @endforeach
+                    </div> <!-- end of container -->
+                </div>
+            </section>
+        @endif
+
+        <!-- About the Game Section -->
+        @if($aboutApplicationPost)
+            <section id="about-application">
+                <div class="pt-16 pb-12">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                        <div class="lg:col-span-7">
+                            <div class="mb-16 lg:mb-0 xl:mt-16">
+                                @if($aboutApplicationPost->body)
+                                    <p class="mb-4">{!! $aboutApplicationPost->body !!}</p>
+                                @endif
+                                @foreach($aboutApplicationPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h2 class="mb-6">{!! $block->content !!}</h2>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-4">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'subtitle')
+                                        @php
+                                            $nextBlock = $aboutApplicationPost->contentBlocks->where('order', $block->order + 1)->first();
+                                        @endphp
+                                        <ul class="list-unstyled mb-6">
+                                            <li class="flex">
+                                                <i class="fas fa-chevron-right"></i>
+                                                <div class="flex ml-2">
+                                                    <strong>{!! $block->content !!}</strong>
+                                                    @if ($nextBlock && $nextBlock->type == 'list')
+                                                        {!! $nextBlock->content !!}
+                                                    @endif
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="lg:col-span-5">
+                            <div class="xl:ml-14">
+                                <img class="inline" src="{{ asset('storage/' . $aboutApplicationPost->uploaded_file) }}" alt="{{ $aboutApplicationPost->title }}"  />
+                            </div>
+                        </div>
+                    </div> <!-- end of container -->
+                </div>
+            </section>
+        @endif
+
+
+        <!-- Features Section -->
+        @if($featuresPosts)
+            <section id="features">
+                <div class="cards-1">
+                    <div class="container px-4 sm:px-8 xl:px-4">
+                        <div class="features-layout">
+
+                            @foreach($featuresPosts->contentBlocks as $index => $block)
+                                @php
+                                
+                                    if ($index < 2) {
+                                        $cardId = 'card-left';
+                                        $iconClass = 'fas fa-trophy fa-3x';
+                                        $iconColor = '#eb427e';
+                                    } elseif ($index < 4) {
+                                        $cardId = 'card-middle-1';
+                                        $iconClass = 'fas fa-paint-brush fa-3x';
+                                        $iconColor = '#594cda';
+                                    } elseif ($index < 6) {
+                                        $cardId = 'card-middle-2';
+                                        $iconClass = 'fas fa-globe fa-3x';
+                                        $iconColor = '#594cda';
+                                    } else {
+                                        $cardId = 'card-right';
+                                        $iconClass = 'fas fa-gamepad fa-3x';
+                                        $iconColor = '#eb427e';
+                                    }
+                                @endphp
+
+                                <!-- Start middle-cards wrapper for middle cards (index > 2) -->
+                                @if($index == 2)
+                                    <div class="middle-cards">
+                                @endif
+
+                                <!-- Card Structure with Title and Description -->
+                                @if($index % 2 == 0)
+                                    <div class="card" id="{{ $cardId }}">
+                                        <div class="card-image-feature text-center mb-4">
+                                            <div class="icon-circle">
+                                                <i class="{{ $iconClass }}" style="color: {{ $iconColor }};"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">{!! $block->content ?? 'Default Title' !!}</h5>
+                                @else
+                                            <p class="mb-4">{!! $block->content ?? 'Default Description' !!}</p>
+                                        </div> <!-- Close card-body and card div here -->
+                                    </div>
+                                @endif
+
+                                
+                                @if($index == 5)
+                                    </div> <!-- end of middle-cards -->
+                                @endif
+
+                            @endforeach
+
+                        </div> <!-- end of features-layout -->
+                    </div> <!-- end of container -->
+                </div> <!-- end of cards-1 -->
+            </section>
+        @endif
+
+                <!-- Ad Section -->
+                @if($ads->where('active', true)->where('ad_platform', 'website')->isNotEmpty())
+            <section id="ads-section" class="py-8">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-2xl font-bold mb-4">Sponsored Ads</h2>
+
+                    <!-- Center the ad container with conditional layout based on ad count -->
+                    <div class="@if($ads->where('active', true)->where('ad_platform', 'website')->count() > 2) grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 @else flex justify-center space-x-6 @endif">
+                        @foreach($ads->where('active', true)->where('ad_platform', 'website')->take(3) as $ad) <!-- Limit to 3 active ads with platform 'website' -->
+                            @if($ad->ad_type == 'custom')
+                                <!-- Display Custom Ad -->
+                                <div class="ad-item bg-white p-4 rounded-lg shadow-lg inline-block">
+                                    @if($ad->ad_image)
+                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $ad->ad_image) }}" alt="{{ $ad->ad_name }}"  class="object-contain rounded-lg mb-4 mx-auto" style="max-width: 100%; height: auto;">
+                                        </a>
+                                    @endif
+                                    <h3 class="text-xl font-semibold mb-2">
+                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="hover:underline">{{ $ad->ad_name }}</a>
+                                    </h3>
+                                    <p class="mb-2 text-gray-600">{{ $ad->description }}</p> <!-- Display Description -->
+                                    <p class="mb-4">Sponsored by {{ $ad->ad_owner }}</p>
+                                    <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="text-indigo-600 hover:underline">Visit Site</a>
+                                </div>
+                            @elseif($ad->ad_type == 'google')
+                                <!-- Display Google Ad -->
+                                <div class="google-ad-item mb-6">
+                                    {!! $ad->google_ad_code !!}
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif
+
+
+        <!-- Detail Section -->
+        @if($detailPost)
+            <section id="detail">
+                <div class="pt-12 pb-16 lg:pt-16">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                        <div class="lg:col-span-6">
+                            <div class="mb-16 lg:mb-0 xl:mt-16">
+                                @if($detailPost->body)
+                                    <p class="mb-4">{!! $detailPost->body !!}</p>
+                                @endif
+                                @foreach($detailPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h2 class="mb-6">{!! $block->content !!}</h2>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-4">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'subtitle')
+                                        @php
+                                            $nextBlock = $detailPost->contentBlocks->where('order', $block->order + 1)->first();
+                                        @endphp
+                                        <ul class="list-unstyled mb-6">
+                                            <li class="flex">
+                                                <i class="fas fa-chevron-right"></i>
+                                                <div class="flex ml-2">
+                                                    <strong>{!! $block->content !!}</strong>
+                                                    @if ($nextBlock && $nextBlock->type == 'list')
+                                                        {!! $nextBlock->content !!}
+                                                    @endif
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6">
+                            <div class="xl:ml-14">
+                                <img class="inline" src="{{ asset('storage/' . $detailPost->uploaded_file) }}" alt="{{ $detailPost->title }}"  />
+                            </div>
                         </div>
                     </div>
-                </div> <!-- end of container -->
-            </div>
-            <!-- end of details -->
-        </section>
+                </div>
+            </section>
+        @endif
 
-       <!-- <section id="ad">
-            <div class="ad-container">
-                 //Google AdSense Ad 
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2477819131946252" crossorigin="anonymous"></script>
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-2477819131946252"
-                    data-ad-slot="7525814060"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </section> -->
 
-        
-            <!-- Details 2 -->
-        <section id="blog">    
-            <div class="py-24">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
-                    <div class="lg:col-span-6">
-                        <div class="mb-12 lg:mb-0 xl:mr-14">
-                            <img class="inline" src="images/detail2.webp" alt="alternative" />
+        <!-- Blog Section -->
+        @if($blogPost)
+            <section id="blog">
+                <div class="py-24">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-12 lg:gap-x-12">
+                        <div class="lg:col-span-6">
+                            <div class="mb-12 lg:mb-0 xl:mr-14">
+                                <img class="inline" src="{{ asset('storage/' . $blogPost->uploaded_file) }}" alt="{{ $blogPost->title }}" />
+                            </div>
                         </div>
-                    </div> <!-- end of col -->
-                    <div class="lg:col-span-5">
-                        <div class="xl:mt-12">
-                            <h2 class="mb-6">Customize Your Experience</h2>
-                            <ul class="list mb-7 space-y-2">
-                                <li class="flex">
-                                    <i class="fas fa-chevron-right"></i>
-                                    <div>Change the color and skin of your ball</div>
-                                </li>
-                                <li class="flex">
-                                    <i class="fas fa-chevron-right"></i>
-                                    <div>Select different backgrounds to match your style</div>
-                                </li>
-                                <li class="flex">
-                                    <i class="fas fa-chevron-right"></i>
-                                    <div>Use power-ups to boost your score</div>
-                                </li>
-                            </ul>
-                            <a class="btn-outline-reg" href="{{ route('blog') }}">Details</a>
+                        <div class="lg:col-span-5">
+                            <div class="xl:mt-12">
+                                @if($blogPost->body)
+                                    <p class="mb-4">{!! $blogPost->body !!}</p>
+                                @endif
+                                @foreach($blogPost->contentBlocks->sortBy('order') as $block)
+                                    @if($block->type == 'heading')
+                                        <h2 class="mb-6">{!! $block->content !!}</h2>
+                                    @elseif($block->type == 'paragraph')
+                                        <p class="mb-4">{!! $block->content !!}</p>
+                                    @elseif($block->type == 'subtitle')
+                                        @php
+                                            $nextBlock = $blogPost->contentBlocks->where('order', $block->order + 1)->first();
+                                        @endphp
+                                        <ul class="list-unstyled mb-6">
+                                            <li class="flex">
+                                                <i class="fas fa-chevron-right"></i>
+                                                <div class="flex ml-2">
+                                                    <strong>{!! $block->content !!}</strong>
+                                                    @if ($nextBlock && $nextBlock->type == 'list')
+                                                        {!! $nextBlock->content !!}
+                                                    @endif
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    @elseif($block->type == 'list')
+                                        <ul class="list mb-7 space-y-2">
+                                            <li class="flex">
+                                                <i class="fas fa-chevron-right"></i>
+                                                <div>{!! $block->content !!}</div>
+                                            </li>
+                                        </ul>
+                                    @elseif($block->type == 'link')
+                                        <a href="{!! $block->content !!}" class="text-primary hover:underline">{{ $block->content }}</a>
+                                    @endif
+                                @endforeach
+                                <a class="btn-outline-reg" href="{{ route('blog') }}">Details</a>
+                            </div>
                         </div>
-                    </div> <!-- end of col -->
-                </div> <!-- end of container -->
-            </div>
-            <!-- end of details 2 -->
-        </section>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <!-- Statistics -->
+        @if (!$allPostsInactive)
         <section id="counter-statisque">
             <div class="counter">
                 <div class="container px-4 sm:px-8">
@@ -305,32 +524,38 @@
                     <!-- Counter -->
                     <div id="counter">
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="531">1</div>
-                            <p class="counter-info">Number of Visits</p>
+                            <div class="counter-value number-count" data-count="{{ $siteStatistics->total_visits ?? 0 }}">0</div>
+                            <p class="counter-info">Total Visits</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="385">1</div>
+                            <span class="counter-value" data-count="{{ $siteStatistics->daily_visits ?? 0 }}">0</span>
+                            <p class="counter-info">Daily Visits</p>
+                        </div>
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="0">0</div>
                             <p class="counter-info">Total Downloads</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="159">1</div>
-                            <p class="counter-info"> New Users This Month</p>
+                            <div class="counter-value number-count" data-count="{{ $siteStatistics->total_users_registered ?? 0 }}">0</div>
+                            <p class="counter-info">Total Users</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="127">1</div>
-                            <p class="counter-info">Rewards Unlocked</p>
+                            <div class="counter-value number-count" data-count="{{ $siteStatistics->monthly_visits ?? 0 }}">0</div>
+                            <p class="counter-info">New Users This Month</p>
                         </div>
+                        
                     </div> <!-- end of counter -->
 
                 </div> <!-- end of container -->
             </div> <!-- end of counter -->
             <!-- end of statistics -->
         </section>
+        @endif
 
 
-        <!-- Testimonials -->
+        <!-- About Us Section -->
         <section id="aboutus">
-            <div  class="slider-1 py-32 bg-gray">
+            <div class="slider-1 py-32 bg-gray">
                 <div class="container px-4 sm:px-8">
                     <h2 class="mb-12 text-center lg:max-w-xl lg:mx-auto">Meet the Side to Side Development Team</h2>
 
@@ -339,41 +564,19 @@
                         <div class="swiper-container card-slider">
                             <div class="swiper-wrapper">
                                 
-                                <!-- Slide 1 -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="images/article-details-large.jpg" alt="alternative" />
-                                        <div class="card-body">
-                                            <h4 class="card-title">Wadee Issa</h4>
-                                            <p class="card-text">Mobile Developer & Project Management</p>
-                                            <p class="italic mb-3">"Side to Side has been a rewarding project. The smooth gameplay and endless fun keep our users engaged."</p>
+                                <!-- Loop through team members -->
+                                @foreach($teamMembers as $member)
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <img class="card-image" src="{{ asset('storage/' . $member->image_url ?? 'images/default-team-image.jpg') }}" alt="{{ $member->name }}" />
+                                            <div class="card-body">
+                                                <h4 class="card-title">{{ $member->name }}</h4>
+                                                <p class="card-text">{{ $member->position }}</p>
+                                                <p class="italic mb-3">"{{ $member->quote }}"</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
-                                
-                                <!-- Slide 2 -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="images/testimonial-2.jpg" alt="alternative" />
-                                        <div class="card-body">
-                                            <h4 class="card-title">Alexander Issa</h4>
-                                            <p class="card-text">Mobile Developer & Web Developer</p>
-                                            <p class="italic mb-3">"Creating a seamless and responsive interface was key to making Side to Side a hit among players."</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
-
-                                <!-- Slide 3 -->
-                                <div class="swiper-slide">
-                                    <div class="card">
-                                        <img class="card-image" src="images/pricing-background.jpg" alt="alternative" />
-                                        <div class="card-body">
-                                            <h4 class="card-title">Nassim Cheric</h4>
-                                            <p class="card-text">Quality Assurance</p>
-                                            <p class="italic mb-3">"Ensuring a bug-free experience for our users has been my top priority. Side to Side delivers quality at every level."</p>
-                                        </div>
-                                    </div>
-                                </div> <!-- end of swiper-slide -->
+                                    </div> <!-- end of swiper-slide -->
+                                @endforeach
 
                             </div> <!-- end of swiper-wrapper -->
 
@@ -386,32 +589,76 @@
                     </div> <!-- end of slider-container -->
                 </div> <!-- end of container -->
             </div> <!-- end of slider-1 -->
-            <!-- end of testimonials -->
         </section>
 
-        
-        <!-- Conclusion -->
-        <section id="download">
-            <div class="basic-5">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2">
-                    <div class="mb-16 lg:mb-0">
-                        <img src="images/conclusionimage.webp" alt="alternative" />
+
+        <!-- Download Section -->
+        @if($downloadPost)
+            <section id="download">
+                <div class="basic-5">
+                    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2">
+                        <div class="mb-16 lg:mb-0">
+                            <img src="{{ asset('storage/' . $downloadPost->uploaded_file) }}" alt="{{ $downloadPost->title }}" />
+                        </div>
+                        <div class="lg:mt-24 xl:mt-44 xl:ml-12">
+                            @if($downloadPost->body)
+                                <p class="mb-9 text-gray-800 text-3xl leading-10">{{ $downloadPost->body }}</p>
+                            @endif
+                            @foreach($downloadPost->contentBlocks->sortBy('order') as $block)
+                                @if($block->type == 'heading')
+                                    <h2 class="mb-6">{!! $block->content !!}</h2>
+                                @elseif($block->type == 'paragraph')
+                                    <p class="mb-4">{!! $block->content !!}</p>
+                                @elseif($block->type == 'subtitle')
+                                    @php
+                                        $nextBlock = $downloadPost->contentBlocks->where('order', $block->order + 1)->first();
+                                    @endphp
+                                    <ul class="list-unstyled mb-6">
+                                        <li class="flex">
+                                            <i class="fas fa-chevron-right"></i>
+                                            <div class="flex ml-2">
+                                                <strong>{!! $block->content !!}</strong>
+                                                @if ($nextBlock && $nextBlock->type == 'list')
+                                                    {!! $nextBlock->content !!}
+                                                @endif
+                                            </div>
+                                        </li>
+                                    </ul>
+                                @endif
+                            @endforeach
+                            <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
+                            <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+                        </div>
                     </div>
-                    <div class="lg:mt-24 xl:mt-44 xl:ml-12">
-                        <p class="mb-9 text-gray-800 text-3xl leading-10">Mobile games don’t get much better than Side to Side. Customize your ball, climb the leaderboard, and unlock rewards! Download now and start your adventure!</p>
-                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                        <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
-                    </div>
-                </div> <!-- end of container -->
-            </div> <!-- end of basic-5 -->
-            <!-- end of conclusion -->
-        </section>
+                </div>
+            </section>
+        @endif
+
 
         <!-- Footer -->
         <section id="contactus">
             <div class="footer">
                 <div class="container px-4 sm:px-8">
-                    <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">For more information about the Side to Side game or to reach the development team, please contact us at <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a></h4>
+                    @if($contactUsPost && $contactUsPost->body)
+                        <p class="mb-4">{!! $contactUsPost->body !!}</p>
+                    @elseif($contactUsPost)
+                        @foreach($contactUsPost->contentBlocks->sortBy('order') as $block)
+                            @if($block->type == 'heading')
+                                <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">{!! $block->content !!}</h4>
+                            @elseif($block->type == 'paragraph')
+                                <p class="mb-8">{!! $block->content !!}</p>
+                            @elseif($block->type == 'link')
+                                <a class="text-indigo-600 hover:text-gray-500" href="mailto:{!! $block->content !!}">{!! $block->content !!}</a>
+                            @endif
+                        @endforeach
+                    @else
+                        <h4 class="mb-8 lg:max-w-3xl lg:mx-auto">
+                            For more information about the Side to Side game or to reach the development team, please contact us at 
+                            <a class="text-indigo-600 hover:text-gray-500" href="mailto:majed.issa62@gmail.com">majed.issa62@gmail.com</a>
+                        </h4>
+                    @endif
+                    
+
                     <div class="social-container">
                         <span class="fa-stack">
                             <a href="#your-link">
@@ -453,6 +700,7 @@
                 </div>
             </div> <!-- end of copyright -->
         </section>
+        
 
         <!-- Scripts -->
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->

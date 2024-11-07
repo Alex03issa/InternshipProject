@@ -34,7 +34,7 @@
         
        
 </head>
-<body>
+<body class="signup-page">
 
         <form class="signup" action="{{ route('signup.submit') }}" method="POST" autocomplete="off">
             @csrf
@@ -110,8 +110,8 @@
         </form>
 
 
-         <!-- Footer -->
-         <section id="contactus">
+        <!-- Footer -->
+        <section id="contactus">
             <div class="footer">
                 <div class="container px-4 sm:px-8">
                     <div class="social-container">

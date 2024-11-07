@@ -508,27 +508,22 @@ h1 i {
   color: var(--fa-icon-color);
 }
 
-.copyright {
-  padding-top: 1.5rem;
-  background-color: var(--light-blue-gradient);
-  text-align: center;
-  color: var(--footer-text-color); /* Updated color for copyright text */
-  font-size: 0.875rem; 
-  font: 400 1rem / 0.675rem "Open Sans", sans-serif;
-}
-
 
 
 .container {
   margin-left: auto;
   margin-right: auto;
 }
-.copyright p {
-  justify-content: center; /* Center the links */
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.copyright {
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem; 
+  background-color: var(--light-blue-gradient);
+  text-align: center;
+  color: var(--footer-text-color);
+  font-size: 0.875rem;
+  font: 400 1rem / 0.675rem "Open Sans", sans-serif;
 }
+
 
 .statement {
 
@@ -556,7 +551,6 @@ h1 i {
 
 .nav-link {
   display: inline-block;
-
   color: var(--dark-gray-body-text);
   text-decoration: none;
   line-height: 0.875rem;
@@ -570,6 +564,7 @@ h1 i {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  padding-bottom: 0.75rem;
 }
 
 .copyright ul li {
@@ -594,4 +589,15 @@ h1 i {
   .copyright ul li:last-child {
     margin-bottom: 0; /* Remove bottom margin from the last item */
   }
+
+  .copyright {
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem; 
+    background-color: var(--light-blue-gradient);
+    color: var(--footer-text-color);
+    font-size: 0.875rem;
+    font: 400 1rem / 0.675rem "Open Sans", sans-serif;
+  }
+  
+
 }

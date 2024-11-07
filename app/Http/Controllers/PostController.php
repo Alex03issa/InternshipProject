@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Category;
 use Illuminate\Support\Facades\Log;
+use App\Models\Ad;
 
 class PostController extends Controller
 {
@@ -39,7 +40,9 @@ class PostController extends Controller
             ->get();
 
         
-
+        $teamMembers = \App\Models\TeamMember::all();
+        $siteStatistics = \App\Models\SiteStatistic::first();
+        $ads = Ad::where('active', true)->get();
     
         switch ($categoryTitle) {
             case 'Privacy Policy':
@@ -47,9 +50,9 @@ class PostController extends Controller
             case 'Terms & Conditions':
                 return view('terms', compact('category', 'posts', 'contactUsPost'));
             case 'Blog':
-                return view('blog', compact('category', 'posts', 'contactUsPost'));
+                return view('blog', compact('category', 'posts', 'contactUsPost', 'ads'));
             case 'Homepage':
-                return view('homepage', compact('category', 'posts', 'contactUsPost'));
+                return view('Homepage', compact('category', 'posts', 'contactUsPost', 'teamMembers','siteStatistics',  'ads' ));
             default:
                 abort(404, 'Page not found.');
         }

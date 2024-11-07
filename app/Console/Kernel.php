@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('reset:user-registration-counts')->dailyAt('00:00');
+        $schedule->command('track:inactive-users')->everyFifteenMinutes();
+        $schedule->command('ads:update-status')->daily();
     }
 
     /**

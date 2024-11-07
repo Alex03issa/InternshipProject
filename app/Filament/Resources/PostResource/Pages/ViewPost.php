@@ -17,9 +17,13 @@ class ViewPost extends ViewRecord
             Actions\EditAction::make(),
             Actions\DeleteAction::make(),
             Actions\Action::make('create')
-            ->label('New Post')
-            ->url(static::getResource()::getUrl('create'))
-            ->icon('heroicon-o-plus'),
+                ->label('New Post')
+                ->url(static::getResource()::getUrl('create'))
+                ->icon('heroicon-o-plus'),
+            Actions\Action::make('view_posts')
+                ->label('View Posts')
+                ->url(PostResource::getUrl('index'))
+                ->icon('heroicon-o-document-duplicate'),
         ];
     }
     protected function mutateFormDataBeforeFill(array $data): array

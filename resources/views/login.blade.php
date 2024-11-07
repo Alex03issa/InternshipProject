@@ -31,96 +31,99 @@
 
     
 </head>
-<body>
-
-
-<form class="signup" action="{{ route('login.submit') }}" method="POST" autocomplete="off">
-    @csrf
-
-    <div class="header_signin">
-        <a href="{{ route('signup') }}" class="back-button"><i class="fas fa-arrow-left"></i> </a>
-        <h1><i class="fas fa-sign-in-alt"></i>Sign In</h1>
-    </div>
+<body class="login-page">
     
-    
-    <div class="signup__field">
-        <input class="signup__input" type="email" name="email" id="email" autocomplete="email" required />
-        <label class="signup__label" for="email">Email</label>
-    </div>
 
-    <div class="signup__field">
-        <input class="signup__input" type="password" name="password" id="password" autocomplete="current-password" required />
+
+    <form class="signup" action="{{ route('login.submit') }}" method="POST" autocomplete="off">
+        @csrf
+
+        <div class="header_signin">
+            <a href="{{ route('signup') }}" class="back-button"><i class="fas fa-arrow-left"></i> </a>
+            <h1><i class="fas fa-sign-in-alt"></i>Sign In</h1>
+        </div>
         
-        <label class="signup__label" for="password">Password</label>
-        <span class="toggle-password password-icon" style="cursor: pointer;">
-            <i class="fas fa-eye-slash"></i>
-        </span>
-    </div>
+        
+        <div class="signup__field">
+            <input class="signup__input" type="email" name="email" id="email" autocomplete="email" required />
+            <label class="signup__label" for="email">Email</label>
+        </div>
 
-      <!-- Forgot Password Link -->
-    <div class="forgot-password">
-        <a href="{{ route('password.request') }}">Forgot Password?</a>
-    </div>
+        <div class="signup__field">
+            <input class="signup__input" type="password" name="password" id="password" autocomplete="current-password" required />
+            
+            <label class="signup__label" for="password">Password</label>
+            <span class="toggle-password password-icon" style="cursor: pointer;">
+                <i class="fas fa-eye-slash"></i>
+            </span>
+        </div>
 
-    <button type="submit"><i class="fas fa-sign-in-alt"></i>Sign in</button>
+        <!-- Forgot Password Link -->
+        <div class="forgot-password">
+            <a href="{{ route('password.request') }}">Forgot Password?</a>
+        </div>
 
-    <!-- Google Sign-In Button -->
-    <a href="#" id="google-signin-btn" data-redirect-url="{{ route('google.redirect') }}" class="signup__button--google">
-        <i class="fab fa-google"></i>Continue with Google
-    </a>
+        <input type="hidden" name="timezone" id="timezone">
 
-    <!-- Apple ID Button -->
-    <a href="{{ route('apple.redirect') }}" class="signup__button--apple">
-        <i class="fab fa-apple"></i>Continue with Apple ID
-    </a>
-</form>
+        <button type="submit"><i class="fas fa-sign-in-alt"></i>Sign in</button>
 
-<!-- Footer -->
-<section id="contactus">
-            <div class="footer">
-                <div class="container px-4 sm:px-8">
-                    <div class="social-container">
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-facebook-f fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-linkedin fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-youtube fa-stack-1x"></i>
-                            </a>
-                        </span>
-                        <span class="fa-stack">
-                            <a href="#your-link">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-instagram fa-stack-1x"></i>
-                            </a>
-                        </span>
-                    </div> <!-- end of social-container -->
-                </div> <!-- end of container -->
-            </div> <!-- end of footer -->
+        <!-- Google Sign-In Button -->
+        <a href="#" id="google-signin-btn" data-redirect-url="{{ route('google.redirect') }}" class="signup__button--google">
+            <i class="fab fa-google"></i>Continue with Google
+        </a>
 
-            <!-- Copyright -->
-            <div class="copyright">
-                <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
-                    <ul class="mb-4 list-unstyled p-small">
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
-                        <li class="mb-2"><a class="nav-link page-scroll" href="mailto:majed.issa62@gmail.com">Contact us</a></li>
-                    </ul>
-                    <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
-                </div>
-            </div> <!-- end
+        <!-- Apple ID Button -->
+        <a href="{{ route('apple.redirect') }}" class="signup__button--apple">
+            <i class="fab fa-apple"></i>Continue with Apple ID
+        </a>
+    </form>
 
+    <!-- Footer -->
+    <section id="contactus">
+        <div class="footer">
+            <div class="container px-4 sm:px-8">
+                <div class="social-container">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-linkedin fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-youtube fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-instagram fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </div> <!-- end of social-container -->
+            </div> <!-- end of container -->
+        </div> <!-- end of footer -->
+
+        <!-- Copyright -->
+        <div class="copyright">
+            <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-3">
+                <ul class="mb-4 list-unstyled p-small">
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('blog') }}">Blog</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                    <li class="mb-2"><a class="nav-link page-scroll" href="mailto:majed.issa62@gmail.com">Contact us</a></li>
+                </ul>
+                <p class="pb-2 p-small statement">Copyright © <a href="{{ route('homepage') }}" class="underline">Side to Side</a> (Alexander Issa)</p>
+            </div>
+        </div> <!-- endof copyright -->
+    </section>
 
 <script src="{{ asset('js/ui_event_handlers.js') }}"></script>
 
