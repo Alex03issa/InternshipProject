@@ -11,7 +11,7 @@ class Trophy extends Model
     use HasFactory;
 
     protected $fillable = [
-        'trophy_name', 'trophy_description', 'unlock_criteria'
+        'trophy_name', 'trophy_description', 'icon', 'unlock_points'
     ];
 
     public function gameInfos()

@@ -11,7 +11,7 @@ class Background extends Model
     use HasFactory;
 
     protected $fillable = [
-        'background_name', 'background_image', 'unlock_points'
+        'background_name', 'background_image', 'cost'
     ];
 
 

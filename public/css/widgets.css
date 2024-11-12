@@ -1,0 +1,188 @@
+/* General Widget Styling */
+.widget {
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.widget:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.widget-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.widget-icon {
+    font-size: 24px;
+    margin-right: 8px;
+    color: #ffffff;
+}
+
+/* Widget Value Styling */
+.widget-value {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+/* Color Themes for Each Widget */
+.retry-times-widget {
+    background-color: #6daedf; /* Soft Blue */
+}
+
+.score-widget {
+    background-color: #77c593; /* Soft Green */
+}
+
+.coins-widget {
+    background-color: #ffdb75; /* Soft Yellow */
+}
+
+.revenue-widget {
+    background-color: #77c593; /* Soft Green */
+}
+
+.pending-widget {
+    background-color: #ffdb75; /* Soft Yellow */
+}
+/* Dark Mode Colors */
+@media (prefers-color-scheme: dark) {
+    .retry-times-widget {
+        background-color: #4d89c1;
+    }
+
+    .score-widget {
+        background-color: #5ea378;
+    }
+
+    .coins-widget {
+        background-color: #e6c065;
+    }
+    
+    .revenue-widget {
+        background-color: #5ea378;
+    }
+
+    .pending-widget {
+        background-color: #e6c065;
+    }
+
+    .widget {
+        color: #e0e0e0;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .widget:hover {
+        box-shadow: 0 6px 12px rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* General Widget Container Styling */
+.widget-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.widget-container h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.widget-container:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Selected Items Grid Layout */
+.selected-items-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Unlocked Items Grid Layout */
+.unlocked-items-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Individual Item Styling */
+.selected-item, .unlocked-item {
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selected-item:hover, .unlocked-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.selected-item img, .unlocked-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Specific Background Colors for Different Widgets */
+.selected-background {
+    background-color: #d8ecf5; /* Very Light Blue */
+}
+
+.selected-skin {
+    background-color: #f7dbe5; /* Very Light Pink */
+}
+
+.backgrounds-grid .unlocked-item {
+    background-color: #e4f1e7; /* Very Light Green */
+}
+
+.skins-grid .unlocked-item {
+    background-color: #fdf0e0; /* Very Light Orange */
+}
+
+.trophies-grid .unlocked-item {
+    background-color: #e8f2fa; /* Very Light Sky Blue */
+}
+
+/* Text Styling */
+.selected-item p, .widget-container p {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Dark Mode Styling */
+@media (prefers-color-scheme: dark) {
+    .widget-container {
+        background-color: #2c2c2e;
+        color: #e0e0e0;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .widget-container h3 {
+        color: #f0f0f0;
+    }
+
+    .selected-item, .unlocked-item {
+        background-color: #3a3a3c;
+        box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .selected-item p, .widget-container p {
+        color: #b0b0b0;
+    }
+}

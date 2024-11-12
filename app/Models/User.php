@@ -52,7 +52,8 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
-
+    
+    
     public function getDisplayNameAttribute()
     {
         return $this->name ?? $this->username;  // Return name if set, otherwise username.
@@ -71,8 +72,9 @@ class User extends Authenticatable
 
     public function gameStatistics()
     {
-        return $this->hasMany(GameStatistic::class, 'user_id');
+        return $this->hasOne(GameUserStatistic::class);
     }
+
 
     public function userStatistic()
     {

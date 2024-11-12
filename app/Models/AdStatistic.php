@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,18 +9,14 @@ class AdStatistic extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ad_id', 'type'];
+    protected $fillable = [
+        'ad_id', 'views', 'clicks',
+    ];
 
     public function ad()
     {
-        return $this->belongsTo(Ad::class, 'ad_id');
+        return $this->belongsTo(Ad::class);
     }
 
-    protected static function booted()
-    {
-        static::created(function ($adStatistic) {
-            // Recalculate and save revenue for the associated ad after each new statistic
-            $adStatistic->ad->calculateRevenue();
-        });
-    }
+    
 }

@@ -10,7 +10,8 @@ class GameStatistic extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'platform', 'average_session_duration', 'total_achievements', 'last_active', 'total_users_registered', 'daily_users_registered', 'monthly_users_registered', 'daily_active_users', 'monthly_active_users'
+        'total_users_registered', 'daily_users_registered', 'monthly_users_registered', 'daily_active_users', 'monthly_active_users', 'daily_active_guests',
+        'monthly_active_guests'
     ];
 
     public function user()

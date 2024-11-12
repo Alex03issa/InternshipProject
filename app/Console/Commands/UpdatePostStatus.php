@@ -12,10 +12,11 @@ class UpdatePostStatus extends Command
 
     public function handle()
     {
-        $posts = Post::all();
-
-        foreach ($posts as $post) {
+        // Retrieve all posts and update their status based on conditions
+        Post::all()->each(function ($post) {
             $post->updateStatusBasedOnConditions();
-        }
+        });
+
+        $this->info('Post statuses have been updated based on conditions.');
     }
 }
