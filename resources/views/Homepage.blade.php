@@ -217,8 +217,8 @@
                                     <a href="{!! $block->content !!}" class="text-primary hover:underline">{{ $block->content }}</a>
                                 @endif
                             @endforeach
-                            <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                            <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+                            <a class="btn-solid-lg" href="https://www.apple.com/app-store/"><i class="fab fa-apple"></i>Download</a>
+                            <a class="btn-solid-lg secondary" href="https://play.google.com/store/games?hl=en"><i class="fab fa-google-play"></i>Download</a>
                         </div>
                         <div class="xl:text-right">
                             <img class="inline" src="{{ asset('storage/' . $homeHeaderPost->uploaded_file) }}" alt="{{ $homeHeaderPost->title }}" />
@@ -638,8 +638,8 @@
                                     </ul>
                                 @endif
                             @endforeach
-                            <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
-                            <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+                            <a class="btn-solid-lg" href="https://www.apple.com/app-store/"><i class="fab fa-apple"></i>Download</a>
+                            <a class="btn-solid-lg secondary" href="https://play.google.com/store/games?hl=en"><i class="fab fa-google-play"></i>Download</a>
                         </div>
                     </div>
                 </div>

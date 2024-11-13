@@ -296,7 +296,7 @@
                                 @endif
                             @endforeach
                             
-                            <a class="btn-solid-reg mb-12" href="index.html#download">Download Now</a>
+                            <a class="btn-solid-reg mb-12" href="{{ route('download') }}">Download Now</a>
                         @endif
                     @endif
                 </div>
