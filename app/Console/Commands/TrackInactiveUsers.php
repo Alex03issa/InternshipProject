@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\UserStatistic;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -14,19 +15,32 @@ class TrackInactiveUsers extends Command
 
     public function handle()
     {
-        $threshold = Carbon::now()->subMinutes(30); // 30-minute inactivity threshold
+        $threshold = Carbon::now('UTC')->subMinutes(5)->startOfMinute(); 
 
-        // Find users who have been inactive for more than the threshold
-        $inactiveUsers = UserStatistic::where('updated_at', '<', $threshold)
-                                      ->whereNotNull('current_visit')
-                                      ->get();
-
+        $inactiveUsers = UserStatistic::whereNotNull('current_visit')->get();
+        
         foreach ($inactiveUsers as $userStatistic) {
-            $userStatistic->last_visit = $userStatistic->current_visit;
-            $userStatistic->current_visit = null; // Clear current_visit
-            $userStatistic->save();
+            // Fetch the associated user's timezone from the User model
+            $user = User::find($userStatistic->user_id);
+            $userTimeZone = $user->timezone ?? 'UTC';
 
-            Log::info('Inactivity detected. Last visit updated for user ID: ' . $userStatistic->user_id);
+            // Convert `current_visit` to UTC for comparison
+            $currentVisitInUTC = Carbon::parse($userStatistic->current_visit, $userTimeZone)->utc();
+
+            if ($currentVisitInUTC->lessThan($threshold)) {
+                // Update last_visit and manually set updated_at to user's local time
+                $userStatistic->last_visit = $userStatistic->current_visit;
+                $userStatistic->current_visit = null;
+                
+                // Save the updated_at timestamp in user's timezone
+                $userStatistic->timestamps = false; 
+                $userStatistic->updated_at = Carbon::now($userTimeZone);
+                $userStatistic->save();
+                $userStatistic->timestamps = true; 
+
+                Log::info("Inactivity detected. Last visit updated for user ID: {$userStatistic->user_id}");
+            }
         }
     }
+
 }

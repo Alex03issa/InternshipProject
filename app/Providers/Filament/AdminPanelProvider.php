@@ -26,20 +26,27 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
-            ->login() 
+            ->path('admin') 
             ->colors([
                 'primary' => '#594cda',
+                'views-blue' => '#2563eb',   // A medium blue for views
+                'clicks-orange' => '#f97316', // A vibrant orange for clicks
+                'revenue-green' => '#10b981', // A fresh green for revenue
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
-                Pages\Dashboard::class,
-            ])
+                \App\Filament\Pages\Dashboard::class,
+            ])            
             ->widgets([
-                Widgets\AccountWidget::class,
+                \App\Filament\Widgets\RevenueWidget::class,
+                \App\Filament\Widgets\MonthlyRegisteredUsers::class,
+                \App\Filament\Widgets\MonthlyRevenueChart::class,
+                \App\Filament\Widgets\MonthlyUserGuestChart::class,
+                \App\Filament\Widgets\DownloadStatisticsChartWidget::class,
             ])
+            
             
             ->middleware([
                 EncryptCookies::class,
@@ -56,4 +63,6 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+
+    
 }

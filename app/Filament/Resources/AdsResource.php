@@ -25,6 +25,9 @@ use Filament\Tables\Filters\Filter;
 use Carbon\Carbon;
 use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\IconColumn;
+use Illuminate\Support\Facades\Config;
+use Filament\Tables\Columns\BadgeColumn;
 
 class AdsResource extends Resource
 {
@@ -32,6 +35,8 @@ class AdsResource extends Resource
 
     protected static ?string $navigationGroup = 'Content';
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+
+    
 
     public static function form(Form $form): Form
     {
@@ -142,12 +147,17 @@ class AdsResource extends Resource
                     Toggle::make('active')
                         ->label('Active')
                         ->default(true),
+
+                    Toggle::make('paid_status')
+                        ->label('Is it Paid?')
+                        ->default(false),
                 ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+
         return $table
             ->columns([
                 TextColumn::make('ad_name')
@@ -175,18 +185,24 @@ class AdsResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('total_views')
+                BadgeColumn::make('total_views')
                     ->label('Views')
-                    ->getStateUsing(fn ($record) => $record->total_views),
-    
-                TextColumn::make('total_clicks')
+                    ->getStateUsing(fn ($record) => $record->total_views)
+                    ->icon('heroicon-o-eye')
+                    ->Color('views-blue'), 
+
+                BadgeColumn::make('total_clicks')
                     ->label('Clicks')
-                    ->getStateUsing(fn ($record) => $record->total_clicks),
-    
-                TextColumn::make('revenue')
-                    ->label('Revenue')
-                    ->getStateUsing(fn ($record) => $record->calculateRevenue()),
-    
+                    ->getStateUsing(fn ($record) => $record->total_clicks)
+                    ->icon('heroicon-o-cursor-arrow-rays')
+                    ->Color('clicks-orange'),
+
+                BadgeColumn::make('bill')
+                    ->label('Bill')
+                    ->getStateUsing(fn ($record) => number_format($record->bill, 5))
+                    ->icon('heroicon-o-currency-dollar')
+                    ->Color('revenue-green'),
+
 
                 TextColumn::make('start_date')
                     ->label('Start Date')
@@ -197,6 +213,9 @@ class AdsResource extends Resource
                     ->label('End Date')
                     ->sortable()
                     ->date('Y-m-d'),
+
+                BooleanColumn::make('paid_status')
+                    ->label('Paid'),
             ])
             ->filters([
                 // Start Date Filter
@@ -281,6 +300,10 @@ class AdsResource extends Resource
                     ->icon('heroicon-o-trash')
                     ->label('')
                     ->size('xl'),
+                Tables\Actions\Action::make('downloadClientReport')
+                    ->label('Client Report')
+                    ->url(fn (Ad $record) => route('ad.downloadClientReport', $record->id))
+                    ->icon('heroicon-o-arrow-down-on-square'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -321,7 +344,51 @@ class AdsResource extends Resource
                         })
                         ->color('danger') 
                         ->requiresConfirmation() 
-                        ->icon('heroicon-o-x-circle'),  
+                        ->icon('heroicon-o-x-circle'), 
+                        
+                    Tables\Actions\BulkAction::make('mark_as_paid')
+                        ->label('Mark as Paid')
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                $record->update(['paid_status' => true]);
+                                $record->updateRevenue(); // Update revenue after marking as paid
+                            }
+                            Notification::make()
+                                ->title('The Bill is Paid!')
+                                ->success()
+                                ->send();
+                        })
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->icon('heroicon-o-check-circle'),
+                    
+
+                    Tables\Actions\BulkAction::make('mark_as_unpaid')
+                        ->label('Mark as Unpaid')
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                $record->update(['paid_status' => false]);
+                                $record->updateRevenue(); 
+                            }
+                            Notification::make()
+                                ->title('The Bill is Unpaid!')
+                                ->success()
+                                ->send();
+                        })
+                        ->color('danger') 
+                        ->requiresConfirmation() 
+                        ->icon('heroicon-o-x-circle'),
+
+                    Tables\Actions\BulkAction::make('downloadAdminReport')
+                        ->label('Admin Report')
+                        ->url(route('ad.downloadAdminReport'))
+                        ->action(function (Collection $records) {
+                            Notification::make()
+                                ->title('Report has been Downloaded!')
+                                ->success()
+                                ->send();
+                        })
+                        ->icon('heroicon-o-arrow-down-on-square'),
                     ])
                     ->label('Actions'),
             ]);

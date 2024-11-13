@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\signupController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -59,9 +59,6 @@ Route::post('/login', [loginController::class, 'signIn'])->name('login.submit');
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
 
 
-Route::middleware(['auth', 'CheckAdmin'])->group(function () {
-
-});
 
 
 // Google login routes
@@ -69,19 +66,12 @@ Route::post('/store-timezone', [GoogleAuthController::class, 'storeTimezone'])->
 Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
-//password creation
-
-Route::get('auth/password/create', [PasswordController::class, 'showCreateForm'])->name('password.create');
-Route::post('auth/password/store', [PasswordController::class, 'store'])->name('password.store');
 
 // Apple login routes (if using Apple ID login)
 
 Route::get('auth/apple/redirect', [AppleAuthController::class, 'redirectToApple'])->name('apple.redirect');
 Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallback'])->name('apple.callback');
 
-//password prompt
-Route::get('/password/prompt', [PasswordController::class, 'prompt'])->name('password.prompt');
-Route::post('/password/choice', [PasswordController::class, 'handleChoice'])->name('password.choice');
 
 Route::get('/verify/{token}', [VerificationController::class, 'verify'])->name('verify.email');
 
@@ -122,5 +112,14 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 
-Route::get('/ad-click/{id}', [AdController::class, 'trackClick'])->name('ad.click');
-Route::get('/ad-view/{id}', [AdController::class, 'trackView'])->name('ad.view');
+Route::get('/track-click/{adId}', [AdController::class, 'trackClick'])->name('trackClick');
+Route::get('/ads/{adId}/client-report', [AdController::class, 'downloadClientReport'])->name('ad.downloadClientReport');
+Route::get('/ads/admin-report', [AdController::class, 'downloadAdminReport'])->name('ad.downloadAdminReport');
+
+
+Route::post('/user/update-last-visit', [HomeController::class, 'updateLastVisit'])->name('user.updateLastVisit');
+
+
+Route::post('/track-activity', [UserActivityController::class, 'updateCurrentVisit'])->name('track.activity');
+
+

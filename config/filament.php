@@ -2,12 +2,27 @@
 
 return [
 
-    'auth' => [
-        'guard' => 'web', // Use your application's guard
-        'login' => false, // Disable Filament's default login page
-        'logout' => '/logout',
+    'panels' => [
+        'admin' => [
+            'path' => 'admin',
+            'middleware' => ['web', 'auth'],
+            'auth' => [
+                'guard' => 'web',
+                'login' => '/login', 
+            ],
+        ],
+        'user' => [
+            'path' => 'user',
+            'middleware' => ['web', 'auth'],
+            'auth' => [
+                'guard' => 'web',
+                'login' => '/login', 
+            ],
+        ],
     ],
 
-    // Other Filament settings...
-
+    'auth' => [
+        'logout_redirect' => '/login', 
+    ],
 ];
+

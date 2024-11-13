@@ -11,8 +11,18 @@ class Skin extends Model
     use HasFactory;
 
     protected $fillable = [
-        'skin_name', 'skin_image', 'unlock_points'
+        'skin_name', 'skin_image', 'cost'
     ];
+
+    public function addUnlockedSkin($skinId)
+    {
+        $unlockedSkins = $this->unlocked_skin ?? [];
+        if (!in_array($skinId, $unlockedSkins)) {
+            $unlockedSkins[] = $skinId;
+            $this->unlocked_skin = $unlockedSkins;
+            $this->save();
+        }
+    }
 
     public function gameInfos()
     {

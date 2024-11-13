@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 use App\Models\Ad;
+use App\Models\AdStatistic;
+use App\Http\Controllers\AdController;
 
 class PostController extends Controller
 {
@@ -43,6 +45,13 @@ class PostController extends Controller
         $teamMembers = \App\Models\TeamMember::all();
         $siteStatistics = \App\Models\SiteStatistic::first();
         $ads = Ad::where('active', true)->get();
+
+
+        
+        foreach ($ads as $ad) {
+            $adController = new AdController();
+            $adController->trackView($ad->id);
+        }
     
         switch ($categoryTitle) {
             case 'Privacy Policy':

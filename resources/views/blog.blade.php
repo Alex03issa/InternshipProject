@@ -16,7 +16,8 @@
         <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
         <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
         <meta name="twitter:card" content="summary_large_image" /> <!-- to have large image post format in Twitter -->
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <!-- Webpage Title -->
         <title>Blog - Side to Side</title>
 
@@ -80,7 +81,7 @@
                                     @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <a class="dropdown-item" href="{{route('filament.user.pages.user-dashboard')}}">Profile</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -295,7 +296,7 @@
                                 @endif
                             @endforeach
                             
-                            <a class="btn-solid-reg mb-12" href="index.html#download">Download Now</a>
+                            <a class="btn-solid-reg mb-12" href="{{ route('download') }}">Download Now</a>
                         @endif
                     @endif
                 </div>
@@ -315,16 +316,27 @@
                                 <!-- Display Custom Ad -->
                                 <div class="ad-item bg-white p-4 rounded-lg shadow-lg inline-block">
                                     @if($ad->ad_image)
-                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank">
-                                            <img src="{{ asset('storage/' . $ad->ad_image) }}" alt="{{ $ad->ad_name }}"  class="object-contain rounded-lg mb-4 mx-auto" style="max-width: 100%; height: auto;">
-                                        </a>
+                                        <div class="image-container flex-grow mb-4">
+                                            @if($ad->ad_url)
+                                                <a href="{{ route('trackClick', ['adId' => $ad->id]) }}" target="_blank">
+                                                    <img src="{{ asset('storage/' . $ad->ad_image) }}" alt="{{ $ad->ad_name }}" class="object-contain w-full h-auto max-h-64 mx-auto rounded-lg">
+                                                </a>
+                                            @else
+                                                <img src="{{ asset('storage/' . $ad->ad_image) }}" alt="{{ $ad->ad_name }}" class="object-contain w-full h-auto max-h-64 mx-auto rounded-lg">
+                                            @endif
+                                        </div>
                                     @endif
-                                    <h3 class="text-xl font-semibold mb-2">
-                                        <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="hover:underline">{{ $ad->ad_name }}</a>
-                                    </h3>
-                                    <p class="mb-2 text-gray-600">{{ $ad->description }}</p> <!-- Display Description -->
-                                    <p class="mb-4">Sponsored by {{ $ad->ad_owner }}</p>
-                                    <a href="{{ route('ad.click', $ad->id) }}" target="_blank" class="text-indigo-600 hover:underline">Visit Site</a>
+                                    <div class="text-container mt-auto">
+                                        <h3 class="text-xl font-semibold mb-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                                            {{ $ad->ad_name }}
+                                        </h3>
+                                        <p class="mb-2 text-gray-600 whitespace-nowrap overflow-hidden text-ellipsis">
+                                            Sponsored by {{ $ad->ad_owner }}
+                                        </p>
+                                        @if($ad->ad_url)
+                                            <a href="{{ route('trackClick', ['adId' => $ad->id]) }}" target="_blank" class="text-indigo-600 hover:underline whitespace-nowrap">Visit Site</a>
+                                        @endif
+                                    </div>
                                 </div>
                             @elseif($ad->ad_type == 'google')
                                 <!-- Display Google Ad -->
@@ -368,25 +380,25 @@
 
                     <div class="social-container">
                         <span class="fa-stack">
-                            <a href="#your-link">
+                            <a href="https://www.facebook.com/">
                                 <i class="fas fa-circle fa-stack-2x"></i>
                                 <i class="fab fa-facebook-f fa-stack-1x"></i>
                             </a>
                         </span>
                         <span class="fa-stack">
-                            <a href="#your-link">
+                            <a href="https://www.linkedin.com/">
                                 <i class="fas fa-circle fa-stack-2x"></i>
                                 <i class="fab fa-linkedin fa-stack-1x"></i>
                             </a>
                         </span>
                         <span class="fa-stack">
-                            <a href="#your-link">
+                            <a href="https://www.youtube.com/">
                                 <i class="fas fa-circle fa-stack-2x"></i>
                                 <i class="fab fa-youtube fa-stack-1x"></i>
                             </a>
                         </span>
                         <span class="fa-stack">
-                            <a href="#your-link">
+                            <a href="https://www.instagram.com/">
                                 <i class="fas fa-circle fa-stack-2x"></i>
                                 <i class="fab fa-instagram fa-stack-1x"></i>
                             </a>
@@ -418,9 +430,7 @@
         <script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
         <script src="js/scripts.js"></script> <!-- Custom scripts -->
         <script src="{{ asset('js/ui_event_handlers.js') }}"></script>
-        <script>
-            fetch("{{ route('ad.view', $ad->id) }}");
-        </script>
+        <script src="js/click_tracker.js"></script>
 
 
 

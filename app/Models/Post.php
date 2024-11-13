@@ -22,6 +22,7 @@ class Post extends Model
         'published_at',
         'timezone',
         'use_blocks',
+        'manual_override',
     ];
 
 protected $casts = [
@@ -31,21 +32,20 @@ protected $casts = [
 
 
 public function updateStatusBasedOnConditions()
-    {
-        // Check if manual_override is true; if so, skip automated updates
-        if ($this->manual_override) {
-            return;
-        }
-
-        // Automated conditions for activating or deactivating the post
-        $currentDate = now();
-
-        if ($this->published_at && $this->published_at <= $currentDate) {
-            $this->update(['active' => true]);
-        } else {
-            $this->update(['active' => false]);
-        }
+{
+    if ($this->manual_override) {
+        return;
     }
+
+    $currentDate = now();
+
+    if ($this->published_at && $this->published_at <= $currentDate) {
+        $this->update(['active' => true]);
+    } else {
+        $this->update(['active' => false]);
+    }
+}
+
 
     
 public function contentBlocks()
