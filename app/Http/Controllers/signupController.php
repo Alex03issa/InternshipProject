@@ -111,4 +111,98 @@ class signupController extends Controller
             return redirect()->back()->with('error', 'An unexpected error occurred. Please try again.');
         }
     }
+
+    /**
+     * Handle the sign-up API request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function apiSignUp(Request $request)
+    {
+        try {
+            // Validate the request data
+            $request->validate([
+                'username' => 'required|string|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+                'timezone' => 'string',
+            ]);
+
+            $timezone = $request->input('timezone');
+            $now = Carbon::now($timezone);
+
+            // Generate the verification token
+            $verificationToken = Str::random(64);
+
+            // Create the user with the verification token
+            $user = User::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'verification_token' => $verificationToken,
+                'provider' => 'sidetoside',
+                'timezone' => $timezone,
+                'created_at' => $now,
+            ]);
+
+            DB::beginTransaction();
+            try {
+                // Update statistics after successful registration
+                $totalUsers = User::count();
+                $dailyUsers = User::whereDate('created_at', Carbon::today())->count();
+                $monthlyUsers = User::whereYear('created_at', Carbon::now()->year)
+                                    ->whereMonth('created_at', Carbon::now()->month)
+                                    ->count();
+
+                $siteStatistic = SiteStatistic::first();
+                if ($siteStatistic) {
+                    $siteStatistic->total_users_registered = $totalUsers;
+                    $siteStatistic->daily_users_registered = $dailyUsers;
+                    $siteStatistic->monthly_users_registered = $monthlyUsers;
+                    $siteStatistic->save();
+                }
+
+                DB::commit();
+            } catch (Exception $e) {
+                DB::rollBack();
+                Log::error('Error during user registration: ' . $e->getMessage());
+                return response()->json(['success' => false, 'message' => 'Error updating statistics.'], 500);
+            }
+
+            // Send verification email
+            try {
+                Mail::to($user->email)->send(new VerificationMail($user));
+            } catch (Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Registration successful, but failed to send verification email. Please contact support.'
+                ], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Registration successful! Please check your email to verify your account.'
+            ], 201);
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->validator->errors()
+            ], 422);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'There was an issue with your registration. Please try again later.'
+            ], 500);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An unexpected error occurred. Please try again.'
+            ], 500);
+        }
+    }
+    
 }

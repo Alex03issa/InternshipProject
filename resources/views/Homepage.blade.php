@@ -576,25 +576,41 @@
                         <div class="swiper-container card-slider">
                             <div class="swiper-wrapper">
                                 
-                                <!-- Loop through team members -->
-                                @foreach($teamMembers as $member)
+                                <!-- Loop through team members only if there are multiple entries -->
+                                @if($teamMembers->count() > 1)
+                                    @foreach($teamMembers as $member)
+                                        <div class="swiper-slide">
+                                            <div class="card">
+                                                <img class="card-image" src="{{ asset('storage/' . $member->image_url ?? 'images/default-team-image.jpg') }}" alt="{{ $member->name }}" />
+                                                <div class="card-body">
+                                                    <h4 class="card-title">{{ $member->name }}</h4>
+                                                    <p class="card-text">{{ $member->position }}</p>
+                                                    <p class="italic mb-3">"{{ $member->quote }}"</p>
+                                                </div>
+                                            </div>
+                                        </div> <!-- end of swiper-slide -->
+                                    @endforeach
+                                @else
+                                    <!-- Display single team member without looping -->
                                     <div class="swiper-slide">
                                         <div class="card">
-                                            <img class="card-image" src="{{ asset('storage/' . $member->image_url ?? 'images/default-team-image.jpg') }}" alt="{{ $member->name }}" />
+                                            <img class="card-image" src="{{ asset('storage/' . $teamMembers->first()->image_url ?? 'images/default-team-image.jpg') }}" alt="{{ $teamMembers->first()->name }}" />
                                             <div class="card-body">
-                                                <h4 class="card-title">{{ $member->name }}</h4>
-                                                <p class="card-text">{{ $member->position }}</p>
-                                                <p class="italic mb-3">"{{ $member->quote }}"</p>
+                                                <h4 class="card-title">{{ $teamMembers->first()->name }}</h4>
+                                                <p class="card-text">{{ $teamMembers->first()->position }}</p>
+                                                <p class="italic mb-3">"{{ $teamMembers->first()->quote }}"</p>
                                             </div>
                                         </div>
                                     </div> <!-- end of swiper-slide -->
-                                @endforeach
+                                @endif
 
                             </div> <!-- end of swiper-wrapper -->
 
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
+                            <!-- Conditionally add navigation arrows if there is more than one team member -->
+                            @if($teamMembers->count() > 1)
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            @endif
                             <!-- end of add arrows -->
 
                         </div> <!-- end of swiper-container -->
@@ -602,6 +618,7 @@
                 </div> <!-- end of container -->
             </div> <!-- end of slider-1 -->
         </section>
+
 
 
         <!-- Download Section -->
@@ -715,6 +732,9 @@
         
 
         <!-- Scripts -->
+        <script>
+            var totalMembers = {{ $teamMembers->count() }};
+        </script>
         <script src="js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->
         <script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
         <script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
@@ -723,6 +743,7 @@
         <script src="js/ui_event_handlers.js"></script>
         <script src="js/click_tracker.js"></script>
         
+
 
 
       

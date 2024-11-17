@@ -47,6 +47,10 @@ class SkinResource extends Resource
                     ->label('Cost (Coins)')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('skin_image')
+                    ->directory('uploads')
+                    ->preserveFilenames()
+                    ->visibility('public')
+                    ->image()
                     ->label('Image'),
             ])
             ->actions([

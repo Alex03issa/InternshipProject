@@ -60,9 +60,9 @@ class User extends Authenticatable
     }
 
 
-    public function gameInfos()
+    public function gameInfo()
     {
-        return $this->hasMany(GameInfo::class, 'user_id');
+        return $this->hasOne(GameInfo::class, 'user_id','id');
     }
 
     public function siteStatistics()

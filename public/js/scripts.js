@@ -61,31 +61,33 @@
     });
     
 
-    /* Card Slider - Swiper */
+	/* Card Slider - Swiper */
 	var cardSlider = new Swiper('.card-slider', {
 		autoplay: {
-            delay: 4000,
-            disableOnInteraction: false
+			delay: 4000,
+			disableOnInteraction: false
 		},
-        loop: true,
-        navigation: {
+		loop: totalMembers > 1, // Enable loop only if there are multiple members
+		navigation: {
 			nextEl: '.swiper-button-next',
 			prevEl: '.swiper-button-prev'
 		},
-		slidesPerView: 3,
-		spaceBetween: 70,
-        breakpoints: {
-            // when window is <= 767px
-            767: {
-                slidesPerView: 1
-            },
-            // when window is <= 1023px
-            1023: {
-                slidesPerView: 2,
-                spaceBetween: 40
-            }
-        }
-    });
+		slidesPerView: totalMembers < 3 ? totalMembers : 3, // Show 1, 2, or 3 slides depending on totalMembers
+		spaceBetween: totalMembers === 1 ? 0 : (totalMembers === 2 ? 40 : 70), // Adjust spacing based on totalMembers
+		breakpoints: {
+			// when window is <= 767px
+			767: {
+				slidesPerView: 1
+			},
+			// when window is <= 1023px
+			1023: {
+				slidesPerView: totalMembers < 2 ? totalMembers : 2, // Show 1 or 2 slides on smaller screens
+				spaceBetween: totalMembers === 1 ? 0 : 40
+			}
+		}
+	});
+
+
 
 
     /* Counter - CountTo */

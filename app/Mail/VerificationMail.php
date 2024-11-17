@@ -30,10 +30,21 @@ class VerificationMail extends Mailable
      */
     public function build()
     {
+        $isApiClient = request()->header('Client-Type') === 'API'; // Assume a custom header is sent to indicate client type
+    
+        $verificationUrl = $isApiClient
+            ? url('/api/apiverify-email/' . $this->user->verification_token) // API link
+            : route('verify.email', ['token' => $this->user->verification_token]); // Web link
+    
         return $this->subject('Email Verification')
                     ->view('emails.verify')
                     ->with([
-                        'verificationUrl' => route('verify.email', ['token' => $this->user->verification_token]),
+                        'verificationUrl' => $verificationUrl,
+                        'user' => $this->user,
+                        'isApiClient' => $isApiClient, // Pass this to the email view
                     ]);
     }
+    
+
+
 }

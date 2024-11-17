@@ -34,7 +34,7 @@ class GoogleAuthController extends Controller
         try {
            
             $timezone = Session::get('user_timezone', 'UTC');
-            \Log::info('Timezone retrieved from session before redirecting to Google: ' . $timezone);
+            Log::info('Timezone retrieved from session before redirecting to Google: ' . $timezone);
 
             return Socialite::driver('google')->redirect();
         } catch (Exception $e) {
@@ -145,4 +145,108 @@ class GoogleAuthController extends Controller
     {
         return bin2hex(openssl_random_pseudo_bytes($length / 2));
     }
+
+    public function apiGoogleLogin(Request $request)
+    {
+        try {
+            // Retrieve token from the Authorization header or fallback to the request body
+            $token = $request->bearerToken() ?: $request->input('token');
+
+            if (!$token) {
+                return response()->json(['success' => false, 'message' => 'Token is required.'], 400);
+            }
+
+            // Optional timezone input, defaults to 'UTC'
+            $timezone = $request->input('timezone', 'UTC');
+
+            // Use the token to retrieve the Google user
+            $googleUser = Socialite::driver('google')->stateless()->userFromToken($token);
+
+            // Check if the user already exists in your database
+            $existingUser = User::where('email', $googleUser->getEmail())->first();
+            $now = Carbon::now($timezone);
+
+            if ($existingUser) {
+                // Update the user if necessary
+                if ($existingUser->username == 'default_username' || empty($existingUser->username)) {
+                    $existingUser->username = $googleUser->getName();
+                }
+
+                $existingUser->update([
+                    'profile_image' => $googleUser->getAvatar(),
+                    'provider' => 'google',
+                    'is_verified' => true,
+                    'google_id' => $googleUser->getId(),
+                    'timezone' => $timezone,
+                ]);
+
+                // Generate a Laravel Sanctum token for the existing user
+                $token = $existingUser->createToken('MobileAppToken')->plainTextToken;
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logged in successfully!',
+                    'token' => $token,
+                    'user' => $existingUser,
+                ], 200);
+            } else {
+                // Register a new user
+                $randomPassword = $this->generateRandomPassword();
+
+                $newUser = User::create([
+                    'username' => $googleUser->getName(),
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'provider' => 'google',
+                    'google_id' => $googleUser->getId(),
+                    'is_verified' => true,
+                    'profile_image' => $googleUser->getAvatar(),
+                    'password' => Hash::make($randomPassword),
+                    'timezone' => $timezone,
+                    'created_at' => $now,
+                ]);
+
+                // Generate a Laravel Sanctum token for the new user
+                $token = $newUser->createToken('MobileAppToken')->plainTextToken;
+
+                // Update statistics after registration
+                DB::beginTransaction();
+                try {
+                    $totalUsers = User::count();
+                    $dailyUsers = User::whereDate('created_at', Carbon::today())->count();
+                    $monthlyUsers = User::whereYear('created_at', Carbon::now()->year)
+                                        ->whereMonth('created_at', Carbon::now()->month)
+                                        ->count();
+
+                    $siteStatistic = SiteStatistic::first();
+                    if ($siteStatistic) {
+                        $siteStatistic->total_users_registered = $totalUsers;
+                        $siteStatistic->daily_users_registered = $dailyUsers;
+                        $siteStatistic->monthly_users_registered = $monthlyUsers;
+                        $siteStatistic->save();
+                    }
+
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    Log::error('Error during user registration: ' . $e->getMessage());
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logged in successfully!',
+                    'token' => $token,
+                    'user' => $newUser,
+                ], 201);
+            }
+        } catch (Exception $e) {
+            Log::error('Google OAuth error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to login using Google. Please try again.',
+            ], 500);
+        }
+    }
+
+ 
 }

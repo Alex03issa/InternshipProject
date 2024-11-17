@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
-<!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -106,21 +103,22 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            <img src="{{ asset('images/logo.png') }}" alt="Side to Side Logo">
         </div>
-        
         <div class="title">
             Welcome to Side to Side
         </div>
-        
         <div class="content">
-            <p>Hello {{ $user->username == 'default_username' ?  $user->name : $user->username }},</p>
-            <p>Thank you for signing up with Side to Side. Please verify your email address by clicking the button below:</p>
+            <p>Hello {{ $user->username == 'default_username' ? $user->name : $user->username }},</p>
+            <p>Thank you for signing up! Please verify your email address by clicking the button below:</p>
         </div>
-        
-        <a class="verify-button" href="{{ $verificationUrl }}" target="_blank" rel="noopener noreferrer">Verify Email</a>
+        <div class="content">
+            <a class="verify-button" href="{{ $verificationUrl }}" target="_blank">
+                {{ $isApiClient ? 'Verify Email via API' : 'Verify Email' }}
+            </a>
+        </div>
         <div class="footer">
-            <p>If you did not sign up for this account, please ignore this email.</p>
+            <p>If you did not sign up for this account, you can safely ignore this email.</p>
             <p>&copy; 2024 Side to Side. All rights reserved.</p>
         </div>
     </div>

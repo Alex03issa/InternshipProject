@@ -26,6 +26,9 @@ class BackgroundResource extends Resource
                     ->required(),
                 Forms\Components\FileUpload::make('background_image')
                     ->label('Image')
+                    ->directory('uploads')
+                    ->preserveFilenames()
+                    ->visibility('public')
                     ->image(),
                 Forms\Components\TextInput::make('cost')
                     ->label('Cost (Coins)')
