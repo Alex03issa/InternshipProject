@@ -76,17 +76,6 @@ Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallb
 Route::get('/verify/{token}', [VerificationController::class, 'verify'])->name('verify.email');
 
 
-
-Route::get('/send-test-email', function () {
-    Mail::raw('This is a test email', function($message) {
-        $message->to('aissait18@gmail.com')
-                ->subject('Test Email');
-    });
-
-    return 'Test email sent!';
-});
-
-
 Route::get('storage/uploads/{filename}', function ($filename) {
     $path = storage_path('app/public/uploads/' . $filename);
 

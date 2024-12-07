@@ -15,7 +15,7 @@ class TrackInactiveUsers extends Command
 
     public function handle()
     {
-        $threshold = Carbon::now('UTC')->subMinutes(5)->startOfMinute(); 
+        $threshold = Carbon::now('UTC')->subMinutes(30)->startOfMinute(); 
 
         $inactiveUsers = UserStatistic::whereNotNull('current_visit')->get();
         

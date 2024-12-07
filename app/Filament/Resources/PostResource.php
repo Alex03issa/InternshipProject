@@ -112,11 +112,14 @@ class PostResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('uploaded_file')
                             ->label('Upload File')
-                            ->preserveFilenames() 
-                            ->directory('uploads') 
-                            ->visibility('public')
+                            ->preserveFilenames()
+                            ->directory('uploads')
+                            ->visibility('private')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp']) // Restrict types
+                            ->maxSize(2048) // Limit file size to 2MB
                             ->image()
                             ->imageEditor(),
+
                         Forms\Components\Select::make('category_id')
                             ->relationship('categories', 'title')
                             ->required(),

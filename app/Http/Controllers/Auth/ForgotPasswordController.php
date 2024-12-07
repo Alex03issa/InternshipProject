@@ -1,12 +1,16 @@
 <?php
 
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetMail;
+use Exception;
 
 class ForgotPasswordController extends Controller
 {
@@ -17,46 +21,144 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLinkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'We couldn\'t find an account with that email address in our Database.']);
-        }
-
         try {
-            $status = Password::sendResetLink($request->only('email'));
+            Log::info('Password reset request received (web).', ['email' => $request->email]);
 
-            return $status === Password::RESET_LINK_SENT
-                ? back()->with('success', 'Password reset link sent successfully. Please check your email.')
-                : back()->withErrors(['email' => __($status)]);
-        } catch (\Exception $e) {
-            // Custom error message when email could not be sent
-            return back()->withErrors(['email' => 'We couldn\'t send you an email right now. Try again later or contact us.']);
+            // Validate the input
+            $request->validate(['email' => 'required|email']);
+
+            // Hash the email to find the user
+            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $user = User::where('hashed_email', $hashedEmail)->first();
+
+            if (!$user) {
+                Log::warning('No user found with the provided email (web).', ['hashed_email' => $hashedEmail]);
+                return back()->withErrors(['email' => 'No user found with this email.']);
+            }
+
+            // Decrypt the stored email
+            $encryptedData = Crypt::decryptString($user->email);
+            $data = json_decode($encryptedData, true);
+
+            if (!isset($data['email'])) {
+                Log::error('Invalid email structure in the database.', ['user_id' => $user->id]);
+                return back()->withErrors(['email' => 'Invalid email structure.']);
+            }
+
+            $decryptedEmail = Crypt::decryptString($data['email']);
+            if ($decryptedEmail !== $request->email) {
+                Log::warning('Email mismatch detected.', ['user_id' => $user->id]);
+                return back()->withErrors(['email' => 'Invalid email address.']);
+            }
+
+            // Generate the password reset token
+            $plainToken = Password::broker()->createToken($user);
+
+            // Encrypt the token
+            $tokenData = json_encode([
+                'user_id' => $user->id,
+                'email' => $decryptedEmail,
+                'token' => $plainToken,
+                'timestamp' => now()->addMinutes(30)->timestamp, // Token expiry
+            ]);
+            $hmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $encryptedToken = Crypt::encryptString(json_encode(['data' => $tokenData, 'hmac' => $hmac]));
+
+            Log::info("Generated encrypted password reset token for user ID {$user->id}.");
+
+            // Store the token
+            \DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'email' => $user->email,
+                    'token' => $encryptedToken,
+                    'created_at' => now(),
+                    'hashed_email' => $hashedEmail,
+                ]
+            );
+
+            // Send the reset link email
+            Mail::to($decryptedEmail)->send(new PasswordResetMail($user, $encryptedToken));
+            Log::info("Password reset email sent to {$decryptedEmail}.");
+
+            return back()->with('success', 'Password reset link sent successfully. Please check your email.');
+        } catch (Exception $e) {
+            Log::error('ForgotPassword Error (web): ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return back()->withErrors(['email' => 'We couldn\'t send you an email right now. Please try again later.']);
         }
     }
 
-
-
-     /**
-     * API version for sending a password reset email.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function apiForgotPassword(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        try {
+            Log::info('Password reset request received (API).', ['email' => $request->email]);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+            // Validate the input
+            $request->validate(['email' => 'required|email']);
 
-        if ($status == Password::RESET_LINK_SENT) {
-            return response()->json(['success' => true, 'message' => __($status)], 200);
+            // Hash the email to find the user
+            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $user = User::where('hashed_email', $hashedEmail)->first();
+
+            if (!$user) {
+                Log::warning('No user found with the provided email (API).', ['hashed_email' => $hashedEmail]);
+                return response()->json(['success' => false, 'message' => 'No user found with this email.'], 404);
+            }
+
+            // Decrypt the stored email
+            $encryptedData = Crypt::decryptString($user->email);
+            $data = json_decode($encryptedData, true);
+
+            if (!isset($data['email'])) {
+                Log::error('Invalid email structure in the database.', ['user_id' => $user->id]);
+                return response()->json(['success' => false, 'message' => 'Invalid email structure.'], 400);
+            }
+
+            $decryptedEmail = Crypt::decryptString($data['email']);
+            if ($decryptedEmail !== $request->email) {
+                Log::warning('Email mismatch detected.', ['user_id' => $user->id]);
+                return response()->json(['success' => false, 'message' => 'Invalid email address.'], 400);
+            }
+
+            // Generate the password reset token
+            $plainToken = Password::broker()->createToken($user);
+
+            // Encrypt the token
+            $tokenData = json_encode([
+                'user_id' => $user->id,
+                'email' => $decryptedEmail,
+                'token' => $plainToken,
+                'timestamp' => now()->addMinutes(30)->timestamp, // Token expiry
+            ]);
+            $hmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $encryptedToken = Crypt::encryptString(json_encode(['data' => $tokenData, 'hmac' => $hmac]));
+
+            Log::info("Generated encrypted password reset token for user ID {$user->id} (API).");
+
+            // Store the token
+            \DB::table('password_reset_tokens')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'email' => $user->email,
+                    'token' => $encryptedToken,
+                    'created_at' => now(),
+                    'hashed_email' => $hashedEmail,
+                ]
+            );
+
+            // Prepare the reset link
+            $resetUrl = url("/password/reset/{$encryptedToken}");
+
+            Log::info("Password reset link generated successfully (API): {$resetUrl}");
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Password reset link generated successfully.',
+                'reset_link' => $resetUrl,
+            ], 200);
+        } catch (Exception $e) {
+            Log::error('API ForgotPassword Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json(['success' => false, 'message' => 'Unable to send password reset email. Please try again later.'], 500);
         }
-
-        return response()->json(['success' => false, 'message' => __($status)], 400);
     }
 }

@@ -84,11 +84,13 @@
                                 </a>
                                 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route('filament.user.pages.user-dashboard')}}">Profile</a>
+                                    @if(auth()->user()->user_type === 'admin')
+                                        <a class="dropdown-item" href="{{ route('filament.admin.pages.dashboard') }}">Admin Dashboard</a>
+                                    @elseif(auth()->user()->user_type === 'user')
+                                        <a class="dropdown-item" href="{{ route('filament.user.pages.user-dashboard') }}">Dashboard</a>
+                                    @endif
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -31,11 +31,10 @@ class SetUserTimezone
     
                 // Update all timestamps in relevant tables
                 $this->updateTimestampsForAllModels($user->timezone);
+                Log::info("Timezone applied for user: {$user->id}");
             } else {
                 Log::info('User timezone is not set in the database.');
             }
-        } else {
-            Log::info('User is not authenticated.');
         }
 
         return $next($request);
@@ -95,8 +94,8 @@ class SetUserTimezone
             }
 
             // Password Reset Tokens
-            if (isset($record->expires_at)) {
-                $record->expires_at = Carbon::parse($record->expires_at)->setTimezone($userTimezone);
+            if (isset($record->created_at)) {
+                $record->created_at = Carbon::parse($record->expires_at)->setTimezone($userTimezone);
             }
 
             // Failed Jobs

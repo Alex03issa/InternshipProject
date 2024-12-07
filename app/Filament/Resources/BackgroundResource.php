@@ -28,8 +28,10 @@ class BackgroundResource extends Resource
                     ->label('Image')
                     ->directory('uploads')
                     ->preserveFilenames()
-                    ->visibility('public')
-                    ->image(),
+                    ->visibility('private')
+                    ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                    ->maxSize(2048),
                 Forms\Components\TextInput::make('cost')
                     ->label('Cost (Coins)')
                     ->numeric()

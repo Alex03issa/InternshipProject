@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             // Make title, slug, and body columns nullable
-            $table->string('title', 2048)->nullable()->change();
-            $table->string('slug', 2048)->nullable()->change();
-            $table->longText('body')->nullable()->change();
+            $table->string('title', 2048)->default('Untitled')->change();
+            $table->string('slug', 2048)->default('untitled-slug')->change();
+            $table->longText('body')->default('')->change();
         });
     }
 

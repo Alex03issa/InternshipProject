@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\TrackInactiveUsers::class,
         \App\Console\Commands\UpdateAdStatus::class,
         \App\Console\Commands\UpdatePostStatus::class,
+        \App\Console\Commands\ManageEmails::class,
     ];
     
 }

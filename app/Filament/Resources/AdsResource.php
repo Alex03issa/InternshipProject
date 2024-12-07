@@ -63,11 +63,13 @@ class AdsResource extends Resource
 
                     FileUpload::make('ad_image')
                         ->directory('ads')
+                        ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                        ->maxSize(2048) 
                         ->preserveFilenames()
-                        ->visibility('public')
-                        ->image()
-                        ->label('Ad Image (for Custom Ads)')
-                        ->imageEditor(), 
+                        ->visibility('private')
+                        ->imageEditor()
+                        ->image(),
+                 
                     
 
                     Textarea::make('description')

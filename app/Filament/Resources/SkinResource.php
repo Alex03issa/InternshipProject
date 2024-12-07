@@ -49,8 +49,10 @@ class SkinResource extends Resource
                 Tables\Columns\ImageColumn::make('skin_image')
                     ->directory('uploads')
                     ->preserveFilenames()
-                    ->visibility('public')
+                    ->visibility('private')
                     ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp']) 
+                    ->maxSize(2048)
                     ->label('Image'),
             ])
             ->actions([

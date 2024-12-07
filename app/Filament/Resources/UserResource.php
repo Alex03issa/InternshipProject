@@ -17,6 +17,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class UserResource extends Resource
 {
@@ -40,7 +41,11 @@ class UserResource extends Resource
                             ->imageEditor()
                             ->circleCropper()
                             ->columnSpanFull()
-                            ->alignment('center'),
+                            ->visibility('private')
+                            ->alignment('center')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
+                            ->maxSize(2048), 
+
                         
                         Forms\Components\TextInput::make('name')
                             ->label('Name')
@@ -129,8 +134,26 @@ class UserResource extends Resource
                 TextColumn::make('display_name')
                     ->label('Username/Name')
                     ->searchable(),
-                TextColumn::make('email')
+                    TextColumn::make('email')
+                    ->label('Email')
+                    ->getStateUsing(function ($record) {
+                        try {
+                            $encryptedData = Crypt::decryptString($record->email);
+                            $decodedData = json_decode($encryptedData, true);
+                
+                            if (isset($decodedData['email'])) {
+                                return Crypt::decryptString($decodedData['email']); // Decrypt the inner email
+                            }
+                
+                            return 'Invalid Data'; // Fallback if structure is unexpected
+                        } catch (\Exception $e) {
+                            \Log::error("Failed to decrypt email for user ID {$record->id}: " . $e->getMessage());
+                            return 'Error';
+                        }
+                    })
+                    ->sortable()
                     ->searchable(),
+                
                 TextColumn::make('user_type')
                     ->label('User Type')
                     ->sortable(),

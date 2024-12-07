@@ -33,11 +33,13 @@ class TeamMemberResource extends Resource
                     ->imageEditor()
                     ->circleCropper()
                     ->directory('uploads') 
-                    ->visibility('public')
+                    ->visibility('private')
                     ->columnSpanFull() 
                     ->image()
                     ->required()
                     ->columnSpanFull()
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp']) // Restrict types
+                    ->maxSize(2048) // Limit file size to 2MB
                     ->alignment('center'),
                 TextInput::make('name')
                     ->required()
