@@ -100,7 +100,7 @@ class loginController extends Controller
                             return redirect()->route('home.verified')->with('success', 'Logged in successfully!');
                         } else {
                             Log::warning("Password mismatch for user ID {$user->id}.");
-                            return redirect()->back()->withErrors(['password' => 'Invalid password.']);
+                            return redirect()->back()->withErrors(['password' => 'Invalid email or password.']);
                         }
                     } else {
                         return redirect()->back()->withErrors(['email' => 'No user found with this email.']);

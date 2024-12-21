@@ -16,6 +16,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
 use Exception;
 use App\Models\SiteStatistic;
+use Illuminate\Support\Facades\Validator;
 
 class signupController extends Controller
 {
@@ -39,12 +40,24 @@ class signupController extends Controller
     {
         try {
             // Validate the request data
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'username' => 'required|string|max:255|unique:users',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8|confirmed',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'confirmed',
+                    'regex:/[A-Z]/',
+                    'regex:/[0-9]/',
+                    'regex:/[^A-Za-z0-9]/'
+                ],
                 'timezone' => 'required|string',
             ]);
+        
+            if ($validator->fails()) {
+                return redirect()->back()->with('error','Please choose a strong password to sign up');
+            }
 
             // Capture timezone and current timestamp
             $timezone = $request->input('timezone');

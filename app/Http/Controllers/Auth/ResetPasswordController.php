@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class ResetPasswordController extends Controller
 {
@@ -73,12 +74,25 @@ class ResetPasswordController extends Controller
         try {
             Log::info('Password reset request received.', ['email' => $request->email]);
 
-            // Validate the incoming request
-            $request->validate([
-                'token' => 'required',
+             // Validate the request
+             $validator = Validator::make($request->all(), [
+                'token' => 'required|string',
                 'email' => 'required|email',
-                'password' => 'required|confirmed|min:8',
+                'password' => [
+                    'required',
+                    'string',
+                    'min:8',
+                    'confirmed',
+                    'regex:/[A-Z]/',
+                    'regex:/[0-9]/',
+                    'regex:/[^A-Za-z0-9]/'
+                ],
+                
             ]);
+        
+            if ($validator->fails()) {
+                return redirect()->back()->with('error','Please choose a strong password to sign up');
+            }
 
             // Step 1: Decrypt the token
             Log::info('Decrypting the reset token...', ['token' => $request->token]);

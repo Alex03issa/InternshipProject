@@ -63,7 +63,7 @@ class AdsResource extends Resource
 
                     FileUpload::make('ad_image')
                         ->directory('ads')
-                        ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                        ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/webp'])
                         ->maxSize(2048) 
                         ->preserveFilenames()
                         ->visibility('private')
