@@ -57,7 +57,7 @@ The "Side to Side" web dashboard is an administrative platform for managing game
 
 
 ## Screenshots
-Below are some screenshots illustrating some page of the website:
+Below are some screenshots illustrating some pages of the website:
 
 <img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_1.png" width="600">
 <img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_2.png" width="600">
@@ -66,6 +66,11 @@ Below are some screenshots illustrating some page of the website:
 <img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_5.png" width="600">
 <img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_6.png" width="600">
 <img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_7.png" width="600">
+<img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_8.png" width="600">
+<img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_9.png" width="600">
+<img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_10.png" width="600">
+<img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_11.png" width="600">
+
 
 ## Conclusion
 This project provides a robust and scalable dashboard for managing various aspects of the "Side to Side" game, ensuring easy content customization, user engagement, and advertisement handling.
