@@ -55,43 +55,11 @@ The "Side to Side" web dashboard is an administrative platform for managing game
 - Node.js & NPM
 - MySQL Database
 
-### Setup Steps:
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo/side-to-side-dashboard.git
-   cd side-to-side-dashboard
-   ```
-2. Install dependencies:
-   ```sh
-   composer install
-   npm install
-   ```
-3. Copy the environment file:
-   ```sh
-   cp .env.example .env
-   ```
-4. Generate the application key:
-   ```sh
-   php artisan key:generate
-   ```
-5. Configure database settings in `.env`.
-6. Run migrations and seed data:
-   ```sh
-   php artisan migrate --seed
-   ```
-7. Start the development server:
-   ```sh
-   php artisan serve
-   ```
 
 ## Screenshots
 Below are some screenshots illustrating different sections of the dashboard:
 
-- **Admin Dashboard Overview**
-- **User & Team Management**
-- **Advertisements Management**
-- **Game Content Control (Rewards, Leaderboards, Skins, etc.)**
-- **Blog & Post Management**
+
 
 ## Conclusion
 This project provides a robust and scalable dashboard for managing various aspects of the "Side to Side" game, ensuring easy content customization, user engagement, and advertisement handling.
