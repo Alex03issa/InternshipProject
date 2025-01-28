@@ -57,7 +57,7 @@ The "Side to Side" web dashboard is an administrative platform for managing game
 
 
 ## Screenshots
-Below are some screenshots illustrating different sections of the dashboard:
+
 
 ```md
 ![Dashboard Overview](screenshots/Side_to_Side_screen_1.png)
