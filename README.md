@@ -59,15 +59,8 @@ The "Side to Side" web dashboard is an administrative platform for managing game
 ## Screenshots
 
 
-```md
-![Dashboard Overview](screenshots/Side_to_Side_screen_1.png)
-![User Management](screenshots/Side_to_Side_screen_2.png)
-![Advertisements Management](screenshots/Side_to_Side_screen_3.png)
-![Game Content Control](screenshots/Side_to_Side_screen_4.png)
-![Blog & Post Management](screenshots/Side_to_Side_screen_5.png)
-![Admin Dashboard Overview](screenshots/Side_to_Side_screen_6.png)
-![Game Features Control](screenshots/Side_to_Side_screen_7.png)
-```
+<img src="https://raw.githubusercontent.com/Alex03issa/InternshipProject/main/screenshots/Side_to_Side_screen_1.png" width="600">
+
 
 ## Conclusion
 This project provides a robust and scalable dashboard for managing various aspects of the "Side to Side" game, ensuring easy content customization, user engagement, and advertisement handling.
