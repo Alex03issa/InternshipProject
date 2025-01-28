@@ -17,7 +17,6 @@ The "Side to Side" web dashboard is an administrative platform for managing game
 ### 1. **User & Team Management**
 - View and manage registered users.
 - Add, edit, and remove team members.
-- Assign roles and permissions.
 
 ### 2. **Content Management**
 - Control and organize game-related content blocks.
