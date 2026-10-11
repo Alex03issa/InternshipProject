@@ -592,7 +592,7 @@
                                             </div>
                                         </div> <!-- end of swiper-slide -->
                                     @endforeach
-                                @else
+                                @elseif($teamMembers->count() === 1)
                                     <!-- Display single team member without looping -->
                                     <div class="swiper-slide">
                                         <div class="card">

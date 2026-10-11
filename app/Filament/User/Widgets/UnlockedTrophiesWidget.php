@@ -18,9 +18,9 @@ class UnlockedTrophiesWidget extends Widget
         // Fetch the unlocked trophy IDs for the logged-in user from GameInfo
         $gameInfo = GameInfo::where('user_id', Auth::id())->first();
 
-        if ($gameInfo && $gameInfo->unlocked_trophy) {
-            // Decode JSON array of unlocked trophy IDs
-            $unlockedTrophyIds = json_decode($gameInfo->unlocked_trophy, true);
+        if ($gameInfo && $gameInfo->unlockedIds('unlocked_trophies')) {
+            // Array of unlocked trophy IDs
+            $unlockedTrophyIds = $gameInfo->unlockedIds('unlocked_trophies');
 
             // Fetch trophy images where IDs match the unlocked trophy IDs
             $this->trophies = Trophy::whereIn('id', $unlockedTrophyIds)

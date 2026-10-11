@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,6 +12,20 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // SQLite (test suite) can't add a primary key to an existing table,
+        // so rebuild it there with the same resulting columns.
+        if (DB::getDriverName() === 'sqlite') {
+            Schema::drop('password_reset_tokens');
+            Schema::create('password_reset_tokens', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('email')->unique();
+                $table->string('token');
+                $table->timestamp('created_at')->nullable();
+            });
+
+            return;
+        }
+
         Schema::table('password_reset_tokens', function (Blueprint $table) {
             // Add 'id' as an auto-incrementing primary key
             $table->bigIncrements('id')->first();

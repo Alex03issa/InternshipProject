@@ -18,9 +18,9 @@ class UnlockedBackgroundsWidget extends Widget
         // Fetch the unlocked background IDs for the logged-in user from GameInfo
         $gameInfo = GameInfo::where('user_id', Auth::id())->first();
 
-        if ($gameInfo && $gameInfo->unlocked_background) {
-            // Decode JSON array of unlocked background IDs
-            $unlockedBackgroundIds = json_decode($gameInfo->unlocked_background, true);
+        if ($gameInfo && $gameInfo->unlockedIds('unlocked_backgrounds')) {
+            // Array of unlocked background IDs
+            $unlockedBackgroundIds = $gameInfo->unlockedIds('unlocked_backgrounds');
 
             // Fetch background images where IDs match the unlocked background IDs
             $this->backgrounds = Background::whereIn('id', $unlockedBackgroundIds)

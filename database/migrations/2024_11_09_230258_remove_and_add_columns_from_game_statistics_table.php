@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::table('game_statistics', function (Blueprint $table) {
             $table->dropColumn('platform');
+        });
+
+        // Separate blueprint so the adds survive SQLite's table rebuild (tests).
+        Schema::table('game_statistics', function (Blueprint $table) {
             $table->unsignedBigInteger('total_active_guests')->default(0)->after('monthly_active_guests');
             $table->unsignedBigInteger('total_active_users')->default(0)->after('monthly_active_users');
 

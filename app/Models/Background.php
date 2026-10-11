@@ -13,10 +13,4 @@ class Background extends Model
     protected $fillable = [
         'background_name', 'background_image', 'cost'
     ];
-
-
-    public function gameInfos()
-    {
-        return $this->belongsToMany(GameInfo::class, 'game_info_backgrounds', 'background_id', 'game_info_id');
-    }
 }

@@ -17,9 +17,9 @@ class UnlockedSkinsWidget extends Widget
     {
         $gameInfo = GameInfo::where('user_id', Auth::id())->first();
 
-        if ($gameInfo && $gameInfo->unlocked_skin) {
+        if ($gameInfo && $ids = $gameInfo->unlockedIds('unlocked_skins')) {
             // Fetch only the skins that match the unlocked IDs
-            $this->skins = Skin::whereIn('id', $gameInfo->unlocked_skin)->get();
+            $this->skins = Skin::whereIn('id', $ids)->pluck('skin_image')->toArray();
         }
     }
 

@@ -3,8 +3,11 @@
 namespace App\Filament\User\Widgets;
 
 
+use App\Models\Background;
 use App\Models\GameInfo;
+use App\Models\Skin;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Auth;
 
 class SelectedItemsWidget extends Widget
 {
@@ -15,12 +18,28 @@ class SelectedItemsWidget extends Widget
 
     public function mount(): void
     {
-        // Fetch the selected background and skin from the GameInfo table
-        $gameInfo = GameInfo::first(); // Assuming there's only one row for simplicity
+        // Fetch the logged-in player's selected background and skin
+        $gameInfo = GameInfo::where('user_id', Auth::id())->first();
 
-        // Use default values if not found
-        $this->selectedBackground = $gameInfo->background_selected ?? 'default_background.png';
-        $this->selectedSkin = $gameInfo->ball_skin_selected ?? 'default_ball_skin.png';
+        // The game API stores item ids; older rows hold a default file name.
+        $this->selectedBackground = $this->resolveImage(
+            $gameInfo?->background_selected,
+            fn ($id) => Background::find($id)?->background_image
+        ) ?? 'default_background.png';
+
+        $this->selectedSkin = $this->resolveImage(
+            $gameInfo?->ball_skin_selected,
+            fn ($id) => Skin::find($id)?->skin_image
+        ) ?? 'default_ball_skin.png';
+    }
+
+    private function resolveImage($value, callable $findImage): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return is_numeric($value) ? $findImage((int) $value) : (string) $value;
     }
 
     protected function getViewData(): array

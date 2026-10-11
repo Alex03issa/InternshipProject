@@ -16,7 +16,10 @@ class UpdateSiteStatisticsTable extends Migration
         Schema::table('site_statistics', function (Blueprint $table) {
             // Remove the old 'visits' column
             $table->dropColumn('visits');
+        });
 
+        // Separate blueprint so the adds survive SQLite's table rebuild (tests).
+        Schema::table('site_statistics', function (Blueprint $table) {
             // Add new columns for tracking total, daily, and monthly visits
             $table->unsignedBigInteger('total_visits')->default(0);
             $table->unsignedBigInteger('daily_visits')->default(0);

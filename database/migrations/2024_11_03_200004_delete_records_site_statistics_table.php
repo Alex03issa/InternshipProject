@@ -15,7 +15,10 @@ class DeleteRecordsSiteStatisticsTable extends Migration
     {
         Schema::table('site_statistics', function (Blueprint $table) {
             // Drop foreign key constraint before dropping columns
-            $table->dropForeign(['user_id']);
+            // (SQLite, used by the test suite, can't drop foreign keys.)
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['user_id']);
+            }
 
             // Drop user-specific columns
             $table->dropColumn(['user_id', 'last_visit']);

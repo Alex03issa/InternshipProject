@@ -8,21 +8,27 @@ class UpdateBackgroundSkinAndTrophyTables extends Migration
 {
     public function up()
     {
+        // Drops and adds run in separate blueprints so the migration also
+        // works on SQLite (test suite), where a column drop rebuilds the table.
         Schema::table('backgrounds', function (Blueprint $table) {
-            if (!Schema::hasColumn('backgrounds', 'cost')) {
-                $table->integer('cost')->default(0)->after('background_image')->comment('Cost in coins');
-            }
             if (Schema::hasColumn('backgrounds', 'unlock_points')) {
                 $table->dropColumn('unlock_points');
             }
         });
+        Schema::table('backgrounds', function (Blueprint $table) {
+            if (!Schema::hasColumn('backgrounds', 'cost')) {
+                $table->integer('cost')->default(0)->after('background_image')->comment('Cost in coins');
+            }
+        });
 
+        Schema::table('skins', function (Blueprint $table) {
+            if (Schema::hasColumn('skins', 'unlock_points')) {
+                $table->dropColumn('unlock_points');
+            }
+        });
         Schema::table('skins', function (Blueprint $table) {
             if (!Schema::hasColumn('skins', 'cost')) {
                 $table->integer('cost')->default(0)->after('skin_image')->comment('Cost in coins');
-            }
-            if (Schema::hasColumn('skins', 'unlock_points')) {
-                $table->dropColumn('unlock_points');
             }
         });
 
@@ -30,6 +36,8 @@ class UpdateBackgroundSkinAndTrophyTables extends Migration
             if (Schema::hasColumn('trophies', 'unlock_criteria')) {
                 $table->dropColumn('unlock_criteria');
             }
+        });
+        Schema::table('trophies', function (Blueprint $table) {
             if (!Schema::hasColumn('trophies', 'icon')) {
                 $table->string('icon')->nullable()->after('trophy_description')->comment('Icon image path');
             }

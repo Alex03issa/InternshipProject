@@ -5,7 +5,7 @@
             <div class="unlocked-items-grid backgrounds-grid">
                 @foreach($backgrounds as $background)
                     <div class="unlocked-item">
-                        <img src="{{ asset('storage/' . $background->background_image) }}" alt="{{ $background->background_name }}">
+                        <img src="{{ asset('storage/' . $background) }}" alt="Background Image">
                     </div>
                 @endforeach
             </div>

@@ -5,7 +5,7 @@
             <div class="unlocked-items-grid trophies-grid">
                 @foreach($trophies as $trophy)
                     <div class="unlocked-item">
-                        <img src="{{ asset('storage/' . $trophy['icon']) }}" alt="Trophy Image">
+                        <img src="{{ asset('storage/' . $trophy) }}" alt="Trophy Image">
                     </div>
                 @endforeach
             </div>

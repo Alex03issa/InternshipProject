@@ -14,18 +14,4 @@ class Skin extends Model
         'skin_name', 'skin_image', 'cost'
     ];
 
-    public function addUnlockedSkin($skinId)
-    {
-        $unlockedSkins = $this->unlocked_skin ?? [];
-        if (!in_array($skinId, $unlockedSkins)) {
-            $unlockedSkins[] = $skinId;
-            $this->unlocked_skin = $unlockedSkins;
-            $this->save();
-        }
-    }
-
-    public function gameInfos()
-    {
-        return $this->belongsToMany(GameInfo::class, 'game_info_skins', 'skin_id', 'game_info_id');
-    }
 }

@@ -10,9 +10,12 @@ class UpdateGameInfoTable extends Migration
     {
         Schema::table('game_info', function (Blueprint $table) {
             
-            $table->dropColumn('speed');
-            $table->dropColumn('level');
-            
+            // One dropColumn call, in its own blueprint: SQLite (test suite)
+            // can't drop two columns separately or mix drops with adds.
+            $table->dropColumn(['speed', 'level']);
+        });
+
+        Schema::table('game_info', function (Blueprint $table) {
             $table->integer('coin')->default(0);
         });
     }

@@ -22,23 +22,29 @@ class GameInfo extends Model
         
     ];
 
+    /**
+     * Unlocked item ids as an int array, whatever form the column holds
+     * (array cast, legacy double-encoded JSON string, or null).
+     */
+    public function unlockedIds(string $column): array
+    {
+        $value = $this->{$column};
+
+        while (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if ($decoded === null && $value !== 'null') {
+                return [];
+            }
+            $value = $decoded;
+        }
+
+        return array_values(array_map('intval', is_array($value) ? $value : []));
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function skins()
-    {
-        return $this->belongsToMany(Skin::class, 'game_info_skins', 'game_info_id', 'skin_id');
-    }
 
-    public function backgrounds()
-    {
-        return $this->belongsToMany(Background::class, 'game_info_backgrounds', 'game_info_id', 'background_id');
-    }
-
-    public function trophies()
-    {
-        return $this->belongsToMany(Trophy::class, 'game_info_trophies', 'game_info_id', 'trophy_id');
-    }
 }
