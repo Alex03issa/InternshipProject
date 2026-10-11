@@ -15,25 +15,25 @@ Built during my internship (August to December 2024). The application has three 
 ### Website and accounts
 - Home, blog, privacy-policy and terms pages rendered from database posts grouped by category and section, with reusable content blocks
 - Sign-up with e-mail verification, login and logout, forgot / reset password
-- Social login with **Google** and **Apple** (Laravel Socialite)
-- E-mail addresses can be stored encrypted and hashed (`emails:manage` Artisan command)
+- Social login with **Google** (Laravel Socialite)
+- E-mail addresses are stored encrypted; an HMAC of the address (keyed with `HASH_SECRET`) is used to look users up. `emails:manage` converts legacy plain-text rows
 - The browser's timezone is stored per user (`SetUserTimezone` middleware) so dates display in local time
 - User and guest activity tracking (`TrackUserActivity` middleware, last-visit and current-visit endpoints)
 
 ### Game API (`routes/api.php`, Laravel Sanctum)
-- `POST /api/register`, `/api/login`, `/api/logout`, `/api/google-login`
-- `POST /api/forgot-password`, `/api/reset-password`, `/api/change-password`, e-mail verification
-- `GET /api/user-profile/{userId}` - score, coins, retries, unlocked and selected items
-- `POST /api/update-score-coins`, `/api/reset-score-retry`, `/api/update-profile-image`
+- `POST /api/register`, `/api/login`, `/api/google-login` return a Sanctum token; every other game endpoint requires `Authorization: Bearer <token>` and acts on the token's owner (rate limited)
+- `POST /api/logout`, `/api/forgot-password`, `/api/reset-password`, `/api/change-password`, e-mail verification
+- `GET /api/user-profile` - the player's own score, coins, retries, unlocked and selected items
+- `POST /api/update-score-coins` (adds non-negative, capped deltas; limits in `config/game.php`), `/api/reset-score-retry`, `/api/update-profile-image`
 - `GET /api/skins-and-backgrounds`, `POST /api/purchase-item`, `POST /api/select-item`, `GET /api/get-item-by-id` - in-game store: buy skins and backgrounds with coins and equip them
 
-### Admin panel (Filament, `/admin`)
+### Admin panel (Filament, `/admin`, admins only)
 - Resources for **Posts** (with categories, sections, scheduled publishing and a manual override), **Categories**, **Team members**, **Users**, **Skins**, **Backgrounds**, **Trophies** and **Ads**
 - **Advertising**: custom image ads or Google ad code, per platform, with start and end dates, CPC and CPM rates, click and view tracking, revenue and paid status, and CSV reports per client or for all clients
 - Dashboard charts: monthly registered users, users vs guests, downloads by platform, monthly revenue and bills
-- Roles and permissions with `spatie/laravel-permission`
+- Access is limited to users with `user_type = admin` (`User::canAccessPanel()`); the ad CSV reports also require an admin login
 
-### Player panel (Filament, `/user`)
+### Player panel (Filament, `/user`, players only)
 - Widgets for total score, coins, retry count, selected skin and background, and unlocked skins, backgrounds and trophies
 
 ### Scheduled jobs (`app/Console/Kernel.php`)
@@ -46,9 +46,9 @@ Built during my internship (August to December 2024). The application has three 
 
 - **Backend:** PHP 8.2+, Laravel 10, Laravel Sanctum, Laravel Socialite
 - **Admin UI:** Filament 3, Livewire 3
-- **Auth and permissions:** spatie/laravel-permission
+- **Auth:** session login for the website and panels, Sanctum tokens for the game API, Socialite for Google
 - **Frontend:** Blade, Vite
-- **Database:** MySQL (Doctrine DBAL for column changes in migrations)
+- **Database:** MySQL (Doctrine DBAL for column changes in migrations); the test suite runs on in-memory SQLite
 
 ## Project Structure
 
@@ -61,7 +61,7 @@ app/
     User/Widgets/            player dashboard widgets
   Http/
     Controllers/             website, auth, game API (GameInfo, Skins, Ads, Posts)
-    Middleware/              TrackUserActivity, SetUserTimezone, EnsureEmailIsVerified
+    Middleware/              TrackUserActivity, SetUserTimezone, EnsureUserIsAdmin
   Models/                    User, GameInfo, Skin, Background, Trophy, Ad, AdStatistic, Post, ...
   Providers/Filament/        AdminPanelProvider, UserPanelProvider
 database/migrations/         full schema history
@@ -74,7 +74,7 @@ routes/web.php, routes/api.php
 ### Prerequisites
 - PHP 8.2+ with the `intl` extension, Composer, Node.js and npm
 - MySQL
-- Optional: Google and Apple OAuth credentials and an SMTP account
+- Optional: Google OAuth credentials and an SMTP account
 
 ### Installation
 
@@ -90,13 +90,21 @@ php artisan storage:link
 
 ### Configuration
 
-Set the database, mail and OAuth values in `.env`:
+Set the database, mail, secrets and OAuth values in `.env`:
 
 ```dotenv
 DB_CONNECTION=mysql
 DB_DATABASE=side_to_side
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
+
+# Required: key for the e-mail lookup hash and token signatures.
+# php -r "echo bin2hex(random_bytes(32)), PHP_EOL;"
+HASH_SECRET=
+
+# Initial admin (used by admin:create / db:seed; no defaults)
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
 
 MAIL_MAILER=smtp
 MAIL_HOST=...
@@ -110,14 +118,24 @@ GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
 
 ```bash
 php artisan migrate
-php artisan make:filament-user      # create an admin login
+php artisan admin:create            # create an admin (uses ADMIN_EMAIL/ADMIN_PASSWORD or asks)
 php artisan serve
 php artisan schedule:work           # run scheduled jobs locally
 ```
 
+`admin:create` stores the e-mail encrypted and hashed the same way sign-up does, so the admin can sign in at `/login` and is redirected to `/admin`. (`php artisan db:seed` does the same when `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set.) Players sign up on the website or through the API and use `/user`.
+
 - Website: http://localhost:8000
 - Admin panel: http://localhost:8000/admin
 - Player panel: http://localhost:8000/user
+
+### Tests
+
+```bash
+php artisan test
+```
+
+Feature tests (`tests/Feature/GameApiTest.php`) cover registration, login and token use, the auth requirement on game endpoints, score updates, buying and equipping items, `admin:create`, and panel / report access. They run on in-memory SQLite, no MySQL needed.
 
 ## Screenshots
 
