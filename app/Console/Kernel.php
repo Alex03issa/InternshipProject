@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\UpdateAdStatus::class,
         \App\Console\Commands\UpdatePostStatus::class,
         \App\Console\Commands\ManageEmails::class,
+        \App\Console\Commands\CreateAdmin::class,
     ];
     
 }

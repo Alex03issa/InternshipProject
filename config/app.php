@@ -128,6 +128,36 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Email Hash Secret
+    |--------------------------------------------------------------------------
+    |
+    | Secret used for the HMAC that indexes encrypted e-mail addresses
+    | (users.hashed_email) and signs verification / reset tokens. Changing it
+    | invalidates every existing login, so set it once per environment.
+    |
+    */
+
+    'hash_secret' => env('HASH_SECRET'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Admin Account
+    |--------------------------------------------------------------------------
+    |
+    | Used by `php artisan admin:create` and the DatabaseSeeder. There are no
+    | defaults for the e-mail or password on purpose.
+    |
+    */
+
+    'admin' => [
+        'name' => env('ADMIN_NAME', 'Admin'),
+        'username' => env('ADMIN_USERNAME', 'admin'),
+        'email' => env('ADMIN_EMAIL'),
+        'password' => env('ADMIN_PASSWORD'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |

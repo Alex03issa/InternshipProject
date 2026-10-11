@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Skin;
 use App\Models\Background;
+use App\Models\GameInfo;
+use Illuminate\Support\Facades\DB;
 
 class SkinsController extends Controller
 {
@@ -44,33 +46,33 @@ class SkinsController extends Controller
 
     public function getSkinsAndBackgrounds(Request $request)
     {
-        $userId = $request->query('user_id'); 
-        $user = User::with('gameInfo')->find($userId);
+        // The player comes from the Sanctum token, not from the query string.
+        $user = $request->user()->load('gameInfo');
+        $gameInfo = $user->gameInfo;
 
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'User not found'], 404);
-        }
+        $unlockedSkins = $gameInfo ? $gameInfo->unlockedIds('unlocked_skins') : [];
+        $unlockedBackgrounds = $gameInfo ? $gameInfo->unlockedIds('unlocked_backgrounds') : [];
 
         // Fetch skins and backgrounds
-        $skins = Skin::all()->map(function ($skin) use ($user) {
+        $skins = Skin::all()->map(function ($skin) use ($gameInfo, $unlockedSkins) {
             return [
                 'id' => $skin->id,
                 'name' => $skin->skin_name,
                 'image' => $skin->skin_image,
                 'cost' => $skin->cost,
-                'isUnlocked' => in_array($skin->id, json_decode($user->gameInfo->unlocked_skins ?? '[]')),
-                'isSelected' => $user->gameInfo->ball_skin_selected == $skin->id,
+                'isUnlocked' => in_array($skin->id, $unlockedSkins),
+                'isSelected' => $gameInfo && $gameInfo->ball_skin_selected == $skin->id,
             ];
         });
 
-        $backgrounds = Background::all()->map(function ($background) use ($user) {
+        $backgrounds = Background::all()->map(function ($background) use ($gameInfo, $unlockedBackgrounds) {
             return [
                 'id' => $background->id,
                 'name' => $background->background_name,
                 'image' => $background->background_image,
                 'cost' => $background->cost,
-                'isUnlocked' => in_array($background->id, json_decode($user->gameInfo->unlocked_backgrounds ?? '[]')),
-                'isSelected' => $user->gameInfo->background_selected == $background->id,
+                'isUnlocked' => in_array($background->id, $unlockedBackgrounds),
+                'isSelected' => $gameInfo && $gameInfo->background_selected == $background->id,
             ];
         });
 
@@ -84,88 +86,81 @@ class SkinsController extends Controller
 
     public function purchaseItem(Request $request)
     {
-        $user = User::with('gameInfo')->find($request->user_id);
-        $itemType = $request->item_type; // 'skin' or 'background'
-        $itemId = $request->item_id;
-    
-        if (!$user || !$user->gameInfo) {
-            return response()->json(['success' => false, 'message' => 'User or game information not found.'], 404);
+        $validated = $request->validate([
+            'item_type' => 'required|in:skin,background', // 'skin' or 'background'
+            'item_id' => 'required|integer|min:1',
+        ]);
+
+        $user = $request->user();
+        $itemType = $validated['item_type'];
+        $itemId = (int) $validated['item_id'];
+
+        $item = $itemType === 'skin' ? Skin::find($itemId) : Background::find($itemId);
+        $label = $itemType === 'skin' ? 'Skin' : 'Background';
+        $column = $itemType === 'skin' ? 'unlocked_skins' : 'unlocked_backgrounds';
+
+        if (!$item) {
+            return response()->json(['success' => false, 'message' => "{$label} not found."], 404);
         }
-    
-        if ($itemType === 'skin') {
-            $skin = Skin::find($itemId);
-            if (!$skin) {
-                return response()->json(['success' => false, 'message' => 'Skin not found.'], 404);
+
+        return DB::transaction(function () use ($user, $item, $label, $column) {
+            // Lock the row so two parallel purchases can't spend the same coins.
+            $gameInfo = GameInfo::where('user_id', $user->id)->lockForUpdate()->first();
+
+            if (!$gameInfo) {
+                return response()->json(['success' => false, 'message' => 'User or game information not found.'], 404);
             }
-    
-            if ($user->gameInfo->coin >= $skin->cost) {
-                $user->gameInfo->coin -= $skin->cost;
-                $unlockedSkins = json_decode($user->gameInfo->unlocked_skins ?? '[]');
-    
-                if (!in_array($skin->id, $unlockedSkins)) {
-                    $unlockedSkins[] = $skin->id;
-                    $user->gameInfo->unlocked_skins = json_encode($unlockedSkins);
-                }
-    
-                if ($user->gameInfo->save()) {
-                    $user->gameInfo->refresh(); // Ensure relationship is refreshed
-                    return response()->json(['success' => true, 'message' => 'Skin purchased successfully.']);
-                } else {
-                    return response()->json(['success' => false, 'message' => 'Failed to save game information.']);
-                }
+
+            $unlocked = $gameInfo->unlockedIds($column);
+
+            if (in_array($item->id, $unlocked)) {
+                return response()->json(['success' => false, 'message' => "{$label} already unlocked."]);
             }
-        } elseif ($itemType === 'background') {
-            $background = Background::find($itemId);
-            if (!$background) {
-                return response()->json(['success' => false, 'message' => 'Background not found.'], 404);
+
+            if ($gameInfo->coin < $item->cost) {
+                return response()->json(['success' => false, 'message' => 'Not enough coins.']);
             }
-    
-            if ($user->gameInfo->coin >= $background->cost) {
-                $user->gameInfo->coin -= $background->cost;
-                $unlockedBackgrounds = json_decode($user->gameInfo->unlocked_backgrounds ?? '[]');
-    
-                if (!in_array($background->id, $unlockedBackgrounds)) {
-                    $unlockedBackgrounds[] = $background->id;
-                    $user->gameInfo->unlocked_backgrounds = json_encode($unlockedBackgrounds);
-                }
-    
-                if ($user->gameInfo->save()) {
-                    $user->gameInfo->refresh(); // Ensure relationship is refreshed
-                    return response()->json(['success' => true, 'message' => 'Background purchased successfully.']);
-                } else {
-                    return response()->json(['success' => false, 'message' => 'Failed to save game information.']);
-                }
+
+            $unlocked[] = $item->id;
+            $gameInfo->coin -= $item->cost;
+            $gameInfo->{$column} = $unlocked; // array cast handles the JSON
+
+            if ($gameInfo->save()) {
+                return response()->json(['success' => true, 'message' => "{$label} purchased successfully."]);
             }
-        }
-    
-        return response()->json(['success' => false, 'message' => 'Not enough coins.']);
+
+            return response()->json(['success' => false, 'message' => 'Failed to save game information.']);
+        });
     }
     
 
     public function selectItem(Request $request)
     {
-        $user = User::with('gameInfo')->find($request->user_id);
-        $itemType = $request->item_type; // 'skin' or 'background'
-        $itemId = $request->item_id;
+        $validated = $request->validate([
+            'item_type' => 'required|string', // 'skin' or 'background'
+            'item_id' => 'required|integer|min:1',
+        ]);
 
-        if (!$user || !$user->gameInfo) {
+        $gameInfo = GameInfo::where('user_id', $request->user()->id)->first();
+        $itemType = $validated['item_type'];
+        $itemId = (int) $validated['item_id'];
+
+        if (!$gameInfo) {
             return response()->json(['success' => false, 'message' => 'User or game information not found.'], 404);
         }
 
         if ($itemType === 'skin') {
-            $unlockedSkins = json_decode($user->gameInfo->unlocked_skins ?? '[]');
-            if (in_array($itemId, $unlockedSkins)) {
-                $user->gameInfo->ball_skin_selected = $itemId;
-                $user->gameInfo->save();
+            if (in_array($itemId, $gameInfo->unlockedIds('unlocked_skins'))) {
+                $gameInfo->ball_skin_selected = $itemId;
+                $gameInfo->save();
 
                 return response()->json(['success' => true, 'message' => 'Skin selected successfully.']);
             }
             return response()->json(['success' => false, 'message' => 'Skin not unlocked.']);
         } elseif ($itemType === 'background') {
-            $unlockedBackgrounds = json_decode($user->gameInfo->unlocked_backgrounds ?? '[]');
-            if (in_array($itemId, $unlockedBackgrounds)) {
-                $user->gameInfo->background_selected = $itemId;
-                $user->gameInfo->save();
+            if (in_array($itemId, $gameInfo->unlockedIds('unlocked_backgrounds'))) {
+                $gameInfo->background_selected = $itemId;
+                $gameInfo->save();
 
                 return response()->json(['success' => true, 'message' => 'Background selected successfully.']);
             }

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\signupController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserActivityController;
@@ -50,12 +49,12 @@ Route::get('/download', function () {
 
 
 Route::get('/signup', [signupController::class, 'showSignUp'])->name('signup');
-Route::post('/signup', [signupController::class, 'signUp'])->name('signup.submit');
+Route::post('/signup', [signupController::class, 'signUp'])->middleware('throttle:10,1')->name('signup.submit');
 
 
 
 Route::get('/login', [loginController::class, 'showSignIn'])->name('login');
-Route::post('/login', [loginController::class, 'signIn'])->name('login.submit');
+Route::post('/login', [loginController::class, 'signIn'])->middleware('throttle:10,1')->name('login.submit');
 Route::post('/logout', [loginController::class, 'logout'])->name('logout');
 
 
@@ -65,12 +64,6 @@ Route::post('/logout', [loginController::class, 'logout'])->name('logout');
 Route::post('/store-timezone', [GoogleAuthController::class, 'storeTimezone'])->name('store.timezone');
 Route::get('auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
-
-
-// Apple login routes (if using Apple ID login)
-
-Route::get('auth/apple/redirect', [AppleAuthController::class, 'redirectToApple'])->name('apple.redirect');
-Route::get('auth/apple/callback', [AppleAuthController::class, 'handleAppleCallback'])->name('apple.callback');
 
 
 Route::get('/verify/{token}', [VerificationController::class, 'verify'])->name('verify.email');
@@ -102,8 +95,11 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 
 
 Route::get('/track-click/{adId}', [AdController::class, 'trackClick'])->name('trackClick');
-Route::get('/ads/{adId}/client-report', [AdController::class, 'downloadClientReport'])->name('ad.downloadClientReport');
-Route::get('/ads/admin-report', [AdController::class, 'downloadAdminReport'])->name('ad.downloadAdminReport');
+// Billing / revenue CSV reports: admins only (linked from the admin panel).
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/ads/{adId}/client-report', [AdController::class, 'downloadClientReport'])->name('ad.downloadClientReport');
+    Route::get('/ads/admin-report', [AdController::class, 'downloadAdminReport'])->name('ad.downloadAdminReport');
+});
 
 
 Route::post('/user/update-last-visit', [HomeController::class, 'updateLastVisit'])->name('user.updateLastVisit');

@@ -45,7 +45,7 @@ class loginController extends Controller
             ]);
 
             // Generate hash for the input email
-            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $request->email, config('app.hash_secret'));
 
             // Retrieve the user by hashed_email
             $user = User::where('hashed_email', $hashedEmail)->first();
@@ -73,7 +73,7 @@ class loginController extends Controller
                             if ($request->has('timezone')) {
                                 $user->timezone = $request->input('timezone');
                                 $user->save();
-                                Log::info("Timezone updated for user: {$decryptedEmail}");
+                                Log::info("Timezone updated for user ID {$user->id}.");
                             }
 
                             // Check if the user is verified
@@ -86,17 +86,17 @@ class loginController extends Controller
                             if (Hash::needsRehash($user->password)) {
                                 $user->password = Hash::make($request->password);
                                 $user->save();
-                                Log::info("Password rehashed for user: {$decryptedEmail}");
+                                Log::info("Password rehashed for user ID {$user->id}.");
                             }
 
                             // Authenticate and redirect based on user type
                             Auth::login($user);
                             if ($user->user_type === 'admin') {
-                                Log::info("Admin logged in: {$decryptedEmail}");
+                                Log::info("Admin logged in: user ID {$user->id}.");
                                 return redirect()->route('filament.admin.pages.dashboard')->with('success', 'Logged in as Admin!');
                             }
 
-                            Log::info("User logged in: {$decryptedEmail}");
+                            Log::info("User logged in: user ID {$user->id}.");
                             return redirect()->route('home.verified')->with('success', 'Logged in successfully!');
                         } else {
                             Log::warning("Password mismatch for user ID {$user->id}.");
@@ -141,7 +141,7 @@ class loginController extends Controller
             ]);
 
             // Generate hash for the input email
-            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $request->email, config('app.hash_secret'));
 
             // Retrieve the user by hashed_email
             $user = User::where('hashed_email', $hashedEmail)->first();
@@ -175,13 +175,13 @@ class loginController extends Controller
                             $user->save();
                         }
 
-                        // Generate and encrypt API token
+                        // Generate the API token. The client sends it back as
+                        // "Authorization: Bearer <token>".
                         $plainToken = $user->createToken('API Token')->plainTextToken;
-                        $encryptedToken = Crypt::encryptString($plainToken);
 
                         return response()->json([
                             'success' => true,
-                            'token' => $encryptedToken,
+                            'token' => $plainToken,
                             'user' => [
                                 'id' => $user->id,
                                 'email' => $decryptedEmail,
@@ -258,7 +258,7 @@ class loginController extends Controller
                 'email' => $decryptedEmail,
                 'timestamp' => now()->addMinutes(30)->timestamp, // Expiry: 30 minutes
             ]);
-            $hmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $hmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
             $verificationToken = Crypt::encryptString(json_encode(['data' => $tokenData, 'hmac' => $hmac]));
 
             // Save the new token
@@ -279,11 +279,9 @@ class loginController extends Controller
         try {
             // Step 1: Decrypt the outer encryption layer
             $encryptedData = Crypt::decryptString($user->email);
-            \Log::info("Step 1: Decrypted Outer Layer -> {$encryptedData}");
     
             // Step 2: Decode JSON to extract inner encryption and hash
             $data = json_decode($encryptedData, true);
-            \Log::info("Step 2: Decoded JSON Data -> " . print_r($data, true));
     
             if (!isset($data['email']) || !isset($data['hash'])) {
                 throw new Exception("Invalid email structure.");
@@ -291,18 +289,16 @@ class loginController extends Controller
     
             // Step 3: Decrypt the inner encryption layer
             $decryptedEmail = Crypt::decryptString($data['email']);
-            \Log::info("Step 3: Decrypted Email -> {$decryptedEmail}");
     
             // Optional: Verify the hash for integrity
-            $calculatedHash = hash_hmac('sha256', $decryptedEmail, env('HASH_SECRET'));
+            $calculatedHash = hash_hmac('sha256', $decryptedEmail, config('app.hash_secret'));
             if ($calculatedHash !== $data['hash']) {
                 throw new Exception("Hash integrity check failed.");
             }
-            \Log::info("Step 4: Hash Verified Successfully");
     
             // Send the verification email
             Mail::to($decryptedEmail)->send(new VerificationMail($user));
-            \Log::info("Verification email sent to: " . $decryptedEmail);
+            \Log::info("Verification email sent to user ID {$user->id}.");
     
         } catch (Exception $e) {
             Log::error("Failed to send verification email: " . $e->getMessage());

@@ -37,7 +37,7 @@ class ResetPasswordController extends Controller
             $tokenData = json_decode($decodedToken['data'], true);
 
             // Verify HMAC integrity
-            $calculatedHmac = hash_hmac('sha256', $decodedToken['data'], env('HASH_SECRET'));
+            $calculatedHmac = hash_hmac('sha256', $decodedToken['data'], config('app.hash_secret'));
             if ($calculatedHmac !== $decodedToken['hmac']) {
                 Log::error("HMAC verification failed.", ['token' => $token]);
                 throw new Exception("Token integrity check failed.");
@@ -72,7 +72,7 @@ class ResetPasswordController extends Controller
     public function reset(Request $request)
     {
         try {
-            Log::info('Password reset request received.', ['email' => $request->email]);
+            Log::info('Password reset request received.');
 
              // Validate the request
              $validator = Validator::make($request->all(), [
@@ -105,7 +105,7 @@ class ResetPasswordController extends Controller
             }
 
             // Validate HMAC
-            $expectedHmac = hash_hmac('sha256', $tokenPayload['data'], env('HASH_SECRET'));
+            $expectedHmac = hash_hmac('sha256', $tokenPayload['data'], config('app.hash_secret'));
             if ($expectedHmac !== $tokenPayload['hmac']) {
                 Log::error('HMAC validation failed.', ['token' => $encryptedToken]);
                 return back()->withErrors(['email' => 'Invalid or tampered token.']);
@@ -120,7 +120,7 @@ class ResetPasswordController extends Controller
             }
 
             // Look up the user and reset record
-            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $request->email, config('app.hash_secret'));
             $passwordReset = \DB::table('password_reset_tokens')
                 ->where('hashed_email', $hashedEmail)
                 ->first();
@@ -161,7 +161,7 @@ class ResetPasswordController extends Controller
     public function apiResetPassword(Request $request)
     {
         try {
-            Log::info('API password reset request received.', ['email' => $request->email]);
+            Log::info('API password reset request received.');
 
             // Validate the request
             $request->validate([
@@ -180,7 +180,7 @@ class ResetPasswordController extends Controller
             }
 
             // Validate HMAC
-            $expectedHmac = hash_hmac('sha256', $tokenPayload['data'], env('HASH_SECRET'));
+            $expectedHmac = hash_hmac('sha256', $tokenPayload['data'], config('app.hash_secret'));
             if ($expectedHmac !== $tokenPayload['hmac']) {
                 Log::error('HMAC validation failed.');
                 return response()->json(['success' => false, 'message' => 'Invalid or tampered token.'], 400);
@@ -195,7 +195,7 @@ class ResetPasswordController extends Controller
             }
 
             // Look up the user and reset record
-            $hashedEmail = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $request->email, config('app.hash_secret'));
             $passwordReset = \DB::table('password_reset_tokens')
                 ->where('hashed_email', $hashedEmail)
                 ->first();

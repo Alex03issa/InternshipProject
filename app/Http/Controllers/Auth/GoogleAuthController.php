@@ -46,7 +46,7 @@ class GoogleAuthController extends Controller
             $googleUser = Socialite::driver('google')->stateless()->user();
 
             // Step 2: Hash the Google email
-            $saltedHash = hash_hmac('sha256', $googleUser->getEmail(), env('HASH_SECRET'));
+            $saltedHash = hash_hmac('sha256', $googleUser->getEmail(), config('app.hash_secret'));
 
             // Step 3: Check if the user exists based on hashed email
             $existingUser = User::where('hashed_email', $saltedHash)->first();
@@ -121,7 +121,7 @@ class GoogleAuthController extends Controller
 
             $timezone = $request->input('timezone', 'UTC');
             $googleUser = Socialite::driver('google')->stateless()->userFromToken($token);
-            $saltedHash = hash_hmac('sha256', $googleUser->getEmail(), env('HASH_SECRET'));
+            $saltedHash = hash_hmac('sha256', $googleUser->getEmail(), config('app.hash_secret'));
             $now = Carbon::now($timezone);
 
             $existingUser = User::where('hashed_email', $saltedHash)->first();

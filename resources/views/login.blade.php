@@ -72,10 +72,6 @@
             <i class="fab fa-google"></i>Continue with Google
         </a>
 
-        <!-- Apple ID Button -->
-        <a href="{{ route('apple.redirect') }}" class="signup__button--apple">
-            <i class="fab fa-apple"></i>Continue with Apple ID
-        </a>
     </form>
 
     <!-- Footer -->

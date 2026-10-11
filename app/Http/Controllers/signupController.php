@@ -64,7 +64,13 @@ class signupController extends Controller
             $now = Carbon::now($timezone);
 
             // Inline encryption logic for email
-            $saltedHash = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $saltedHash = hash_hmac('sha256', $request->email, config('app.hash_secret'));
+
+            // Emails are stored encrypted, so uniqueness is checked on the hash.
+            if (User::where('hashed_email', $saltedHash)->exists()) {
+                return redirect()->back()->with('error', 'An account with this email already exists.');
+            }
+
             $firstEncryption = Crypt::encryptString($request->email);
             $encryptedEmail = Crypt::encryptString(json_encode([
                 'email' => $firstEncryption,
@@ -77,7 +83,7 @@ class signupController extends Controller
                 'email' => $request->email,
                 'timestamp' => now()->addMinutes(30)->timestamp,
             ]);
-            $hmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $hmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
             $verificationToken = Crypt::encryptString(json_encode(['data' => $tokenData, 'hmac' => $hmac]));
 
             // Store the user in the database
@@ -138,7 +144,16 @@ class signupController extends Controller
             $now = Carbon::now($timezone);
 
             // Inline encryption logic for email
-            $saltedHash = hash_hmac('sha256', $request->email, env('HASH_SECRET'));
+            $saltedHash = hash_hmac('sha256', $request->email, config('app.hash_secret'));
+
+            // Emails are stored encrypted, so uniqueness is checked on the hash.
+            if (User::where('hashed_email', $saltedHash)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['email' => ['The email has already been taken.']],
+                ], 422);
+            }
+
             $firstEncryption = Crypt::encryptString($request->email);
             $encryptedEmail = Crypt::encryptString(json_encode([
                 'email' => $firstEncryption,
@@ -151,7 +166,7 @@ class signupController extends Controller
                 'email' => $request->email,
                 'timestamp' => now()->addMinutes(30)->timestamp,
             ]);
-            $hmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $hmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
             $verificationToken = Crypt::encryptString(json_encode(['data' => $tokenData, 'hmac' => $hmac]));
 
             // Store the user in the database
@@ -233,11 +248,9 @@ class signupController extends Controller
         try {
             // Step 1: Decrypt the outer encryption layer
             $encryptedData = Crypt::decryptString($user->email);
-            \Log::info("Step 1: Decrypted Outer Layer -> {$encryptedData}");
     
             // Step 2: Decode JSON to extract inner encryption and hash
             $data = json_decode($encryptedData, true);
-            \Log::info("Step 2: Decoded JSON Data -> " . print_r($data, true));
     
             if (!isset($data['email']) || !isset($data['hash'])) {
                 throw new Exception("Invalid email structure.");
@@ -245,18 +258,16 @@ class signupController extends Controller
     
             // Step 3: Decrypt the inner encryption layer
             $decryptedEmail = Crypt::decryptString($data['email']);
-            \Log::info("Step 3: Decrypted Email -> {$decryptedEmail}");
     
             // Optional: Verify the hash for integrity
-            $calculatedHash = hash_hmac('sha256', $decryptedEmail, env('HASH_SECRET'));
+            $calculatedHash = hash_hmac('sha256', $decryptedEmail, config('app.hash_secret'));
             if ($calculatedHash !== $data['hash']) {
                 throw new Exception("Hash integrity check failed.");
             }
-            \Log::info("Step 4: Hash Verified Successfully");
     
             // Send the verification email
             Mail::to($decryptedEmail)->send(new VerificationMail($user));
-            \Log::info("Verification email sent to: " . $decryptedEmail);
+            \Log::info("Verification email sent to user ID {$user->id}.");
     
         } catch (Exception $e) {
             Log::error("Failed to send verification email: " . $e->getMessage());

@@ -20,7 +20,7 @@ class VerificationController extends Controller
     public function verify($encryptedToken)
     {
         try {
-            Log::info('Starting email verification (Web).', ['token' => $encryptedToken]);
+            Log::info('Starting email verification (Web).');
 
             // Decrypt the token
             $token = Crypt::decryptString($encryptedToken);
@@ -34,7 +34,7 @@ class VerificationController extends Controller
             $providedHmac = $decodedToken['hmac'];
 
             // Verify HMAC integrity
-            $calculatedHmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $calculatedHmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
             if ($calculatedHmac !== $providedHmac) {
                 throw new Exception('Token integrity verification failed.');
             }
@@ -51,7 +51,7 @@ class VerificationController extends Controller
             }
 
             // Retrieve user
-            $hashedEmail = hash_hmac('sha256', $decodedData['email'], env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $decodedData['email'], config('app.hash_secret'));
             $user = User::where('hashed_email', $hashedEmail)->first();
 
             if (!$user) {
@@ -86,7 +86,7 @@ class VerificationController extends Controller
     public function apiVerify($encryptedToken)
     {
         try {
-            Log::info('Starting email verification (API).', ['token' => $encryptedToken]);
+            Log::info('Starting email verification (API).');
 
             // Decrypt the token
             $token = Crypt::decryptString($encryptedToken);
@@ -100,7 +100,7 @@ class VerificationController extends Controller
             $providedHmac = $decodedToken['hmac'];
 
             // Verify HMAC integrity
-            $calculatedHmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+            $calculatedHmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
             if ($calculatedHmac !== $providedHmac) {
                 throw new Exception('Token integrity verification failed.');
             }
@@ -117,7 +117,7 @@ class VerificationController extends Controller
             }
 
             // Retrieve user
-            $hashedEmail = hash_hmac('sha256', $decodedData['email'], env('HASH_SECRET'));
+            $hashedEmail = hash_hmac('sha256', $decodedData['email'], config('app.hash_secret'));
             $user = User::where('hashed_email', $hashedEmail)->first();
 
             if (!$user) {

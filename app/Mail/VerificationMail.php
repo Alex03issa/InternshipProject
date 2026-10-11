@@ -56,7 +56,7 @@ class VerificationMail extends Mailable
 
             // Step 3: Validate HMAC integrity
             try {
-                $calculatedHmac = hash_hmac('sha256', $tokenData, env('HASH_SECRET'));
+                $calculatedHmac = hash_hmac('sha256', $tokenData, config('app.hash_secret'));
                 if ($providedHmac !== $calculatedHmac) {
                     Log::warning("HMAC validation failed for a verification token.");
                     throw new Exception("An error occurred. Please try again.");

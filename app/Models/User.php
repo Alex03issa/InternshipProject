@@ -4,14 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Panel;
+use App\Observers\UserObserver;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -56,6 +58,37 @@ class User extends Authenticatable
     ];
     
     
+    protected static function booted(): void
+    {
+        static::observe(UserObserver::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->user_type === 'admin';
+    }
+
+    /**
+     * /admin is for admins only; /user (player panel) is for players.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return match ($panel->getId()) {
+            'admin' => $this->isAdmin(),
+            'user' => !$this->isAdmin(),
+            default => false,
+        };
+    }
+
+    /**
+     * Name shown in the Filament panels. Users who signed up with e-mail
+     * only have a username, and Filament requires a non-null string.
+     */
+    public function getFilamentName(): string
+    {
+        return (string) ($this->name ?: $this->username ?: 'User');
+    }
+
     public function getDisplayNameAttribute()
     {
         return $this->name ?? $this->username;  // Return name if set, otherwise username.

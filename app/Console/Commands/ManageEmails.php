@@ -71,23 +71,19 @@ class ManageEmails extends Command
 
         try {
             // Step 1: Generate hash for the email
-            $saltedHash = hash_hmac('sha256', $email, env('HASH_SECRET'));
-            \Log::info("Step 1: Generated Hash -> {$saltedHash}");
+            $saltedHash = hash_hmac('sha256', $email, config('app.hash_secret'));
 
             // Step 2: First encryption of the email
             $firstEncryption = Crypt::encryptString($email);
-            \Log::info("Step 2: First Encryption -> {$firstEncryption}");
 
             // Step 3: Wrap the first encryption and hash in JSON
             $jsonData = json_encode([
                 'email' => $firstEncryption,
                 'hash' => $saltedHash,
             ]);
-            \Log::info("Step 3: JSON Data -> {$jsonData}");
 
             // Step 4: Second encryption of the JSON data
             $encryptedEmail = Crypt::encryptString($jsonData);
-            \Log::info("Step 4: Second Encryption -> {$encryptedEmail}");
 
             // Step 5: Update the database with encrypted email and hash
             DB::table('users')
@@ -127,7 +123,7 @@ class ManageEmails extends Command
                 }
 
                 // Generate hash for the email
-                $saltedHash = hash_hmac('sha256', $user->email, env('HASH_SECRET'));
+                $saltedHash = hash_hmac('sha256', $user->email, config('app.hash_secret'));
 
                 // Encrypt the email
                 $firstEncryption = Crypt::encryptString($user->email);
@@ -159,7 +155,7 @@ class ManageEmails extends Command
      */
     private function decryptSingleEmail($email, $saveToDatabase = false)
     {
-        $user = DB::table('users')->where('hashed_email', hash_hmac('sha256', $email, env('HASH_SECRET')))->first();
+        $user = DB::table('users')->where('hashed_email', hash_hmac('sha256', $email, config('app.hash_secret')))->first();
 
         if (!$user) {
             $this->error("No user found with the hashed email corresponding to: {$email}");
@@ -169,11 +165,9 @@ class ManageEmails extends Command
         try {
             // Step 1: Decrypt the outer encryption layer
             $encryptedData = Crypt::decryptString($user->email);
-            \Log::info("Step 1: Decrypted Outer Layer -> {$encryptedData}");
 
             // Step 2: Decode JSON to extract inner encryption and hash
             $data = json_decode($encryptedData, true);
-            \Log::info("Step 2: Decoded JSON Data -> " . print_r($data, true));
 
             if (!isset($data['email']) || !isset($data['hash'])) {
                 $this->error("Invalid email structure!");
@@ -182,16 +176,14 @@ class ManageEmails extends Command
 
             // Step 3: Decrypt the inner encryption layer
             $decryptedEmail = Crypt::decryptString($data['email']);
-            \Log::info("Step 3: Decrypted Email -> {$decryptedEmail}");
 
             // Optional: Verify the hash for integrity
-            $calculatedHash = hash_hmac('sha256', $decryptedEmail, env('HASH_SECRET'));
+            $calculatedHash = hash_hmac('sha256', $decryptedEmail, config('app.hash_secret'));
             if ($calculatedHash !== $data['hash']) {
                 \Log::error("Hash integrity check failed for user ID {$user->id}");
                 $this->error("Data integrity check failed!");
                 return;
             }
-            \Log::info("Step 4: Hash Verified Successfully");
 
             // Save the decrypted email back to the database if required
             if ($saveToDatabase) {
